@@ -17,12 +17,15 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             Final_project_mobileTheme {
+                ////////
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    Final_project_mobileTheme{
+                        LoginUiMain()
+                    }
                 }
             }
         }
@@ -30,14 +33,18 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
+fun LoginUiMain() {
+    Final_project_mobileTheme {
+        Surface(color = MaterialTheme.colorScheme.background) {
+            Navigation()
+        }
 
+    }
+}
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     Final_project_mobileTheme {
-        Greeting("Android")
+        LoginUiMain()
     }
 }
