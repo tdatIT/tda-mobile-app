@@ -1,6 +1,5 @@
 package com.tda.app.view
 
-import android.graphics.Color.parseColor
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import com.tda.app.navigation.Screen
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
@@ -34,37 +32,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import androidx.navigation.compose.rememberNavController
 import com.tda.app.ui.theme.*
 
-@Composable
-fun Header() {
-    Image(
-        ColorPainter("#63B175".color),
-        contentDescription = "login_bg",
-        contentScale = ContentScale.FillWidth,
-        modifier = Modifier.fillMaxSize()
-    )
-    Column(
-        modifier = Modifier.padding(bottom = 40.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.tda_logo),
-            contentDescription = "login_bg",
-            modifier = Modifier.wrapContentWidth()
-        )
-        Text(
-            text = "TDA Store",
-            color = white,
-            fontSize = 40.sp,
-            fontWeight = FontWeight.SemiBold,
-            letterSpacing = 2.sp
-        )
-    }
-}
+
 @Composable
 fun LoginScreen(navController: NavController) {
     val firaSansFamily = FontFamily(
@@ -139,7 +109,7 @@ fun LoginScreen(navController: NavController) {
                                         fontWeight = FontWeight.Normal
                                     )
                                 ) {
-                                    append("tài khoản của bạn.")
+                                    append("với tài khoản của bạn.")
                                 }
 
                             },
@@ -155,7 +125,7 @@ fun LoginScreen(navController: NavController) {
                     Spacer(modifier = Modifier.padding(10.dp))
 
                     Text(
-                        text = "Địa chỉ email",
+                        text = "Địa chỉ Email",
                         style = MaterialTheme.typography.subtitle1,
                         color = dark_gray,
                         modifier = Modifier.padding(
@@ -202,7 +172,7 @@ fun LoginScreen(navController: NavController) {
                         modifier = Modifier
                             .fillMaxWidth(),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                        label = { Text(text = "Địa chỉ email") },
+                        label = { Text(text = "Địa chỉ Email") },
                         shape = RoundedCornerShape(8.dp),
                         onValueChange = {
                             useremail = it
@@ -283,7 +253,8 @@ fun LoginScreen(navController: NavController) {
 
                     Button(
                         onClick = {
-
+                            navController.popBackStack()
+                            navController.navigate(Screen.HomeScreen.route)
                         },
                         colors = ButtonDefaults.buttonColors(backgroundColor = colorPrimary),
                         modifier = Modifier
@@ -320,7 +291,7 @@ fun LoginScreen(navController: NavController) {
                             style = MaterialTheme.typography.subtitle1,
                             textAlign = TextAlign.Center,
                             modifier = Modifier.clickable {
-
+                                navController.navigate("signup_screen")
                             }
                         )
                     }
@@ -333,12 +304,36 @@ fun LoginScreen(navController: NavController) {
     }
 }
 
+@Composable
+fun Header() {
+    Image(
+        painter = painterResource(id = R.drawable.login_bg),
+        contentDescription = "login_bg",
+        contentScale = ContentScale.FillWidth,
+        modifier = Modifier.fillMaxSize()
+    )
+    Column(
+        modifier = Modifier.padding(bottom = 40.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.flower_logo),
+            contentDescription = "login_bg",
+            modifier = Modifier.wrapContentWidth()
+        )
 
-val String.color
-    get()=Color(parseColor(this))
+        Text(
+            text = "FloraGoGo",
+            color = white,
+            fontSize = 40.sp,
+            fontWeight = FontWeight.SemiBold,
+            letterSpacing = 2.sp
+        )
+    }
+}
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun DefaultPreview()
 {
-    LoginScreen(navController = rememberNavController())
 }
