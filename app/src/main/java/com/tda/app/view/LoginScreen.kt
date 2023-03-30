@@ -99,7 +99,7 @@ fun LoginScreen(navController: NavController) {
                                         fontWeight = FontWeight.Bold
                                     )
                                 ) {
-                                    append("Log in ")
+                                    append("Đăng nhập ")
                                 }
 
                                 withStyle(
@@ -109,7 +109,7 @@ fun LoginScreen(navController: NavController) {
                                         fontWeight = FontWeight.Normal
                                     )
                                 ) {
-                                    append("to your account.")
+                                    append("với tài khoản của bạn.")
                                 }
 
                             },
@@ -125,7 +125,7 @@ fun LoginScreen(navController: NavController) {
                     Spacer(modifier = Modifier.padding(10.dp))
 
                     Text(
-                        text = "Email Address",
+                        text = "Địa chỉ Email",
                         style = MaterialTheme.typography.subtitle1,
                         color = dark_gray,
                         modifier = Modifier.padding(
@@ -172,7 +172,7 @@ fun LoginScreen(navController: NavController) {
                         modifier = Modifier
                             .fillMaxWidth(),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                        label = { Text(text = "Email address") },
+                        label = { Text(text = "Địa chỉ Email") },
                         shape = RoundedCornerShape(8.dp),
                         onValueChange = {
                             useremail = it
@@ -180,7 +180,7 @@ fun LoginScreen(navController: NavController) {
                     )
 
                     Text(
-                        text = "Password",
+                        text = "Mật khẩu",
                         style = MaterialTheme.typography.subtitle1,
                         color = dark_gray,
                         modifier = Modifier.padding(
@@ -228,7 +228,7 @@ fun LoginScreen(navController: NavController) {
                             .fillMaxWidth(),
                         visualTransformation = PasswordVisualTransformation(),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                        label = { Text(text = "Password") },
+                        label = { Text(text = "Mật khẩu") },
                         shape = RoundedCornerShape(8.dp),
                         onValueChange = {
                             password = it
@@ -241,7 +241,7 @@ fun LoginScreen(navController: NavController) {
                         horizontalArrangement = Arrangement.End
                     ) {
                         Text(
-                            text = "Forgot Password",
+                            text = "Quên mật khẩu",
                             style = MaterialTheme.typography.subtitle2,
                             color = colorPrimary,
                             textAlign = TextAlign.End,
@@ -267,7 +267,7 @@ fun LoginScreen(navController: NavController) {
                         shape = RoundedCornerShape(16.dp)
                     ) {
                         Text(
-                            text = "Login",
+                            text = "Đăng nhập",
                             color = white,
                             style = MaterialTheme.typography.button,
                             modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
@@ -281,7 +281,7 @@ fun LoginScreen(navController: NavController) {
                     ) {
                         Text(
                             text = buildAnnotatedString {
-                                append("Don't have an account? Signup")
+                                append("Chưa có tài khoản? Đăng ký")
                                 addStyle(
                                     SpanStyle(color = colorPrimary),
                                     23,
@@ -291,7 +291,7 @@ fun LoginScreen(navController: NavController) {
                             style = MaterialTheme.typography.subtitle1,
                             textAlign = TextAlign.Center,
                             modifier = Modifier.clickable {
-
+                                navController.navigate("signup_screen")
                             }
                         )
                     }
