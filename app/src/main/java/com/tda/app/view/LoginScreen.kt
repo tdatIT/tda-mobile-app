@@ -1,5 +1,8 @@
 package com.tda.app.view
 
+import android.content.Context
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import com.tda.app.navigation.Screen
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
@@ -32,15 +36,27 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.tda.app.data.model.JwtResponse
+import com.tda.app.data.model.LoginBody
+import com.tda.app.data.service.ApiService
+import com.tda.app.data.service.RetrofitClient
 import com.tda.app.ui.theme.*
+import dagger.hilt.android.internal.Contexts
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 @Composable
 fun LoginScreen(navController: NavController) {
+
+    var apiService: ApiService?
+
     val firaSansFamily = FontFamily(
         Font(com.tda.app.R.font.dmsansregular, FontWeight.Normal),
         Font(com.tda.app.R.font.dmsansmedium, FontWeight.Medium),
-        Font(com.tda.app.R. font.dmsansbold, FontWeight.Bold),
+        Font(com.tda.app.R.font.dmsansbold, FontWeight.Bold),
     )
 
     Box(
@@ -134,10 +150,10 @@ fun LoginScreen(navController: NavController) {
                         )
                     )
 
-                    var useremail by remember { mutableStateOf("") }
+                    var user_email by remember { mutableStateOf("") }
 
                     TextField(
-                        value = useremail,
+                        value = user_email,
                         leadingIcon = {
                             Row(
                                 modifier = Modifier.wrapContentWidth(),
@@ -175,7 +191,7 @@ fun LoginScreen(navController: NavController) {
                         label = { Text(text = "Địa chỉ Email") },
                         shape = RoundedCornerShape(8.dp),
                         onValueChange = {
-                            useremail = it
+                            user_email = it
                         }
                     )
 
@@ -253,8 +269,25 @@ fun LoginScreen(navController: NavController) {
 
                     Button(
                         onClick = {
-                            navController.popBackStack()
-                            navController.navigate(Screen.HomeScreen.route)
+                            apiService = RetrofitClient.getRetrofitApiForTDA()
+                                ?.create(ApiService::class.java)
+                            val body = LoginBody(user_email, password)
+                            val response = apiService?.loginRestfulApi(body)?.enqueue(object :
+                                Callback<JwtResponse> {
+                                override fun onResponse(
+                                    call: Call<JwtResponse>,
+                                    response: Response<JwtResponse>
+                                ) {
+                                    val jwt = response.body()
+                                    jwt?.let { Log.e("auth", it.jwt) }
+                                }
+
+                                override fun onFailure(call: Call<JwtResponse>, t: Throwable) {
+                                    Log.e("auth", "Auth fail")
+                                    Log.e("auth-error", "Message: ${t.message}")
+                                }
+                            })
+
                         },
                         colors = ButtonDefaults.buttonColors(backgroundColor = colorPrimary),
                         modifier = Modifier
@@ -284,7 +317,7 @@ fun LoginScreen(navController: NavController) {
                                 append("Chưa có tài khoản? Đăng ký")
                                 addStyle(
                                     SpanStyle(color = colorPrimary),
-                                    23,
+                                    19,
                                     this.length
                                 )
                             },
@@ -307,7 +340,7 @@ fun LoginScreen(navController: NavController) {
 @Composable
 fun Header() {
     Image(
-        painter = painterResource(id = R.drawable.login_bg),
+        ColorPainter(colorPrimary),
         contentDescription = "login_bg",
         contentScale = ContentScale.FillWidth,
         modifier = Modifier.fillMaxSize()
@@ -318,13 +351,13 @@ fun Header() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
-            painter = painterResource(id = R.drawable.flower_logo),
+            painter = painterResource(id = R.drawable.tda_logo),
             contentDescription = "login_bg",
             modifier = Modifier.wrapContentWidth()
         )
 
         Text(
-            text = "FloraGoGo",
+            text = "TDA Laptop",
             color = white,
             fontSize = 40.sp,
             fontWeight = FontWeight.SemiBold,
@@ -332,8 +365,10 @@ fun Header() {
         )
     }
 }
+
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun DefaultPreview()
-{
+fun DefaultPreview() {
+    val navController = rememberNavController()
+    LoginScreen(navController);
 }
