@@ -272,22 +272,25 @@ fun LoginScreen(navController: NavController) {
                             apiService = RetrofitClient.getRetrofitApiForTDA()
                                 ?.create(ApiService::class.java)
                             val body = LoginBody(user_email, password)
-                            val response = apiService?.loginRestfulApi(body)?.enqueue(object :
+                            apiService?.loginRestfulApi(body)?.enqueue(object :
                                 Callback<JwtResponse> {
                                 override fun onResponse(
                                     call: Call<JwtResponse>,
                                     response: Response<JwtResponse>
                                 ) {
+                                    Log.e("auth", "Call API Auth Success")
                                     val jwt = response.body()
-                                    jwt?.let { Log.e("auth", it.jwt) }
+                                    if (jwt != null) {
+                                        Log.e("auth", jwt.jwt)
+                                    } else {
+                                        Log.e("auth", "Login fail")
+                                    }
                                 }
-
                                 override fun onFailure(call: Call<JwtResponse>, t: Throwable) {
                                     Log.e("auth", "Auth fail")
                                     Log.e("auth-error", "Message: ${t.message}")
                                 }
                             })
-
                         },
                         colors = ButtonDefaults.buttonColors(backgroundColor = colorPrimary),
                         modifier = Modifier
