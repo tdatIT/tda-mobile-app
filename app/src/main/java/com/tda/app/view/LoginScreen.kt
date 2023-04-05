@@ -43,6 +43,7 @@ import com.tda.app.data.service.ApiService
 import com.tda.app.data.service.RetrofitClient
 import com.tda.app.ui.theme.*
 import dagger.hilt.android.internal.Contexts
+import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -139,7 +140,10 @@ fun LoginScreen(navController: NavController) {
 
 
                     Spacer(modifier = Modifier.padding(10.dp))
-
+                    var isLoading by remember { mutableStateOf(false) }
+                    if (isLoading) {
+                        LoginProgressIndicator(isLoading) // Show progress indicator
+                    }
                     Text(
                         text = "Địa chỉ Email",
                         style = MaterialTheme.typography.subtitle1,
@@ -263,34 +267,45 @@ fun LoginScreen(navController: NavController) {
                             textAlign = TextAlign.End,
                             modifier = Modifier
                                 .padding(top = 10.dp)
-                                .clickable { }
+                                .clickable {
+                                    navController.navigate("verification_screen")
+                                }
                         )
                     }
 
                     Button(
                         onClick = {
-                            apiService = RetrofitClient.getRetrofitApiForTDA()
-                                ?.create(ApiService::class.java)
-                            val body = LoginBody(user_email, password)
-                            apiService?.loginRestfulApi(body)?.enqueue(object :
-                                Callback<JwtResponse> {
-                                override fun onResponse(
-                                    call: Call<JwtResponse>,
-                                    response: Response<JwtResponse>
-                                ) {
-                                    Log.e("auth", "Call API Auth Success")
-                                    val jwt = response.body()
-                                    if (jwt != null) {
-                                        Log.e("auth", jwt.jwt)
-                                    } else {
-                                        Log.e("auth", "Login fail")
-                                    }
+//                            apiService = RetrofitClient.getRetrofitApiForTDA()
+//                                ?.create(ApiService::class.java)
+//                            val body = LoginBody(user_email, password)
+//                            apiService?.loginRestfulApi(body)?.enqueue(object :
+//                                Callback<JwtResponse> {
+//                                override fun onResponse(
+//                                    call: Call<JwtResponse>,
+//                                    response: Response<JwtResponse>
+//                                ) {
+//                                    Log.e("auth", "Call API Auth Success")
+//                                    val jwt = response.body()
+//                                    if (jwt != null) {
+//                                        Log.e("auth", jwt.jwt)
+//                                    } else {
+//                                        Log.e("auth", "Login fail")
+//                                    }
+//                                }
+//                                override fun onFailure(call: Call<JwtResponse>, t: Throwable) {
+//                                    Log.e("auth", "Auth fail")
+//                                    Log.e("auth-error", "Message: ${t.message}")
+//                                }
+//                            })
+                            isLoading = true
+                            CoroutineScope(Dispatchers.Default).launch {
+                                delay(2000) // Thời gian quay của LoginProgressIndicator là 2 giây
+                                withContext(Dispatchers.Main) {
+                                    isLoading = false
+                                    navController.popBackStack()
+                                    navController.navigate("home_screen")
                                 }
-                                override fun onFailure(call: Call<JwtResponse>, t: Throwable) {
-                                    Log.e("auth", "Auth fail")
-                                    Log.e("auth-error", "Message: ${t.message}")
-                                }
-                            })
+                            }
                         },
                         colors = ButtonDefaults.buttonColors(backgroundColor = colorPrimary),
                         modifier = Modifier
@@ -366,6 +381,30 @@ fun Header() {
             fontWeight = FontWeight.SemiBold,
             letterSpacing = 2.sp
         )
+    }
+}
+@Composable
+fun LoginProgressIndicator(isLoading: Boolean) {
+    if (isLoading) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.White)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            CircularProgressIndicator(
+                modifier = Modifier.size(48.dp),
+                color = MaterialTheme.colors.primary
+            )
+            Text(
+                text = "Đang đăng nhập...",
+                style = MaterialTheme.typography.body1,
+                color = MaterialTheme.colors.onBackground,
+                modifier = Modifier.padding(top = 16.dp)
+            )
+        }
     }
 }
 

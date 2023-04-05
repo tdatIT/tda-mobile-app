@@ -1,13 +1,17 @@
 package com.tda.app
 
 
+import VerificationScreen
 import androidx.compose.runtime.Composable
 import androidx.core.splashscreen.SplashScreen
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.eritlab.jexmon.presentation.screens.home_screen.component.HomeScreen
 import com.tda.app.view.*
 import com.tda.app.navigation.Screen
+import com.tda.app.view.HomeScreenComponent.DashboardScreen
+
 @Composable
 fun Navigation() {
     val navController = rememberNavController()
@@ -25,10 +29,18 @@ fun Navigation() {
         composable(Screen.SignUp.route) {
             SignUpScreen(navController = navController)
         }
-
-//        composable(Screen.HomeScreen.route) {
-//            Dashboard(navController = navController)
-//        }
+        composable(Screen.Verification.route) {
+            VerificationScreen(navController = navController)
+        }
+        composable(Screen.ResetPassword.route) {
+            ResetPassswordScreen(navController = navController)
+        }
+        composable(Screen.HomeScreen.route) {
+            HomeScreen(navController = navController)
+        }
+        composable(Screen.CategoryScreen.route) {
+            CategoryScreen(navController = navController)
+        }
 //        composable(Screen.PopularListScreen.route) {
 //            PopularListScreen(navController = navController)
 //        }
