@@ -25,6 +25,8 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontVariation.width
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,6 +34,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.tda.app.R
 import com.tda.app.navigation.Screen
 import com.tda.app.ui.theme.*
@@ -117,7 +120,9 @@ fun SignUpScreen(navController: NavController) {
                                 fontWeight = FontWeight.Bold)
                             Spacer(modifier = Modifier.padding(10.dp))
                             Row() {
-                             Column(modifier = Modifier.weight(5f).padding(end = 10.dp)) {
+                             Column(modifier = Modifier
+                                 .weight(5f)
+                                 .padding(end = 10.dp)) {
                                  Text(
                                      text = "Họ",
                                      style = MaterialTheme.typography.subtitle1,
@@ -168,12 +173,15 @@ fun SignUpScreen(navController: NavController) {
                                 style = MaterialTheme.typography.subtitle1,
                                 color = dark_gray,
                             )
+                            var passwordVisible by remember {
+                                mutableStateOf(false)
+                            }
                             var password by remember {
                             mutableStateOf("")
                         }
-                            OutlinedTextField(value = password, onValueChange = {
-                                password = it
-                            },
+                            OutlinedTextField(value = password,
+                                onValueChange = {
+                                password = it },
                                 modifier = Modifier.fillMaxSize(),
                                 label = {Text("Mật khẩu")},
                                 placeholder = { Text(text = "Nhập mật khẩu")},
@@ -181,28 +189,60 @@ fun SignUpScreen(navController: NavController) {
                                     imageVector = Icons.Default.Lock,
                                     contentDescription = null,
                                     tint = colorPrimary
-                                )}
+                                )
+                                },
+                                trailingIcon = {
+                                    IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                                        Icon(imageVector =if(passwordVisible) Icons.Filled.VisibilityOff else Icons.Default.Visibility,
+                                            contentDescription = if(passwordVisible) "Hide Password" else "Show password")
+                                    }
+                                },
+                                visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
                             )
                             Spacer(modifier = Modifier.padding(10.dp))
                             Text(
-                                text = "Email",
+                                text = "Nhập lại mật khẩu",
                                 style = MaterialTheme.typography.subtitle1,
                                 color = dark_gray,
                             )
                             var repassword by remember {
                                 mutableStateOf("")
                             }
-                            OutlinedTextField(value = repassword, onValueChange = {
-                                repassword = it
-                            },
+                            var passwordVisibility by remember {
+                                mutableStateOf(false)
+                            }
+                            OutlinedTextField(
+                                value = repassword,
+                                onValueChange = {
+                                    repassword = it
+                                },
                                 modifier = Modifier.fillMaxSize(),
-                                label = {Text("Nhập lại mật khẩu")},
-                                placeholder = { Text(text = "Nhập lại mật khẩu")},
-                                leadingIcon = { Icon(
-                                    imageVector = Icons.Default.Lock,
-                                    contentDescription = null,
-                                    tint = colorPrimary
-                                )}
+                                label = { Text("Nhập lại mật khẩu") },
+                                placeholder = { Text(text = "Nhập lại mật khẩu") },
+                                leadingIcon = {
+                                    Icon(
+                                        imageVector = Icons.Default.Lock,
+                                        contentDescription = null,
+                                        tint = colorPrimary
+                                    )
+                                },
+                                trailingIcon = {
+                                    IconButton(
+                                        onClick = {
+                                            passwordVisibility = !passwordVisibility
+                                        }
+                                    ) {
+                                        Icon(
+                                            imageVector = if (passwordVisibility) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                                            contentDescription = if (passwordVisibility) "Ẩn mật khẩu" else "Hiện mật khẩu"
+                                        )
+                                    }
+                                },
+                                visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
+                                keyboardOptions = KeyboardOptions(
+                                    keyboardType = KeyboardType.Password
+                                )
                             )
                             Spacer(modifier = Modifier.padding(10.dp))
                             Text(
@@ -358,7 +398,8 @@ fun DropDownMenu(list: List<String>, content: String) {
                 onValueChange = {
                     selectedItem = it
                 },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .clickable(onClick = { expanded = true }),
                 label = {
                     Text(text = content)

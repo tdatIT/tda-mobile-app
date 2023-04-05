@@ -1,5 +1,6 @@
 package com.tda.app.ui.theme
 
+import androidx.compose.material.Colors
 import androidx.compose.ui.graphics.Color
 
 val Purple80 = Color(0xFFD0BCFF)
@@ -16,7 +17,7 @@ val Teal200 = Color(0xFF03DAC5)
 
 val black = Color(0xff000000)
 val colorPrimary = Color(0xFF1BA57B)
-val colorprimarywhite= Color(0xFF60C0A2)
+val Colors.colorprimarywhite get() = Color(0xFF60C0A2)
 val gray = Color(0xFF4B4F5A)
 val dark_gray = Color(0xFF54555A)
 val light_gray = Color(0xFF696969)
@@ -27,3 +28,6 @@ val bgwhitelight = Color(0xffF7F7F7)
 
 val statusBar = Color(0xFF1BA57B)
 
+
+val Colors.PrimaryLightColor get() = Color(0xFFFFECDF);
+val Colors.TextColor get() = Color(0xFF757575)
