@@ -3,14 +3,12 @@ package com.tda.app
 
 import VerificationScreen
 import androidx.compose.runtime.Composable
-import androidx.core.splashscreen.SplashScreen
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.eritlab.jexmon.presentation.screens.home_screen.component.HomeScreen
+import com.tda.app.view.home_screen_component.HomeScreen
 import com.tda.app.view.*
 import com.tda.app.navigation.Screen
-import com.tda.app.view.HomeScreenComponent.DashboardScreen
 
 @Composable
 fun Navigation() {

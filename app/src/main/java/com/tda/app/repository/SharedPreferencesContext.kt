@@ -1,6 +1,5 @@
-package com.tda.app.config
+package com.tda.app.repository
 
-import User
 import android.content.Context
 import android.content.SharedPreferences
 import java.text.SimpleDateFormat
@@ -18,12 +17,10 @@ object SharedPreferencesContext {
         return context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
     }
 
-    fun putUserInfo(context: Context, jwt: String, expiryDate: Date, user: User) {
+    fun putJwt(context: Context, jwt: String, expiryDate: Date) {
         val editor = getSharedPreferencesContext(context).edit()
         editor.putString(JWT_KEY, jwt)
         editor.putString(JWT_EXPIRY_KEY, dateToString(expiryDate, ""))
-        editor.putString(US_NAME_KEY, user.firstname + " " + user.lastname)
-        editor.putString(US_EMAIL_KEY, user.email)
         editor.apply()
     }
 

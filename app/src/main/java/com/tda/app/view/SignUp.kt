@@ -2,7 +2,6 @@ package com.tda.app.view
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.shape.ZeroCornerSize
 import androidx.compose.foundation.text.KeyboardOptions
@@ -13,42 +12,38 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontVariation.width
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.unit.toSize
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.tda.app.R
-import com.tda.app.navigation.Screen
-import com.tda.app.ui.theme.*
-//@Preview(showBackground = true)
+import com.tda.app.ui.theme.colorPrimary
+import com.tda.app.ui.theme.dark_gray
+import com.tda.app.ui.theme.ghost_white
+import com.tda.app.ui.theme.white
+
 @Composable
 fun SignUpScreen(navController: NavController) {
     val firaSansFamily = FontFamily(
         Font(R.font.dmsansregular, FontWeight.Normal),
         Font(R.font.dmsansmedium, FontWeight.Medium),
-        Font(R. font.dmsansbold, FontWeight.Bold),
+        Font(R.font.dmsansbold, FontWeight.Bold),
     )
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .verticalScroll(rememberScrollState())) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+    ) {
         ConstraintLayout {
             val (cartitemsbgref, checkoutref) = createRefs()
             Box(modifier = Modifier
@@ -95,55 +90,69 @@ fun SignUpScreen(navController: NavController) {
             }
 
             Surface(color = ghost_white,
-                shape = RoundedCornerShape(40.dp).copy(bottomStart = ZeroCornerSize,
-                    bottomEnd = ZeroCornerSize), modifier = Modifier
+                shape = RoundedCornerShape(40.dp).copy(
+                    bottomStart = ZeroCornerSize,
+                    bottomEnd = ZeroCornerSize
+                ), modifier = Modifier
                     .padding(top = 70.dp)
                     .constrainAs(checkoutref) {
                         bottom.linkTo(parent.bottom)
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
                     }) {
-                Column(modifier = Modifier
-                    .fillMaxSize()
-                    .padding(20.dp)) {
-                    Box(modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight()
-                        .clip(RoundedCornerShape(16.dp))
-                        .background(white)) {
-
-                        Column(modifier = Modifier
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(20.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
                             .fillMaxWidth()
-                            .padding(10.dp)) {
-                            Text(text = "Thông tin",
+                            .wrapContentHeight()
+                            .clip(RoundedCornerShape(16.dp))
+                            .background(white)
+                    ) {
+
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(10.dp)
+                        ) {
+                            Text(
+                                text = "Thông tin",
                                 fontSize = 16.sp,
-                                fontWeight = FontWeight.Bold)
+                                fontWeight = FontWeight.Bold
+                            )
                             Spacer(modifier = Modifier.padding(10.dp))
                             Row() {
-                             Column(modifier = Modifier
-                                 .weight(5f)
-                                 .padding(end = 10.dp)) {
-                                 Text(
-                                     text = "Họ",
-                                     style = MaterialTheme.typography.subtitle1,
-                                     color = dark_gray,
-                                 )
-                                 var email by remember {
-                                     mutableStateOf("")
-                                 }
-                                 OutlinedTextField(value = email, onValueChange = {
-                                     email = it
-                                 },
-                                     modifier = Modifier.fillMaxSize(),
-                                     label = {Text("Họ")},
-                                     placeholder = { Text(text = "Nhập Họ")},
-                                     leadingIcon = { Icon(
-                                         imageVector = Icons.Default.Person,
-                                         contentDescription = null,
-                                         tint = colorPrimary
-                                     )}
-                                 )
-                             }
+                                Column(
+                                    modifier = Modifier
+                                        .weight(5f)
+                                        .padding(end = 10.dp)
+                                ) {
+                                    Text(
+                                        text = "Họ",
+                                        style = MaterialTheme.typography.subtitle1,
+                                        color = dark_gray,
+                                    )
+                                    var email by remember {
+                                        mutableStateOf("")
+                                    }
+                                    OutlinedTextField(value = email, onValueChange = {
+                                        email = it
+                                    },
+                                        modifier = Modifier.fillMaxSize(),
+                                        label = { Text("Họ") },
+                                        placeholder = { Text(text = "Nhập Họ") },
+                                        leadingIcon = {
+                                            Icon(
+                                                imageVector = Icons.Default.Person,
+                                                contentDescription = null,
+                                                tint = colorPrimary
+                                            )
+                                        }
+                                    )
+                                }
                                 Column(modifier = Modifier.weight(5f)) {
                                     Text(
                                         text = "Tên",
@@ -157,13 +166,15 @@ fun SignUpScreen(navController: NavController) {
                                         email = it
                                     },
                                         modifier = Modifier.fillMaxSize(),
-                                        label = {Text("Tên")},
-                                        placeholder = { Text(text = "Nhập tên")},
-                                        leadingIcon = { Icon(
-                                            imageVector = Icons.Default.Person,
-                                            contentDescription = null,
-                                            tint = colorPrimary
-                                        )}
+                                        label = { Text("Tên") },
+                                        placeholder = { Text(text = "Nhập tên") },
+                                        leadingIcon = {
+                                            Icon(
+                                                imageVector = Icons.Default.Person,
+                                                contentDescription = null,
+                                                tint = colorPrimary
+                                            )
+                                        }
                                     )
                                 }
                             }
@@ -177,24 +188,29 @@ fun SignUpScreen(navController: NavController) {
                                 mutableStateOf(false)
                             }
                             var password by remember {
-                            mutableStateOf("")
-                        }
-                            OutlinedTextField(value = password,
+                                mutableStateOf("")
+                            }
+                            OutlinedTextField(
+                                value = password,
                                 onValueChange = {
-                                password = it },
+                                    password = it
+                                },
                                 modifier = Modifier.fillMaxSize(),
-                                label = {Text("Mật khẩu")},
-                                placeholder = { Text(text = "Nhập mật khẩu")},
-                                leadingIcon = { Icon(
-                                    imageVector = Icons.Default.Lock,
-                                    contentDescription = null,
-                                    tint = colorPrimary
-                                )
+                                label = { Text("Mật khẩu") },
+                                placeholder = { Text(text = "Nhập mật khẩu") },
+                                leadingIcon = {
+                                    Icon(
+                                        imageVector = Icons.Default.Lock,
+                                        contentDescription = null,
+                                        tint = colorPrimary
+                                    )
                                 },
                                 trailingIcon = {
                                     IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                                        Icon(imageVector =if(passwordVisible) Icons.Filled.VisibilityOff else Icons.Default.Visibility,
-                                            contentDescription = if(passwordVisible) "Hide Password" else "Show password")
+                                        Icon(
+                                            imageVector = if (passwordVisible) Icons.Filled.VisibilityOff else Icons.Default.Visibility,
+                                            contentDescription = if (passwordVisible) "Hide Password" else "Show password"
+                                        )
                                     }
                                 },
                                 visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
@@ -257,13 +273,15 @@ fun SignUpScreen(navController: NavController) {
                                 email = it
                             },
                                 modifier = Modifier.fillMaxSize(),
-                                label = {Text("Email")},
-                                placeholder = { Text(text = "Nhập Email")},
-                                leadingIcon = { Icon(
-                                    imageVector = Icons.Default.Email,
-                                    contentDescription = null,
-                                    tint = colorPrimary
-                                )}
+                                label = { Text("Email") },
+                                placeholder = { Text(text = "Nhập Email") },
+                                leadingIcon = {
+                                    Icon(
+                                        imageVector = Icons.Default.Email,
+                                        contentDescription = null,
+                                        tint = colorPrimary
+                                    )
+                                }
                             )
                             Spacer(modifier = Modifier.padding(10.dp))
                             Text(
@@ -272,13 +290,13 @@ fun SignUpScreen(navController: NavController) {
                                 color = dark_gray,
                             )
                             var list1 = listOf("Vũng Tàu", "Vũng Tàu")
-                            DropDownMenu(list = list1 ,"Tỉnh/Thành Phố")
+                            DropDownMenu(list = list1, "Tỉnh/Thành Phố")
                             Spacer(modifier = Modifier.padding(10.dp))
                             var list2 = listOf("Vũng Tàu", "Vũng Tàu")
-                            DropDownMenu(list = list2 ,"Quận/Huyện")
+                            DropDownMenu(list = list2, "Quận/Huyện")
                             Spacer(modifier = Modifier.padding(10.dp))
                             var list3 = listOf("Vũng Tàu", "Vũng Tàu")
-                            DropDownMenu(list = list3 ,"Xã phường")
+                            DropDownMenu(list = list3, "Xã phường")
                             Spacer(modifier = Modifier.padding(10.dp))
                             var details by remember {
                                 mutableStateOf("")
@@ -287,13 +305,15 @@ fun SignUpScreen(navController: NavController) {
                                 details = it
                             },
                                 modifier = Modifier.fillMaxSize(),
-                                label = {Text("Chi tiết địa chỉ")},
-                                placeholder = { Text(text = "Nhập chi tiết địa chỉ")},
-                                leadingIcon = { Icon(
-                                    imageVector = Icons.Default.Home,
-                                    contentDescription = null,
-                                    tint = colorPrimary
-                                )}
+                                label = { Text("Chi tiết địa chỉ") },
+                                placeholder = { Text(text = "Nhập chi tiết địa chỉ") },
+                                leadingIcon = {
+                                    Icon(
+                                        imageVector = Icons.Default.Home,
+                                        contentDescription = null,
+                                        tint = colorPrimary
+                                    )
+                                }
                             )
                             Spacer(modifier = Modifier.padding(10.dp))
                             Text(
@@ -308,28 +328,36 @@ fun SignUpScreen(navController: NavController) {
                                 phone = it
                             },
                                 modifier = Modifier.fillMaxSize(),
-                                label = {Text("Số điện thoại")},
-                                placeholder = { Text(text = "Nhập Email")},
-                                leadingIcon = { Icon(
-                                    imageVector = Icons.Default.Phone,
-                                    contentDescription = null,
-                                    tint = colorPrimary
-                                )}
+                                label = { Text("Số điện thoại") },
+                                placeholder = { Text(text = "Nhập Email") },
+                                leadingIcon = {
+                                    Icon(
+                                        imageVector = Icons.Default.Phone,
+                                        contentDescription = null,
+                                        tint = colorPrimary
+                                    )
+                                }
                             )
                             Spacer(modifier = Modifier.padding(10.dp))
-                            Column(modifier = Modifier.fillMaxWidth(),
+                            Column(
+                                modifier = Modifier.fillMaxWidth(),
                                 horizontalAlignment = Alignment.CenterHorizontally,
-                                verticalArrangement = Arrangement.Bottom) {
-                                Button(onClick = {},
+                                verticalArrangement = Arrangement.Bottom
+                            ) {
+                                Button(
+                                    onClick = {},
                                     colors = ButtonDefaults.buttonColors(backgroundColor = colorPrimary),
                                     modifier = Modifier
                                         .padding(8.dp)
                                         .fillMaxWidth()
                                         .height(60.dp),
-                                    shape = RoundedCornerShape(16.dp)) {
-                                    Text(text = "Đăng ký",
+                                    shape = RoundedCornerShape(16.dp)
+                                ) {
+                                    Text(
+                                        text = "Đăng ký",
                                         color = white,
-                                        fontWeight = FontWeight.Bold)
+                                        fontWeight = FontWeight.Bold
+                                    )
                                     Icon(
                                         imageVector = Icons.Default.ArrowForward,
                                         contentDescription = null,
@@ -349,43 +377,7 @@ fun SignUpScreen(navController: NavController) {
         }
     }
 }
-//
-//@Composable
-//fun HeaderSignUp(navController: NavController) {
-//    Image(
-//        painter = painterResource(id = R.drawable.login_bg),
-//        contentDescription = "login bg",
-//        contentScale = ContentScale.FillWidth,
-//        modifier = Modifier.fillMaxSize()
-//    )
-//    Row(
-//        modifier = Modifier
-//            .fillMaxWidth()
-//            .padding(top = 16.dp),
-//        horizontalArrangement = Arrangement.SpaceBetween,
-//        verticalAlignment = Alignment.CenterVertically
-//    ) {
-//        IconButton(onClick = {
-//            navController.navigate("login_screen")
-//        }) {
-//            Icon(
-//                modifier = Modifier.size(32.dp, 32.dp),
-//                imageVector = Icons.Default.KeyboardArrowLeft,
-//                contentDescription = "",
-//                tint = white
-//            )
-//        }
-//
-//        Text(
-//            text = "Sign Up",
-//            color = white,
-//            modifier = Modifier.padding(end = 150.dp),
-//            fontWeight = FontWeight.Bold,
-//            fontSize = 16.sp,
-//        )
-//
-//    }
-//}
+
 @Composable
 fun DropDownMenu(list: List<String>, content: String) {
     var expanded by remember { mutableStateOf(false) }
@@ -430,3 +422,12 @@ fun DropDownMenu(list: List<String>, content: String) {
         }
     }
 }
+
+
+@Preview(showBackground = true)
+@Composable
+fun previewScreens() {
+    val nav = rememberNavController()
+    SplashScreen(navController = nav)
+}
+
