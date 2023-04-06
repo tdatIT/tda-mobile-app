@@ -1,9 +1,8 @@
-package com.eritlab.jexmon.presentation.screens.home_screen.component
+package com.tda.app.view.home_screen_component
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.R
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.shape.ZeroCornerSize
 import androidx.compose.material.*
@@ -22,15 +21,9 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.eritlab.jexmon.presentation.dashboard_screen.component.AppBar
-import com.eritlab.jexmon.presentation.dashboard_screen.component.NavigationBar
-import com.tda.app.ui.theme.TextColor
-import com.tda.app.ui.theme.colorprimarywhite
 import com.tda.app.ui.theme.ghost_white
 import com.tda.app.ui.theme.white
 import com.tda.app.view.*
-import com.tda.app.view.HomeScreenComponent.DashboardScreen
-import kotlinx.coroutines.delay
 
 
 @SuppressLint("RememberReturnType")
@@ -162,7 +155,7 @@ fun HeaderHome(string: String, modifier: Modifier) {
     }
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun DefaultPreviewa() {
+fun defaultPreview() {
     val navController = rememberNavController()
     HomeScreen()
 }

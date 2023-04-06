@@ -1,15 +1,12 @@
 package com.tda.app.view
 
-import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.shape.ZeroCornerSize
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import com.tda.app.R
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
@@ -17,7 +14,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import com.tda.app.navigation.Screen
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
@@ -37,17 +33,17 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.tda.app.data.model.JwtResponse
-import com.tda.app.data.model.LoginBody
-import com.tda.app.data.service.ApiService
-import com.tda.app.data.service.RetrofitClient
+import com.tda.app.R
+import com.tda.app.repository.SharedPreferencesContext
+import com.tda.app.data.model.LoginRequest
+import com.tda.app.data.model.LoginResponse
+import com.tda.app.repository.service.ApiService
+import com.tda.app.repository.service.RetrofitClient
 import com.tda.app.ui.theme.*
-import dagger.hilt.android.internal.Contexts
 import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
 
 @Composable
 fun LoginScreen(navController: NavController) {
@@ -135,7 +131,6 @@ fun LoginScreen(navController: NavController) {
                             fontSize = 18.sp,
                             textAlign = TextAlign.Center
                         )
-
                     }
 
 
@@ -275,37 +270,7 @@ fun LoginScreen(navController: NavController) {
 
                     Button(
                         onClick = {
-//                            apiService = RetrofitClient.getRetrofitApiForTDA()
-//                                ?.create(ApiService::class.java)
-//                            val body = LoginBody(user_email, password)
-//                            apiService?.loginRestfulApi(body)?.enqueue(object :
-//                                Callback<JwtResponse> {
-//                                override fun onResponse(
-//                                    call: Call<JwtResponse>,
-//                                    response: Response<JwtResponse>
-//                                ) {
-//                                    Log.e("auth", "Call API Auth Success")
-//                                    val jwt = response.body()
-//                                    if (jwt != null) {
-//                                        Log.e("auth", jwt.jwt)
-//                                    } else {
-//                                        Log.e("auth", "Login fail")
-//                                    }
-//                                }
-//                                override fun onFailure(call: Call<JwtResponse>, t: Throwable) {
-//                                    Log.e("auth", "Auth fail")
-//                                    Log.e("auth-error", "Message: ${t.message}")
-//                                }
-//                            })
                             isLoading = true
-                            CoroutineScope(Dispatchers.Default).launch {
-                                delay(2000) // Thời gian quay của LoginProgressIndicator là 2 giây
-                                withContext(Dispatchers.Main) {
-                                    isLoading = false
-                                    navController.popBackStack()
-                                    navController.navigate("home_screen")
-                                }
-                            }
                         },
                         colors = ButtonDefaults.buttonColors(backgroundColor = colorPrimary),
                         modifier = Modifier
@@ -383,6 +348,7 @@ fun Header() {
         )
     }
 }
+
 @Composable
 fun LoginProgressIndicator(isLoading: Boolean) {
     if (isLoading) {

@@ -1,6 +1,5 @@
 package com.eritlab.jexmon.presentation.dashboard_screen.component
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -15,7 +14,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.tda.app.ui.theme.PrimaryLightColor
 import com.tda.app.ui.theme.TextColor
-import com.tda.app.view.HomeScreenComponent.BottomNavItem
+import com.tda.app.view.home_screen_component.BottomNavItem
 
 @Composable
 fun NavigationBar(

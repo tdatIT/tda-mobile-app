@@ -1,4 +1,4 @@
-package com.tda.app.view.HomeScreenComponent
+package com.tda.app.view.home_screen_component
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
