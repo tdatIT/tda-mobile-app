@@ -10,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -133,7 +134,7 @@ fun VerificationScreen(navController: NavController) {
                         onValueChange = {},
                         placeholder = { Text("Nhập mã xác thực") },
                         modifier = Modifier
-                            .fillMaxWidth()
+                            .align(CenterHorizontally)
                             .padding(start = 84.dp),
                         textStyle = TextStyle(
                             fontSize = 18.sp

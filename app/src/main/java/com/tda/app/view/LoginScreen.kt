@@ -1,6 +1,5 @@
 package com.tda.app.view
 
-import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -31,24 +30,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.tda.app.R
-import com.tda.app.repository.SharedPreferencesContext
-import com.tda.app.data.model.LoginRequest
-import com.tda.app.data.model.LoginResponse
-import com.tda.app.repository.service.ApiService
-import com.tda.app.repository.service.RetrofitClient
+import com.tda.app.data.service.ApiService
 import com.tda.app.ui.theme.*
-import kotlinx.coroutines.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.tda.app.viewmodel.LoginViewModel
 
 @Composable
 fun LoginScreen(navController: NavController) {
 
-    var apiService: ApiService?
+    val loginViewModel = viewModel(modelClass = LoginViewModel::class.java)
+    val loginState by loginViewModel.state.collectAsState()
 
     val firaSansFamily = FontFamily(
         Font(com.tda.app.R.font.dmsansregular, FontWeight.Normal),
@@ -271,6 +265,7 @@ fun LoginScreen(navController: NavController) {
                     Button(
                         onClick = {
                             isLoading = true
+                            loginViewModel.login(user_email, password)
                         },
                         colors = ButtonDefaults.buttonColors(backgroundColor = colorPrimary),
                         modifier = Modifier
