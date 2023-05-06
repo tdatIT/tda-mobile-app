@@ -11,7 +11,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
-    @POST("login")
+    @POST("auth/login")
     suspend fun login(@Body body: LoginRequest): LoginResponse
     //province
     @GET("p/")
