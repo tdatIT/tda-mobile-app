@@ -7,9 +7,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.tda.app.ui.theme.Final_project_mobileTheme
 import com.tda.app.ui.theme.dark_gray
 @Composable
 fun TopAppBarWithBack(onBackClick: () -> Unit) {

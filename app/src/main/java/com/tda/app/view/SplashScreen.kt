@@ -61,7 +61,7 @@ fun SplashScreen(navController: NavController) {
         navController.popBackStack()
 
         if (!jwtCheck.value.equals("")) {
-            navController.navigate(Screen.CategoryScreen.route)
+            navController.navigate(Screen.HomeScreen.route)
             Log.i("check_jwt", "success")
         } else {
             Log.w("check_jwt", "not found")

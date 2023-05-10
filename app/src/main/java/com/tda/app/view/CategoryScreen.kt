@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.tda.app.view.home_screen_component.HeaderHome
+import com.tda.app.view.HeaderBar
 import com.tda.app.R
 import com.tda.app.ui.theme.black
 import com.tda.app.ui.theme.colorPrimary
@@ -45,7 +45,7 @@ fun CategoryScreen(navController: NavController) {
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 }) {
-                HeaderHome("Category", Modifier.padding(top = 12.dp))
+                HeaderBar()
             }
 
             Surface(

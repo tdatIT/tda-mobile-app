@@ -4,7 +4,9 @@ import com.tda.app.model.request.LoginRequest
 import com.tda.app.model.response.LoginResponse
 import com.tda.app.model.District
 import com.tda.app.model.request.RegisterAccount
+import com.tda.app.model.response.CategoryResp
 import com.tda.app.model.response.CustomResponse
+import com.tda.app.model.response.ProductResponse
 import com.tda.provinceapi.model.Province
 import retrofit2.Call
 import retrofit2.http.Body
@@ -35,4 +37,15 @@ interface ApiService {
         @Path("code") code: Int,
         @Query("depth") depth: Int
     ): District
+
+    @GET("products")
+    suspend fun getAllProducts(
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): List<ProductResponse>
+
+    @GET("categories")
+    suspend fun getCategories(
+        @Query("size") size: Int
+    ): List<CategoryResp>
 }

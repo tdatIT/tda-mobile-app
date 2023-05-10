@@ -1,5 +1,6 @@
 package com.tda.app.data.service
 
+import dagger.Provides
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

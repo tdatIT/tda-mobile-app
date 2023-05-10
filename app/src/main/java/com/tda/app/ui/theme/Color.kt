@@ -25,7 +25,7 @@ val ghost_white = Color(0xFFF8F8F8)
 val white = Color(0xFFFFFFFF)
 val text_hint_color = Color(0xFFA7A7A7)
 val bgwhitelight = Color(0xffF7F7F7)
-
+val favourite = Color(0xFffF5733)
 val statusBar = Color(0xFF1BA57B)
 
 
