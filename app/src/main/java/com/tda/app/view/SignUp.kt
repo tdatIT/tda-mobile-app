@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
@@ -30,10 +31,13 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.tda.app.R
 import com.tda.app.model.DivisionGroup
+import com.tda.app.navigation.Screen
 import com.tda.app.ui.theme.colorPrimary
 import com.tda.app.ui.theme.dark_gray
 import com.tda.app.ui.theme.ghost_white
 import com.tda.app.ui.theme.white
+import com.tda.app.utils.Constants.EMAIL_REGEX
+import com.tda.app.viewmodel.RegisterViewModel
 import com.tda.provinceapi.viewmodel.DistrictViewModel
 import com.tda.provinceapi.viewmodel.ProvinceViewModel
 import com.tda.provinceapi.viewmodel.WardViewModel
@@ -43,11 +47,45 @@ fun SignUpScreen(navController: NavController) {
     val provinceViewModel = viewModel(modelClass = ProvinceViewModel::class.java)
     val districtViewModel = viewModel(modelClass = DistrictViewModel::class.java)
     val wardViewModel = viewModel(modelClass = WardViewModel::class.java)
-
+    val registerViewModel = viewModel(modelClass = RegisterViewModel::class.java)
     val provinces by provinceViewModel.provinces.collectAsState()
     val districts by districtViewModel.district.collectAsState()
     val wards by wardViewModel.wards.collectAsState()
+    val register by registerViewModel.state.collectAsState()
 
+    var passwordMatch by remember {
+        mutableStateOf(true)
+    }
+    var firstname by remember {
+        mutableStateOf("")
+    }
+    var password by remember {
+        mutableStateOf("")
+    }
+    var lastname by remember {
+        mutableStateOf("")
+    }
+    var repassword by remember {
+        mutableStateOf("")
+    }
+    var passwordVisibility by remember {
+        mutableStateOf(false)
+    }
+    var email by remember {
+        mutableStateOf("")
+    }
+    var emailMatch by remember {
+        mutableStateOf(true)
+    }
+    var provinceCode by remember {
+        mutableStateOf(0)
+    }
+    var districtCode by remember {
+        mutableStateOf(0)
+    }
+    var wardsCode by remember {
+        mutableStateOf(0)
+    }
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -86,7 +124,6 @@ fun SignUpScreen(navController: NavController) {
                             tint = white
                         )
                     }
-
                     Text(
                         text = "Đăng ký",
                         color = white,
@@ -144,11 +181,9 @@ fun SignUpScreen(navController: NavController) {
                                         style = MaterialTheme.typography.subtitle1,
                                         color = dark_gray,
                                     )
-                                    var email by remember {
-                                        mutableStateOf("")
-                                    }
-                                    OutlinedTextField(value = email, onValueChange = {
-                                        email = it
+
+                                    OutlinedTextField(value = lastname, onValueChange = {
+                                        lastname = it
                                     },
                                         modifier = Modifier.fillMaxSize(),
                                         label = { Text("Họ") },
@@ -168,11 +203,9 @@ fun SignUpScreen(navController: NavController) {
                                         style = MaterialTheme.typography.subtitle1,
                                         color = dark_gray,
                                     )
-                                    var email by remember {
-                                        mutableStateOf("")
-                                    }
-                                    OutlinedTextField(value = email, onValueChange = {
-                                        email = it
+
+                                    OutlinedTextField(value = firstname, onValueChange = {
+                                        firstname = it
                                     },
                                         modifier = Modifier.fillMaxSize(),
                                         label = { Text("Tên") },
@@ -196,9 +229,7 @@ fun SignUpScreen(navController: NavController) {
                             var passwordVisible by remember {
                                 mutableStateOf(false)
                             }
-                            var password by remember {
-                                mutableStateOf("")
-                            }
+
                             OutlinedTextField(
                                 value = password,
                                 onValueChange = {
@@ -231,27 +262,16 @@ fun SignUpScreen(navController: NavController) {
                                 style = MaterialTheme.typography.subtitle1,
                                 color = dark_gray,
                             )
-                            var repassword by remember {
-                                mutableStateOf("")
-                            }
-                            var passwordVisibility by remember {
-                                mutableStateOf(false)
-                            }
+
                             OutlinedTextField(
                                 value = repassword,
                                 onValueChange = {
                                     repassword = it
+                                    passwordMatch = password.equals(repassword)
                                 },
                                 modifier = Modifier.fillMaxSize(),
                                 label = { Text("Nhập lại mật khẩu") },
                                 placeholder = { Text(text = "Nhập lại mật khẩu") },
-                                leadingIcon = {
-                                    Icon(
-                                        imageVector = Icons.Default.Lock,
-                                        contentDescription = null,
-                                        tint = colorPrimary
-                                    )
-                                },
                                 trailingIcon = {
                                     IconButton(
                                         onClick = {
@@ -267,7 +287,17 @@ fun SignUpScreen(navController: NavController) {
                                 visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
                                 keyboardOptions = KeyboardOptions(
                                     keyboardType = KeyboardType.Password
-                                )
+                                ),
+                                isError = !passwordMatch,
+                                leadingIcon = {
+                                    if (repassword.isNotEmpty()) {
+                                        Icon(
+                                            imageVector = if (passwordMatch) Icons.Default.Check else Icons.Default.Clear,
+                                            contentDescription = null,
+                                            tint = if (passwordMatch) colorPrimary else Color.Red
+                                        )
+                                    }
+                                },
                             )
                             Spacer(modifier = Modifier.padding(10.dp))
                             Text(
@@ -275,11 +305,10 @@ fun SignUpScreen(navController: NavController) {
                                 style = MaterialTheme.typography.subtitle1,
                                 color = dark_gray,
                             )
-                            var email by remember {
-                                mutableStateOf("")
-                            }
+
                             OutlinedTextField(value = email, onValueChange = {
                                 email = it
+                                emailMatch = EMAIL_REGEX.matches(email)
                             },
                                 modifier = Modifier.fillMaxSize(),
                                 label = { Text("Email") },
@@ -290,7 +319,16 @@ fun SignUpScreen(navController: NavController) {
                                         contentDescription = null,
                                         tint = colorPrimary
                                     )
+                                },
+                                isError = !emailMatch,
+                                trailingIcon = {
+                                    Icon(
+                                        imageVector = if (emailMatch) Icons.Default.Check else Icons.Default.Clear,
+                                        contentDescription = null,
+                                        tint = if (emailMatch) colorPrimary else Color.Red
+                                    )
                                 }
+
                             )
                             Spacer(modifier = Modifier.padding(10.dp))
                             Text(
@@ -299,15 +337,7 @@ fun SignUpScreen(navController: NavController) {
                                 color = dark_gray,
                             )
 
-                            var provinceCode by remember {
-                                mutableStateOf(0)
-                            }
-                            var districtCode by remember {
-                                mutableStateOf(0)
-                            }
-                            var wardsCode by remember {
-                                mutableStateOf(0)
-                            }
+
                             DropDownMenu(
                                 provinces,
                                 "Tỉnh thành",
@@ -373,7 +403,25 @@ fun SignUpScreen(navController: NavController) {
                                 verticalArrangement = Arrangement.Bottom
                             ) {
                                 Button(
-                                    onClick = {},
+                                    onClick = {
+                                        registerViewModel.registerAccount(
+                                            firstName = firstname,
+                                            lastName = lastname,
+                                            email = email,
+                                            password = password,
+                                            confirmPassword = repassword,
+                                            phone = phone,
+                                            address_detail = details,
+                                            provinceCode = provinceCode,
+                                            districtCode = districtCode,
+                                            wardCode = wardsCode
+                                        )
+                                        register?.let {
+                                            if (it.code == 200) {
+                                                navController.navigate(Screen.Verification.route)
+                                            }
+                                        }
+                                    },
                                     colors = ButtonDefaults.buttonColors(backgroundColor = colorPrimary),
                                     modifier = Modifier
                                         .padding(8.dp)
@@ -382,7 +430,7 @@ fun SignUpScreen(navController: NavController) {
                                     shape = RoundedCornerShape(16.dp)
                                 ) {
                                     Text(
-                                        text = "Đăng ký",
+                                        text = "Đăng ký tài khoản",
                                         color = white,
                                         fontWeight = FontWeight.Bold
                                     )
@@ -401,7 +449,6 @@ fun SignUpScreen(navController: NavController) {
                 }
 
             }
-
         }
     }
 }

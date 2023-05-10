@@ -1,5 +1,6 @@
 package com.tda.app.view
 
+import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,6 +17,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -34,13 +36,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.tda.app.R
-import com.tda.app.data.service.ApiService
 import com.tda.app.ui.theme.*
 import com.tda.app.viewmodel.LoginViewModel
 
 @Composable
 fun LoginScreen(navController: NavController) {
-
+    val context = LocalContext.current
     val loginViewModel = viewModel(modelClass = LoginViewModel::class.java)
     val loginState by loginViewModel.state.collectAsState()
 
@@ -265,7 +266,15 @@ fun LoginScreen(navController: NavController) {
                     Button(
                         onClick = {
                             isLoading = true
-                            loginViewModel.login(user_email, password)
+                            loginViewModel.login(user_email, password, context)
+                            loginState?.let {
+                                isLoading = false
+                                
+                            } ?: run {
+                                isLoading = false
+                            }
+
+
                         },
                         colors = ButtonDefaults.buttonColors(backgroundColor = colorPrimary),
                         modifier = Modifier

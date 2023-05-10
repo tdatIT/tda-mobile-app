@@ -5,5 +5,5 @@ data class AddressRequest(
     val district_code: Int,
     val ward_code: Int,
     val detail: String,
-    val phone: String,
+    val phone: String? = null,
 )

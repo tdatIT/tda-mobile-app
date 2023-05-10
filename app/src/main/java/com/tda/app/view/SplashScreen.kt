@@ -1,5 +1,6 @@
 package com.tda.app.view
 
+import android.util.Log
 import android.view.animation.OvershootInterpolator
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
@@ -9,21 +10,25 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.datastore.core.DataStore
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.tda.app.R
+import com.tda.app.data.repository.DataStoreUserLogged
 import com.tda.app.navigation.Screen
 import com.tda.app.ui.theme.colorPrimary
 import com.tda.app.utils.Constants
@@ -32,6 +37,10 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(navController: NavController) {
+    val context = LocalContext.current
+    val dataStore = DataStoreUserLogged(context)
+    val jwtCheck = dataStore.getJwt.collectAsState(initial = "")
+
     val scale = remember {
         Animatable(0f)
     }
@@ -50,8 +59,14 @@ fun SplashScreen(navController: NavController) {
         )
         delay(Constants.SPLASH_SCREEN_DURATION)
         navController.popBackStack()
-        navController.navigate(Screen.LoginScreen.route)
 
+        if (!jwtCheck.value.equals("")) {
+            navController.navigate(Screen.HomeScreen.route)
+            Log.i("check_jwt", "success")
+        } else {
+            Log.w("check_jwt", "not found")
+            navController.navigate(Screen.LoginScreen.route)
+        }
     }
 
     Surface(
@@ -75,7 +90,7 @@ fun SplashScreen(navController: NavController) {
             Text(
                 text = "TDA Laptop",
                 fontSize = 32.sp,
-                fontWeight= FontWeight(600),
+                fontWeight = FontWeight(600),
                 color = Color.White,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(top = 20.dp),

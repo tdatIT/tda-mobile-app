@@ -6,24 +6,23 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.tda.app.ui.theme.Final_project_mobileTheme
+import com.tda.app.ui.theme.TdaMobilemobileTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Final_project_mobileTheme {
+            TdaMobilemobileTheme {
                 ////////
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Final_project_mobileTheme{
+                    TdaMobilemobileTheme{
                         LoginUiMain()
                     }
                 }
@@ -34,7 +33,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun LoginUiMain() {
-    Final_project_mobileTheme {
+    TdaMobilemobileTheme {
         Surface(color = MaterialTheme.colorScheme.background) {
             Navigation()
         }
@@ -43,7 +42,7 @@ fun LoginUiMain() {
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    Final_project_mobileTheme {
+    TdaMobilemobileTheme {
         LoginUiMain()
     }
 }

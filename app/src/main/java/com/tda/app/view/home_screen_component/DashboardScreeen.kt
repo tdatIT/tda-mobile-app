@@ -1,47 +1,58 @@
 package com.tda.app.view.home_screen_component
 
+import android.widget.GridView
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.LazyColumn
+
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
+import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.material.icons.rounded.ShoppingCart
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.core.graphics.toColor
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import coil.compose.rememberAsyncImagePainter
 import com.tda.app.R
+import com.tda.app.model.response.ProductResponse
 import com.tda.app.ui.theme.*
-import com.tda.app.view.LoginScreen
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.tda.app.viewmodel.PopularViewModel
 import kotlinx.coroutines.delay
 
 @Composable
-fun DashboardScreen( navController: NavController
+fun DashboardScreen(
+    navController: NavController,
 ) {
+    val popularViewModel = viewModel(modelClass = PopularViewModel::class.java)
+    val products by popularViewModel.state.collectAsState()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -66,10 +77,9 @@ fun DashboardScreen( navController: NavController
                             shape = RoundedCornerShape(10.dp)
                         )
                         .size(50.dp)
-
                         .clip(RoundedCornerShape(10.dp))
                         .clickable {
-                        navController.navigate("category_screen")
+                            navController.navigate("category_screen")
                         }
                         .padding(10.dp)
                 )
@@ -188,8 +198,8 @@ fun DashboardScreen( navController: NavController
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(text = "Special for you", fontWeight = FontWeight.Bold, fontSize = 16.sp)
-            Text(text = "See More", color = MaterialTheme.colors.TextColor)
+            Text(text = "Danh mục sản phẩm", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+            Text(text = "Xem thêm", color = MaterialTheme.colors.TextColor)
         }
 
         Spacer(modifier = Modifier.height(15.dp))
@@ -199,17 +209,17 @@ fun DashboardScreen( navController: NavController
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(text = "Popular Product", fontWeight = FontWeight.Bold, fontSize = 16.sp)
-            Text(text = "See More", color = MaterialTheme.colors.TextColor)
+            Text(text = "Sản phẩm nổi bật", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+            Text(text = "Xêm thêm", color = MaterialTheme.colors.TextColor)
         }
         Spacer(modifier = Modifier.height(8.dp))
-        PouplarItems(navController);
+        PopularItems(products, navController);
 
     }
 }
+
 @Composable
-fun LazyBanner()
-{
+fun LazyBanner() {
     //special offer cart
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -293,240 +303,105 @@ fun LazyBanner()
 
     }
 }
+
 @Composable
-fun PouplarItems(navController: NavController) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
+fun PopularItems(
+    products: List<ProductResponse>,
+    navController: NavController,
+) {
+    LazyVerticalGrid(
+        contentPadding = PaddingValues(8.dp),
+        columns = GridCells.Fixed(2)
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(0.5f)
-                .wrapContentHeight()
-                .clip(RoundedCornerShape(16.dp))
-                .background(white)
-                .clickable { }
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            ) {
-
-                Spacer(modifier = Modifier.height(8.dp))
-                Box(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Image(
-                        modifier = Modifier
-                            .size(100.dp),
-                        painter = painterResource(R.drawable.ic_red_rose_bouquet),
-                        contentDescription = "",
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(16.dp))
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                ) {
-
-                    Column(
-                        modifier = Modifier
-                            .wrapContentHeight()
-                    ) {
-                        Text(
-                            text = "Angle",
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = black,
-                        )
-                        Text(
-                            text = "$567.00",
-                            fontSize = 12.sp,
-                            color = colorPrimary,
-                        )
-                    }
-                    Box(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(8.dp))
-                            .background(colorPrimary)
-                            .padding(4.dp)
-                            .shadow(elevation = 8.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Add,
-                            contentDescription = "",
-                            tint = white,
-                            modifier = Modifier
-                                .size(32.dp, 32.dp)
-                        )
-                    }
-
-                }
-
-            }
-        }
-        Spacer(modifier = Modifier.width(16.dp))
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(0.5f)
-                .wrapContentHeight()
-                .clip(RoundedCornerShape(16.dp))
-                .background(white)
-                .clickable { }
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            ) {
-
-                Spacer(modifier = Modifier.height(8.dp))
-                Box(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Image(
-                        modifier = Modifier
-                            .size(100.dp),
-                        painter = painterResource(R.drawable.ic_red_rose_bouquet),
-                        contentDescription = "",
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(16.dp))
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                ) {
-
-                    Column(
-                        modifier = Modifier
-                            .wrapContentHeight()
-                    ) {
-                        Text(
-                            text = "Angle",
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = black,
-                        )
-                        Text(
-                            text = "$567.00",
-                            fontSize = 12.sp,
-                            color = colorPrimary,
-                        )
-                    }
-                    Box(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(8.dp))
-                            .background(colorPrimary)
-                            .padding(4.dp)
-                            .shadow(elevation = 8.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Add,
-                            contentDescription = "",
-                            tint = white,
-                            modifier = Modifier
-                                .size(32.dp, 32.dp)
-                        )
-                    }
-                }
-
-            }
+        itemsIndexed(products) { index, product ->
+            ProductCard(product = product, navController)
         }
     }
 }
 
-@Composable
-fun Product(navController: NavController){
-//    //popular product
-//    LazyRow(
-//        horizontalArrangement = Arrangement.spacedBy(10.dp),
-//        contentPadding = PaddingValues(horizontal = 10.dp)
-//    ) {
-//        item {
-//            //favourite state rememberable
-//            var favouriteRemember by remember { mutableStateOf(false) }
-//
-//            Column {
-//                Box(
-//                    modifier = Modifier
-//                        .size(150.dp)
-//                        .background(Color.LightGray, shape = RoundedCornerShape(10.dp))
-//                        .clip(RoundedCornerShape(10.dp))
-//                        .clickable {
-//
-//                        },
-//                    contentAlignment = Alignment.Center
-//                ) {
-//                    Image(
-//                        painter = painterResource(id = R.drawable.tda_logo),
-//                        contentDescription = "aa"
-//                    )
-//                }
-//                Text(
-//                    text = "BBB",
-//                    maxLines = 2,
-//                    overflow = TextOverflow.Ellipsis,
-//                    modifier = Modifier.width(150.dp)
-//                )
-//                Row(
-//                    modifier = Modifier
-//                        .width(150.dp)
-//                        .fillMaxWidth(),
-//                    horizontalArrangement = Arrangement.SpaceBetween
-//                ) {
-//                    Text(
-//                        text = "$100 ",
-//                        fontWeight = FontWeight(600),
-//                        color = MaterialTheme.colors.TextColor
-//                    )
-//                    Box(
-//                        modifier = Modifier
-//                            .size(20.dp)
-//                            .background(
-//                                MaterialTheme.colors.PrimaryLightColor,
-//                                shape = CircleShape
-//                            )
-//                            .clip(CircleShape)
-//                            .clickable {
-//                                favouriteRemember = !favouriteRemember
-//                            },
-//                        contentAlignment = Alignment.Center
-//                    ) {
-//
-//                        Image(
-//                            painter = painterResource(
-//                                id = if (favouriteRemember)
-//                                    R.drawable.heart_icon_2
-//                                else R.drawable.heart_icon
-//                            ),
-//                            contentDescription = "Favourite Icon",
-//                            modifier = Modifier.padding(3.dp),
-//                            colorFilter = if (favouriteRemember) ColorFilter.tint(
-//                                Color.Red
-//                            ) else null
-//                        )
-//                    }
-//                }
-//
-//            }
-//        }
-//    }
 
+@Composable
+fun ProductCard(product: ProductResponse, navController: NavController) {
+    Card(Modifier.clickable { }) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Spacer(modifier = Modifier.height(8.dp))
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    modifier = Modifier
+                        .size(100.dp),
+                    painter = rememberAsyncImagePainter(product.images_file[0]),
+                    contentDescription = "",
+                )
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                Column(
+                    modifier = Modifier
+                        .wrapContentHeight()
+                ) {
+                    Text(
+                        text = product.productName,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = black,
+                    )
+                    Text(
+                        text = product.price.toString(),
+                        fontSize = 12.sp,
+                        color = colorPrimary,
+                    )
+                }
+                //Wistlist
+                Button(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(8.dp))
+                        .padding(4.dp)
+                        .shadow(elevation = 8.dp),
+                    onClick = {}
+                ) {
+                    Icon(
+                        imageVector = Icons.Rounded.Favorite,
+                        contentDescription = "",
+                        tint = favourite,
+                        modifier = Modifier
+                            .size(32.dp, 32.dp)
+                    )
+                }
+                Spacer(modifier = Modifier.padding(8.dp))
+                //Shopping Cart
+                Button(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(colorPrimary)
+                        .padding(4.dp)
+                        .shadow(elevation = 8.dp),
+                    onClick = { /*TODO*/ }
+                ) {
+                    Icon(
+                        imageVector = Icons.Rounded.ShoppingCart,
+                        contentDescription = "",
+                        tint = white,
+                        modifier = Modifier
+                            .size(32.dp, 32.dp)
+                    )
+                }
+
+            }
+
+        }
+    }
 }
+
 @Composable
 fun SlidingBannerView() {
     val bannerList = listOf(
@@ -565,6 +440,7 @@ fun SlidingBannerView() {
         }
     }
 }
+
 @Composable
 fun DotsIndicator(
     dotsCount: Int,
@@ -586,10 +462,4 @@ fun DotsIndicator(
             )
         }
     }
-}
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun DefaultPreview() {
-    val navController = rememberNavController()
-    DashboardScreen(navController = navController)
 }

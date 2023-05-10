@@ -6,5 +6,5 @@ data class LoginResponse(
     val code: Int,
     val message: String,
     val jwt: String,
-    val expiryDate: Date?
+    val expiryDate: Date
 )
