@@ -198,7 +198,7 @@ fun DashboardScreen(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(text = "Doanh mục sản phẩm", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+            Text(text = "Danh mục sản phẩm", fontWeight = FontWeight.Bold, fontSize = 16.sp)
             Text(text = "Xem thêm", color = MaterialTheme.colors.TextColor)
         }
 

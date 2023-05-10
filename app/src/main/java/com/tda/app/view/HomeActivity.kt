@@ -315,7 +315,7 @@ fun CategorySection(categories: List<CategoryResp>, navController: NavController
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(text = "Doanh mục sản phẩm", style = MaterialTheme.typography.h6)
+            Text(text = "Danh mục sản phẩm", style = MaterialTheme.typography.h6)
             TextButton(onClick = {}) {
                 Text(text = "Xem thêm", color = colorPrimary)
             }
