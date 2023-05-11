@@ -1,241 +1,135 @@
 package com.tda.app.view
 
+import NavigationBottomBar
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.shape.ZeroCornerSize
+import androidx.compose.material.BottomAppBar
 import androidx.compose.material.Icon
-import androidx.compose.material.Surface
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ShoppingCart
+import androidx.compose.material.icons.rounded.Preview
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.tda.app.view.HeaderBar
-import com.tda.app.R
+import coil.compose.rememberAsyncImagePainter
+import com.tda.app.model.response.CategoryResp
 import com.tda.app.ui.theme.black
 import com.tda.app.ui.theme.colorPrimary
 import com.tda.app.ui.theme.ghost_white
 import com.tda.app.ui.theme.white
+import com.tda.app.viewmodel.CategoryAllViewModel
 
 @Composable
 fun CategoryScreen(navController: NavController) {
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .verticalScroll(rememberScrollState())) {
-        ConstraintLayout {
-            val (topappbarbgref, popularitemsref) = createRefs()
-
-            Box(modifier = Modifier
-                .height(100.dp)
-                .constrainAs(topappbarbgref) {
-                    top.linkTo(topappbarbgref.top)
-                    bottom.linkTo(topappbarbgref.top)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                }) {
-                HeaderBar()
-            }
-
-            Surface(
-                color = ghost_white,
-                shape = RoundedCornerShape(40.dp)
-                    .copy(bottomStart = ZeroCornerSize,
-                        bottomEnd = ZeroCornerSize), modifier = Modifier
-                    .fillMaxSize()
-                    .padding(top = 70.dp)
-                    .constrainAs(popularitemsref) {
-                        bottom.linkTo(parent.bottom)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                    }) {
-                Column(modifier = Modifier
-                    .fillMaxSize()
-                    .padding(20.dp)) {
-
-                    PopularItemsSewction(navController)
-                    Spacer(modifier = Modifier.padding(10.dp))
-                    PopularItemsSewction(navController)
-                    Spacer(modifier = Modifier.padding(10.dp))
-                    PopularItemsSewction(navController)
+    val categoryAllViewModel = viewModel(modelClass = CategoryAllViewModel::class.java)
+    val categories by categoryAllViewModel.state.collectAsState()
+    Scaffold(topBar = {
+        SecondAppBar(navController)
+    }, bottomBar = {
+        NavigationBottomBar(navController = navController)
+    }) { padding ->
+        Column(modifier = Modifier.padding(padding).background(ghost_white)) {
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                itemsIndexed(categories) { index, item ->
+                    CategoryCard(item, navController)
                 }
             }
-
-
         }
     }
+
+
 }
 
 @Composable
-fun PopularItemsSewction(navController: NavController) {
-    Row(
+fun CategoryCard(item: CategoryResp, navController: NavController) {
+    Spacer(modifier = Modifier.width(16.dp))
+    Box(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
+            .clip(RoundedCornerShape(16.dp))
+            .background(white)
+            .clickable { navController.navigate("product_categoryCode/${item.code}") }
     ) {
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(0.5f)
-                .wrapContentHeight()
-                .clip(RoundedCornerShape(16.dp))
-                .background(white)
-                .clickable {
-                }
+                .padding(16.dp)
         ) {
-            Column(
+
+            Spacer(modifier = Modifier.height(8.dp))
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    modifier = Modifier
+                        .size(100.dp),
+                    painter = rememberAsyncImagePainter(item.images),
+                    contentDescription = "",
+                )
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
             ) {
-
-                Spacer(modifier = Modifier.height(8.dp))
-                Box(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.Center
+                Column(
+                    modifier = Modifier
+                        .wrapContentHeight()
                 ) {
-                    Image(
-                        modifier = Modifier
-                            .size(100.dp),
-                        painter = painterResource(R.drawable.ic_red_rose_bouquet),
-                        contentDescription = "",
+                    Text(
+                        text = item.name,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = black,
+                        maxLines = 2
+                    )
+                    Text(
+                        text = "Code: ${item.code.uppercase()}",
+                        fontSize = 12.sp,
+                        color = colorPrimary,
                     )
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
+                Icon(
+                    imageVector = Icons.Rounded.Preview,
+                    contentDescription = "",
+                    tint = colorPrimary,
                     modifier = Modifier
-                        .fillMaxWidth()
-                ) {
-
-                    Column(
-                        modifier = Modifier
-                            .wrapContentHeight()
-                    ) {
-                        Text(
-                            text = "Angle",
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = black,
-                        )
-                        Text(
-                            text = "$567.00",
-                            fontSize = 12.sp,
-                            color = colorPrimary,
-                        )
-                    }
-                    Box(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(8.dp))
-                            .background(colorPrimary)
-                            .padding(4.dp)
-                            .shadow(elevation = 8.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(
-                            imageVector = Icons.Rounded.ShoppingCart,
-                            contentDescription = "",
-                            tint = white,
-                            modifier = Modifier
-                                .size(20.dp, 20.dp)
-                        )
-                    }
-
-                }
-
+                        .size(20.dp, 20.dp)
+                )
             }
-        }
-        Spacer(modifier = Modifier.width(16.dp))
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(0.5f)
-                .wrapContentHeight()
-                .clip(RoundedCornerShape(16.dp))
-                .background(white)
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            ) {
 
-                Spacer(modifier = Modifier.height(8.dp))
-                Box(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Image(
-                        modifier = Modifier
-                            .size(100.dp),
-                        painter = painterResource(R.drawable.ic_pink_rose_bouquet),
-                        contentDescription = "",
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(16.dp))
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                ) {
-
-                    Column(
-                        modifier = Modifier
-                            .wrapContentHeight()
-                    ) {
-                        Text(
-                            text = "Jannien",
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = black,
-                        )
-                        Text(
-                            text = "$567.00",
-                            fontSize = 12.sp,
-                            color = colorPrimary,
-                        )
-                    }
-                    Box(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(8.dp))
-                            .background(colorPrimary)
-                            .padding(4.dp)
-                            .shadow(elevation = 8.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(
-                            imageVector = Icons.Rounded.ShoppingCart,
-                            contentDescription = "",
-                            tint = white,
-                            modifier = Modifier
-                                .size(20.dp, 20.dp)
-                        )
-                    }
-
-                }
-
-            }
         }
     }
 }
+
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun DefaultPrevieawa() {
+fun DefaultPreviewCategories() {
     val navController = rememberNavController()
     CategoryScreen(navController)
 }

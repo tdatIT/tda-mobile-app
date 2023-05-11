@@ -48,4 +48,11 @@ interface ApiService {
     suspend fun getCategories(
         @Query("size") size: Int
     ): List<CategoryResp>
+
+    @GET("categories")
+    suspend fun getAllCategories(): List<CategoryResp>
+
+    @GET("products/category/{categoryCode}")
+    suspend fun getAllProductByCategoryCode(@Path("categoryCode") categoryCode: String)
+            : List<ProductResponse>
 }

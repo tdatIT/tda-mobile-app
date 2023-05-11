@@ -20,4 +20,17 @@ class ProductRespository {
 
         }
     }
+
+    suspend fun getProductsByCategoryCode(code: String): Resource<List<ProductResponse>> {
+        return try {
+            Resource.Success(
+                RetrofitClient.retrofit_TDA_API.getAllProductByCategoryCode(code)
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Log.e("get-product-by-code", "Failed cause: ${e.message}")
+            Resource.Error(e.message ?: "An unknown error")
+
+        }
+    }
 }

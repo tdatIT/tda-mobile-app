@@ -89,7 +89,7 @@ fun Content(
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         item(span = { GridItemSpan(2) }) {
-            AppBar()
+            AppBarPrimary(navController)
         }
         item(span = { GridItemSpan(2) }) {
             HeaderBar()
@@ -120,53 +120,6 @@ fun Content(
     }
 }
 
-@Composable
-fun AppBar() {
-    Row(
-        Modifier
-            .padding(16.dp)
-            .height(48.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceAround
-    ) {
-        TextField(
-            value = "",
-            onValueChange = {},
-            label = { Text(text = "Tìm kiếm sản phẩm", fontSize = 12.sp) },
-            singleLine = true,
-            leadingIcon = {
-                Icon(
-                    imageVector = Icons.Rounded.Search,
-                    contentDescription = "Search"
-                )
-            },
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = Color.White,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent
-            ),
-            shape = RoundedCornerShape(8.dp),
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxHeight()
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        IconButton(onClick = { }) {
-            Icon(
-                imageVector = Icons.Outlined.FavoriteBorder,
-                contentDescription = "",
-                tint = Color.White
-            )
-        }
-        IconButton(onClick = {}) {
-            Icon(
-                imageVector = Icons.Outlined.ShoppingCart,
-                contentDescription = "",
-                tint = Color.White
-            )
-        }
-    }
-}
 
 @Composable
 fun HeaderBar() {
@@ -316,7 +269,9 @@ fun CategorySection(categories: List<CategoryResp>, navController: NavController
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(text = "Danh mục sản phẩm", style = MaterialTheme.typography.h6)
-            TextButton(onClick = {}) {
+            TextButton(onClick = {
+                navController.navigate("category_screen")
+            }) {
                 Text(text = "Xem thêm", color = colorPrimary)
             }
         }
@@ -339,7 +294,7 @@ fun CategoryButton(
     Column(
         Modifier
             .width(72.dp)
-            .clickable { }
+            .clickable { navController.navigate("product_categoryCode/${c.code}") }
     ) {
         Box(
             Modifier
@@ -358,7 +313,9 @@ fun CategoryButton(
         }
         Text(
             text = c.name,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(25.dp),
             textAlign = TextAlign.Center,
             fontSize = 12.sp,
             maxLines = 2
@@ -416,7 +373,8 @@ fun ProductCard(
                             if (product.promotionPrice > 0)
                                 Constants.formatPrice(product.promotionPrice)
                             else
-                                Constants.formatPrice(product.price)}",
+                                Constants.formatPrice(product.price)
+                        }",
                         color = colorPrimary
                     )
                     Text(text = "Bán Chạy", color = Color.Red)

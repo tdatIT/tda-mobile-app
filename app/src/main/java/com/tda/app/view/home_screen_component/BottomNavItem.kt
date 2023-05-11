@@ -2,23 +2,24 @@ package com.tda.app.view.home_screen_component
 
 import com.tda.app.R
 import com.tda.app.navigation.Screen
+
 sealed class BottomNavItem(val tittle: String, val icon: Int, val route: String) {
     object HomeNav : BottomNavItem(
         tittle = "Home",
         icon = R.drawable.shop_icon,
-        route = Screen.LoginScreen.route
+        route = Screen.HomeScreen.route
     )
 
-    object FavouriteNav : BottomNavItem(
+    object CartNav : BottomNavItem(
         tittle = "Favourite",
-        icon = R.drawable.heart_icon,
+        icon = R.drawable.cart_icon,
         route = Screen.LoginScreen.route
     )
 
-    object ChatNav : BottomNavItem(
+    object SearchNav : BottomNavItem(
         tittle = "Chat",
-        icon = R.drawable.chat_bubble_icon,
-        route = Screen.LoginScreen.route
+        icon = R.drawable.search_icon,
+        route = Screen.SearchScreen.route
     )
 
     object ProfileNav : BottomNavItem(

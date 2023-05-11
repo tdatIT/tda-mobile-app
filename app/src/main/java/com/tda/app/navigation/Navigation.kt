@@ -3,9 +3,11 @@ package com.tda.app
 
 import VerificationScreen
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.tda.app.view.*
 import com.tda.app.navigation.Screen
 
@@ -38,6 +40,22 @@ fun Navigation() {
         composable(Screen.CategoryScreen.route) {
             CategoryScreen(navController = navController)
         }
+        composable(Screen.SearchScreen.route) {
+            SearchScreen(nav = navController)
+        }
+        composable(
+            Screen.ProductInCategoryCode.route,
+            arguments = listOf(navArgument("code") { type = NavType.StringType })
+        ) { backStackEntry ->
+            backStackEntry.arguments?.getString("code")?.let {
+                ProductInCategoryScreen(
+                    navController = navController,
+                    code = it
+                )
+            }
+        }
+    }
+}
 //        composable(Screen.PopularListScreen.route) {
 //            PopularListScreen(navController = navController)
 //        }
@@ -49,5 +67,4 @@ fun Navigation() {
 //        }
 
 
-    }
-}
+

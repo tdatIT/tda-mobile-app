@@ -1,5 +1,3 @@
-package com.eritlab.jexmon.presentation.dashboard_screen.component
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -9,26 +7,27 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.tda.app.ui.theme.PrimaryLightColor
 import com.tda.app.ui.theme.TextColor
 import com.tda.app.view.home_screen_component.BottomNavItem
 
 @Composable
-fun NavigationBar(
-    navController: NavController,
-    isVisible: (Boolean) -> Unit,
+fun NavigationBottomBar(
+    navController: NavController
 ) {
     val navItemList = listOf(
         BottomNavItem.HomeNav,
-        BottomNavItem.FavouriteNav,
-        BottomNavItem.ChatNav,
+        BottomNavItem.SearchNav,
+        BottomNavItem.CartNav,
         BottomNavItem.ProfileNav,
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-    var bottomNavVisibility by remember { mutableStateOf<Boolean>(true) }
+    var bottomNavVisibility by remember { mutableStateOf(true) }
 
     if (bottomNavVisibility) {
         BottomNavigation(
@@ -41,7 +40,6 @@ fun NavigationBar(
                 )
                 .clip(RoundedCornerShape(topEnd = 10.dp, topStart = 10.dp))
 
-
         ) {
             navItemList.forEach { screen ->
                 BottomNavigationItem(
@@ -53,7 +51,6 @@ fun NavigationBar(
                             tint = if (navBackStackEntry?.destination?.route == screen.route) MaterialTheme.colors.PrimaryLightColor else LocalContentColor.current,
                         )
                     },
-                    //  label = { Text(text = screen.tittle) },
                     onClick = {
                         navController.navigate(screen.route)
                     },
@@ -63,30 +60,10 @@ fun NavigationBar(
         }
     }
 
-//    //hide topBar
-//    when (navBackStackEntry?.destination?.route) {
-//        ShopHomeScreen.DashboardScreen.route -> {
-//            bottomNavVisibility = true
-//            isVisible(true)
-//        }
-//        DetailScreen.ProductDetailScreen.route + "/{${Constrains.PRODUCT_ID_PARAM}}" -> {
-//
-//            bottomNavVisibility = false
-//            isVisible(false)
-//        }
-//        DetailScreen.CartScreen.route -> {
-//            bottomNavVisibility = false
-//            isVisible(false)
-//        }
-//        DetailScreen.NotificationScreen.route -> {
-//            bottomNavVisibility = false
-//            isVisible(false)
-//        }
-//        else -> {
-//            bottomNavVisibility = true
-//            isVisible(false)
-//        }
-//    }
-
-
+}
+@Preview
+@Composable
+fun PreviewBottomBar(){
+    val nav = rememberNavController()
+    NavigationBottomBar(navController = nav)
 }

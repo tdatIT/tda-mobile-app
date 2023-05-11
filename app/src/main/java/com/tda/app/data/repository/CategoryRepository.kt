@@ -19,4 +19,16 @@ class CategoryRepository {
             Resource.Error(e.message ?: "An unknown error")
         }
     }
+
+    suspend fun getAllCategories(): Resource<List<CategoryResp>> {
+        return try {
+            Resource.Success(
+                RetrofitClient.retrofit_TDA_API.getAllCategories()
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Log.e("get-product", "Login fail cause: ${e.message}")
+            Resource.Error(e.message ?: "An unknown error")
+        }
+    }
 }
