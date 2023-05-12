@@ -3,29 +3,11 @@ package com.tda.app.view
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
+import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme.colors
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AddShoppingCart
 import androidx.compose.material.icons.outlined.ArrowBack
@@ -44,9 +26,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -405,12 +389,64 @@ fun BottomProductBar(navController: NavController) {
         }
     }
 }
-
+@Composable
+fun HeaderAccount(
+    navController: NavController
+) {
+    var name: String = "Hello, Hai!"
+    var email: String = "Email"
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(72.dp)
+            .background(MaterialTheme.colors.surface)
+            .padding(horizontal = 16.dp)
+            .offset(y = 12.dp) // Đặt khoảng cách top là 12dp
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                modifier = Modifier
+                    .size(48.dp)
+                    .clip(CircleShape),
+                painter = painterResource(id = R.drawable.ic_profile),
+                contentDescription = "profile picture"
+            )
+            Column(
+                modifier = Modifier.padding(start = 16.dp)
+            ) {
+                Text(
+                    text = name,
+                    style = MaterialTheme.typography.h6,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = email,
+                    style = MaterialTheme.typography.subtitle1
+                )
+            }
+            Spacer(modifier = Modifier.weight(1f))
+            IconButton(
+                modifier = Modifier.size(36.dp),
+                onClick ={
+                }
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.edit_icon),
+                    contentDescription = "edit",
+                    tint = colorPrimary,
+                    modifier = Modifier.size(28.dp)
+                )
+            }
+        }
+    }
+}
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreviewAppBar() {
     val nav = rememberNavController()
     TdaMobilemobileTheme {
-        BottomProductBar(navController = nav)
+        HeaderAccount(nav)
     }
 }
