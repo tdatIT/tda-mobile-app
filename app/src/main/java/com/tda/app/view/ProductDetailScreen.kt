@@ -142,8 +142,6 @@ fun ProductDetailScreen(nav: NavController, productCode: String) {
                         }
                     }
                     product?.let { HtmlEncoder(it.description) }
-
-
                 }
             }
         }

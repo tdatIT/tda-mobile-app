@@ -14,7 +14,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
+import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.tda.app.R
 import com.tda.app.ui.theme.TdaMobilemobileTheme
@@ -22,50 +22,25 @@ import com.tda.app.ui.theme.colorPrimary
 
 
 @Composable
-fun AccountScreen(navController: NavHostController) {
+fun AccountScreen(nav: NavController) {
 
     Scaffold(topBar = {
-        HeaderAccount(navController)
+        HeaderAccount(nav, "Đạt", "tdat.it2k2@gmail.com")
     }, bottomBar = {
-        NavigationBottomBar(navController = navController)
+        NavigationBottomBar(navController = nav)
     }) { padding ->
-        Column(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+        ) {
             Spacer(modifier = Modifier.height(32.dp))
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(69.dp)
-                    .padding(horizontal = 16.dp),
-                horizontalArrangement = Arrangement.Start
-            ) {
-                Column {
-                    Row(modifier = Modifier.padding(top = 8.dp)) {
-                        Text(text = "Account")
-                        IconButton(
-                            modifier = Modifier
-                                .padding(horizontal = 8.dp)
-                                .size(20.dp),
-                            onClick = {
-                            }
-                        ) {
-                            Icon(
-                                modifier = Modifier
-                                    .fillMaxSize(0.67f),
-                                painter = painterResource(id = R.drawable.edit_icon),
-                                contentDescription = "edit username",
-                                tint = colorPrimary
-                            )
-                        }
-                    }
-                    Text(text = "name@gmail.com",
-                        style = MaterialTheme.typography.h5)
-                }
-            }
+
             Spacer(modifier = Modifier.height(16.dp))
 
             Divider(color = Color(0xFFB3B3B3), modifier = Modifier.fillMaxWidth(), thickness = 1.dp)
             AccountNavItem(icon = R.drawable.orders, name = "Thông tin giỏ hàng")
-            AccountNavItem(icon = R.drawable.my_details, name = "Ví của bạn")
+            AccountNavItem(icon = R.drawable.my_details, name = "Đơn hàng")
             AccountNavItem(icon = R.drawable.help, name = "Help")
             AccountNavItem(icon = R.drawable.notifications, name = "Thông báo")
             AccountNavItem(icon = R.drawable.about, name = "About")
@@ -82,7 +57,10 @@ fun AccountScreen(navController: NavHostController) {
                     contentColor = Color(0xFF53B175)
                 ),
                 shape = RoundedCornerShape(19),
-                elevation = ButtonDefaults.elevation(defaultElevation = 4.dp, pressedElevation = 8.dp)
+                elevation = ButtonDefaults.elevation(
+                    defaultElevation = 4.dp,
+                    pressedElevation = 8.dp
+                )
             ) {
                 Row(
                     modifier = Modifier.fillMaxSize(),
@@ -109,8 +87,10 @@ fun AccountScreen(navController: NavHostController) {
 
 @Composable
 fun AccountNavItem(@DrawableRes icon: Int, name: String) {
-    Card(modifier = Modifier
-        .fillMaxWidth(),  ) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth(),
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -136,6 +116,7 @@ fun AccountNavItem(@DrawableRes icon: Int, name: String) {
     }
     Divider(color = Color(0xFFB3B3B3), modifier = Modifier.fillMaxWidth(), thickness = 1.dp)
 }
+
 @Preview(showBackground = true)
 @Composable
 fun AccountScreenPreviewHome() {

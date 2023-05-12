@@ -1,4 +1,3 @@
-package com.eritlab.jexmon.presentation.dashboard_screen.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

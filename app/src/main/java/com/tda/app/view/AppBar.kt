@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AddShoppingCart
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.Details
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.More
@@ -389,32 +390,32 @@ fun BottomProductBar(navController: NavController) {
         }
     }
 }
+
 @Composable
 fun HeaderAccount(
-    navController: NavController
+    navController: NavController,
+    name: String,
+    email: String
 ) {
-    var name: String = "Hello, Hai!"
-    var email: String = "Email"
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(72.dp)
+            .height(100.dp)
             .background(MaterialTheme.colors.surface)
-            .padding(horizontal = 16.dp)
-            .offset(y = 12.dp) // Đặt khoảng cách top là 12dp
+            .padding(24.dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
                 modifier = Modifier
-                    .size(48.dp)
+                    .size(54.dp)
                     .clip(CircleShape),
                 painter = painterResource(id = R.drawable.ic_profile),
                 contentDescription = "profile picture"
             )
             Column(
-                modifier = Modifier.padding(start = 16.dp)
+                modifier = Modifier.padding(start = 20.dp)
             ) {
                 Text(
                     text = name,
@@ -429,11 +430,11 @@ fun HeaderAccount(
             Spacer(modifier = Modifier.weight(1f))
             IconButton(
                 modifier = Modifier.size(36.dp),
-                onClick ={
+                onClick = {
                 }
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.edit_icon),
+                    imageVector = Icons.Outlined.Edit,
                     contentDescription = "edit",
                     tint = colorPrimary,
                     modifier = Modifier.size(28.dp)
@@ -442,11 +443,63 @@ fun HeaderAccount(
         }
     }
 }
+
+@Composable
+fun HeaderAccount(
+    navController: NavController,
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(100.dp)
+            .background(MaterialTheme.colors.surface)
+            .padding(24.dp)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                modifier = Modifier
+                    .size(48.dp)
+                    .clip(CircleShape),
+                painter = painterResource(id = R.drawable.ic_profile),
+                contentDescription = "profile picture"
+            )
+            Column(
+                modifier = Modifier.padding(start = 20.dp)
+            ) {
+                Text(
+                    text = "Tài khoản khách",
+                    style = MaterialTheme.typography.h6,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = "Vui lòng đăng nhập / tạo tài khoản",
+                    style = MaterialTheme.typography.subtitle1
+                )
+            }
+            Spacer(modifier = Modifier.weight(1f))
+            IconButton(
+                modifier = Modifier.size(36.dp),
+                onClick = {
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Edit,
+                    contentDescription = "edit",
+                    tint = colorPrimary,
+                    modifier = Modifier.size(28.dp)
+                )
+            }
+        }
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreviewAppBar() {
     val nav = rememberNavController()
     TdaMobilemobileTheme {
-        HeaderAccount(nav)
+        HeaderAccount(nav, "Đạt", "tdat.it2k2@gmail.com")
     }
 }

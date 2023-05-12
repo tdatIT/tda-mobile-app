@@ -12,7 +12,7 @@ sealed class Screen(val route: String) {
     object ProductInCategoryCode : Screen("product_categoryCode/{code}")
     object SearchScreen : Screen("search_screen")
     object ProductDetail : Screen("product_detail/{code}")
-    object AccountScreen : Screen("Account_screen")
+    object AccountScreen : Screen("account_screen")
     object PopularListScreen : Screen("popular_list_screen")
     object DetailsScreen : Screen("details_screen")
     object AddToCartScreen : Screen("add_to_cart_screen")

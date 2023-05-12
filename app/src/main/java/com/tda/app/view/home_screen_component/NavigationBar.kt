@@ -48,7 +48,9 @@ fun NavigationBottomBar(
                         Icon(
                             painter = painterResource(id = screen.icon),
                             contentDescription = null,
-                            tint = if (navBackStackEntry?.destination?.route == screen.route) MaterialTheme.colors.PrimaryLightColor else LocalContentColor.current,
+                            tint = if (navBackStackEntry?.destination?.route == screen.route)
+                                MaterialTheme.colors.PrimaryLightColor
+                            else LocalContentColor.current,
                         )
                     },
                     onClick = {

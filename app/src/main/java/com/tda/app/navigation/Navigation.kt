@@ -1,4 +1,5 @@
 package com.tda.app
+
 import VerificationScreen
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
@@ -39,6 +40,9 @@ fun Navigation() {
         }
         composable(Screen.SearchScreen.route) {
             SearchScreen(nav = navController)
+        }
+        composable(Screen.AccountScreen.route) {
+            AccountScreen(nav = navController)
         }
         composable(
             Screen.ProductInCategoryCode.route,

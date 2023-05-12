@@ -40,6 +40,7 @@ import com.tda.app.ui.theme.colorPrimary
 import com.tda.app.utils.Constants
 import com.tda.app.viewmodel.CategoryViewModel
 import com.tda.app.viewmodel.AllProductViewModel
+import com.tda.app.viewmodel.PopularProductViewModel
 
 
 @Preview(showBackground = true)
@@ -59,6 +60,9 @@ fun HomeScreen(navController: NavController) {
     //category viewModel
     val categoryViewModel = viewModel(modelClass = CategoryViewModel::class.java)
     val categories by categoryViewModel.state.collectAsState()
+    //popular Product
+    val popularProductViewModel = viewModel(modelClass = PopularProductViewModel::class.java)
+    val populars by popularProductViewModel.state.collectAsState()
 
     Box() {
         Image(
@@ -69,7 +73,7 @@ fun HomeScreen(navController: NavController) {
             contentDescription = "Header Background",
             contentScale = ContentScale.FillWidth
         )
-        Content(navController, products, categories)
+        Content(navController, products, populars, categories)
     }
 }
 
@@ -77,12 +81,14 @@ fun HomeScreen(navController: NavController) {
 fun Content(
     navController: NavController,
     products: List<ProductResponse>,
+    populars: List<ProductResponse>,
     categories: List<CategoryResp>
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         verticalArrangement = Arrangement.spacedBy(10.dp),
-        horizontalArrangement = Arrangement.spacedBy(10.dp)
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        contentPadding = PaddingValues(10.dp)
     ) {
         item(span = { GridItemSpan(2) }) {
             AppBarPrimary(navController)
@@ -102,7 +108,9 @@ fun Content(
             Spacer(modifier = Modifier.height(16.dp))
             CategorySection(categories, navController)
         }
-
+        item(span = { GridItemSpan(2) }) {
+            TopProduct(populars, navController)
+        }
         item(span = { GridItemSpan(2) }) {
             Spacer(modifier = Modifier.height(16.dp))
             BestSellerSection()
@@ -328,7 +336,24 @@ fun BestSellerSection() {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(text = "Sản phẩm bán chạy", style = MaterialTheme.typography.h6)
+        Text(text = "Sản phẩm gợi ý", style = MaterialTheme.typography.h6)
+        TextButton(onClick = {}) {
+            Text(text = "Xem thêm", color = colorPrimary)
+        }
+    }
+
+}
+
+@Composable
+fun PopularProduct() {
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(text = "Phổ biến", style = MaterialTheme.typography.h6)
         TextButton(onClick = {}) {
             Text(text = "Xem thêm", color = colorPrimary)
         }
@@ -345,11 +370,11 @@ fun ProductCard(
         Modifier
             .width(160.dp)
             .clickable { navController.navigate("product_detail/${product.productCode}") }
-
     ) {
         Column(
             Modifier
-                .padding(bottom = 10.dp)
+                .padding(bottom = 10.dp),
+            verticalArrangement = Arrangement.Center
         ) {
             Image(
                 modifier = Modifier
@@ -376,7 +401,7 @@ fun ProductCard(
                         }",
                         color = colorPrimary
                     )
-                    Text(text = "Bán Chạy", color = Color.Red)
+                    Text(text = "SL: ${product.quantity}", color = Color.Red)
                 }
             }
         }

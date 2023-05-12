@@ -25,6 +25,6 @@ sealed class BottomNavItem(val tittle: String, val icon: Int, val route: String)
     object ProfileNav : BottomNavItem(
         tittle = "Profile",
         icon = R.drawable.user_icon,
-        route = Screen.LoginScreen.route
+        route = Screen.AccountScreen.route
     )
 }
