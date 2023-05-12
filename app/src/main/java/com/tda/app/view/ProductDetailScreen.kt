@@ -32,9 +32,7 @@ import androidx.compose.material.icons.outlined.WorkspacePremium
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -70,7 +68,7 @@ fun ProductDetailScreen(nav: NavController, productCode: String) {
     val bestSellerViewModel = viewModel(modelClass = BestSellerViewModel::class.java)
     val bestSellers by bestSellerViewModel.state.collectAsState()
 
-
+    var currentImagePosition by remember { mutableStateOf(0) }
     Scaffold(
         topBar = { ProductDetailBar(nav) },
         bottomBar = { BottomProductBar(nav) },
@@ -90,7 +88,7 @@ fun ProductDetailScreen(nav: NavController, productCode: String) {
                 ) {
                     product?.let {
                         Image(
-                            painter = rememberAsyncImagePainter(model = it.images_file[0]),
+                            painter = rememberAsyncImagePainter(model = it.images_file[currentImagePosition]),
                             contentDescription = "",
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -103,6 +101,7 @@ fun ProductDetailScreen(nav: NavController, productCode: String) {
                                     modifier = Modifier
                                         .background(Color.White)
                                         .size(80.dp)
+                                        .clickable { currentImagePosition = index }
                                         .padding(10.dp),
                                     painter = rememberAsyncImagePainter(model = img),
                                     contentDescription = ""
