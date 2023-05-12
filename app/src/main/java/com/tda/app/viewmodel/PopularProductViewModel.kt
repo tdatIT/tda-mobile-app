@@ -1,6 +1,5 @@
 package com.tda.app.viewmodel
 
-
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tda.app.data.repository.ProductRespository
@@ -10,25 +9,23 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class PopularViewModel() :
-    ViewModel() {
-    private var _state = MutableStateFlow(emptyList<ProductResponse>())
-    var state: StateFlow<List<ProductResponse>> = _state
+class PopularProductViewModel : ViewModel() {
+    private val _state = MutableStateFlow(emptyList<ProductResponse>())
+    val state: StateFlow<List<ProductResponse>> = _state
 
-    private val repository = ProductRespository()
+    val repository = ProductRespository()
 
     init {
-        getProduct(0, 8)
+        fecthData()
     }
 
-    fun getProduct(page: Int, size: Int) {
+    fun fecthData() {
         viewModelScope.launch {
-            repository.getProducts(page, size)?.let {
+            repository.getPopular().let {
                 if (it is Resource.Success) {
                     _state.value = it.data!!
                 }
             }
         }
     }
-
 }

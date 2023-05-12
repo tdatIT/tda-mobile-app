@@ -12,11 +12,8 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.FavoriteBorder
-import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.material.icons.rounded.AirplaneTicket
 import androidx.compose.material.icons.rounded.Person
-import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -40,10 +37,9 @@ import com.tda.app.model.response.CategoryResp
 import com.tda.app.model.response.ProductResponse
 import com.tda.app.ui.theme.TdaMobilemobileTheme
 import com.tda.app.ui.theme.colorPrimary
-import com.tda.app.ui.theme.dark_gray
 import com.tda.app.utils.Constants
 import com.tda.app.viewmodel.CategoryViewModel
-import com.tda.app.viewmodel.PopularViewModel
+import com.tda.app.viewmodel.AllProductViewModel
 
 
 @Preview(showBackground = true)
@@ -58,8 +54,8 @@ fun DefaultPreviewHome() {
 @Composable
 fun HomeScreen(navController: NavController) {
     //product viewModel
-    val popularViewModel = viewModel(modelClass = PopularViewModel::class.java)
-    val products by popularViewModel.state.collectAsState()
+    val allProductViewModel = viewModel(modelClass = AllProductViewModel::class.java)
+    val products by allProductViewModel.state.collectAsState()
     //category viewModel
     val categoryViewModel = viewModel(modelClass = CategoryViewModel::class.java)
     val categories by categoryViewModel.state.collectAsState()
@@ -346,7 +342,10 @@ fun ProductCard(
     product: ProductResponse
 ) {
     Card(
-        Modifier.width(160.dp)
+        Modifier
+            .width(160.dp)
+            .clickable { navController.navigate("product_detail/${product.productCode}") }
+
     ) {
         Column(
             Modifier

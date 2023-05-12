@@ -55,4 +55,13 @@ interface ApiService {
     @GET("products/category/{categoryCode}")
     suspend fun getAllProductByCategoryCode(@Path("categoryCode") categoryCode: String)
             : List<ProductResponse>
+
+    @GET("products/{code}")
+    suspend fun getProductByCode(@Path("code") code: String):ProductResponse
+
+    @GET("products/popular")
+    suspend fun getPopularProduct(): List<ProductResponse>
+
+    @GET("products/best-seller")
+    suspend fun getBestSellerProduct(): List<ProductResponse>
 }

@@ -3,6 +3,7 @@ package com.tda.app.view
 import NavigationBottomBar
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -66,13 +67,14 @@ fun ProductInCategoryScreen(navController: NavController, code: String) {
         Column(
             Modifier
                 .background(ghost_white)
-                .padding(padding)) {
+                .padding(padding)
+        ) {
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(5.dp),
                 modifier = Modifier.padding(top = 8.dp)
             ) {
                 itemsIndexed(products) { index, p ->
-                    ProductRowCard(p)
+                    ProductRowCard(p, navController)
                 }
             }
         }
@@ -81,12 +83,15 @@ fun ProductInCategoryScreen(navController: NavController, code: String) {
 }
 
 @Composable
-fun ProductRowCard(product: ProductResponse) {
+fun ProductRowCard(product: ProductResponse, navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .background(white)
+            .clickable {
+                navController.navigate("product_detail/${product.productCode}")
+            }
     ) {
         Row(
             Modifier

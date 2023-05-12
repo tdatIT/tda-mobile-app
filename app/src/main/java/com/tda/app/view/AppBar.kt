@@ -5,9 +5,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -20,12 +22,18 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AddShoppingCart
 import androidx.compose.material.icons.outlined.ArrowBack
+import androidx.compose.material.icons.outlined.Details
+import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material.icons.outlined.More
+import androidx.compose.material.icons.outlined.MoreHoriz
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.material.icons.rounded.Search
@@ -46,8 +54,12 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.tda.app.R
+import com.tda.app.navigation.Screen
 import com.tda.app.ui.theme.TdaMobilemobileTheme
+import com.tda.app.ui.theme.bgwhitelight
 import com.tda.app.ui.theme.colorPrimary
+import com.tda.app.ui.theme.gray
+import com.tda.app.ui.theme.text_hint_color
 import com.tda.app.ui.theme.white
 
 @Composable
@@ -268,11 +280,137 @@ fun ProductInCategoryBar(navController: NavController, name: String) {
     }
 }
 
+@Composable
+fun ProductDetailBar(navController: NavController) {
+    var searchStr by remember { mutableStateOf("") }
+    Box(Modifier.background(white)) {
+        Row(
+            Modifier
+                .padding(top = 8.dp, bottom = 8.dp, start = 4.dp, end = 4.dp)
+                .height(48.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceAround,
+
+            ) {
+            IconButton(onClick = { navController.popBackStack() }) {
+                Icon(
+                    imageVector = Icons.Outlined.ArrowBack,
+                    contentDescription = "",
+                    tint = colorPrimary
+                )
+            }
+            TextField(
+                value = searchStr,
+                onValueChange = { searchStr = it },
+                placeholder = {
+                    Text(
+                        text = "Tìm kiếm sản phẩm",
+                        fontSize = 14.sp,
+                        color = colorPrimary
+                    )
+                },
+                singleLine = true,
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Outlined.Search,
+                        contentDescription = "",
+                        tint = gray
+                    )
+                },
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = bgwhitelight,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
+                ),
+                shape = RoundedCornerShape(8.dp),
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
+                    .clickable { navController.navigate(Screen.SearchScreen.route) }
+            )
+
+            IconButton(
+                onClick = {},
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.ShoppingCart,
+                    contentDescription = "",
+                    tint = colorPrimary
+                )
+            }
+            IconButton(
+                onClick = {},
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.MoreHoriz,
+                    contentDescription = "",
+                    tint = colorPrimary
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun BottomProductBar(navController: NavController) {
+    Box(Modifier.background(white)) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(48.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.padding(start = 8.dp, end = 8.dp)
+            ) {
+
+                Icon(
+                    imageVector = Icons.Outlined.FavoriteBorder,
+                    contentDescription = "",
+                    tint = colorPrimary
+                )
+
+                Text(text = "Yêu thích", fontSize = 12.sp)
+            }
+            VerticalDivider()
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.padding(end = 5.dp, start = 5.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.AddShoppingCart,
+                    contentDescription = "",
+                    tint = colorPrimary
+                )
+
+                Text(text = "Thêm vào giỏ hàng", fontSize = 12.sp)
+            }
+            Column(
+                modifier = Modifier.background(colorPrimary),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Button(modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
+                    .fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(colorPrimary),
+                    onClick = { /*TODO*/ }) {
+                    Text(text = "Mua ngay", color = white)
+                }
+            }
+        }
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreviewAppBar() {
     val nav = rememberNavController()
     TdaMobilemobileTheme {
-        SearchAppBar(navController = nav)
+        BottomProductBar(navController = nav)
     }
 }

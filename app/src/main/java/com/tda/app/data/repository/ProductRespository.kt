@@ -28,9 +28,49 @@ class ProductRespository {
             )
         } catch (e: Exception) {
             e.printStackTrace()
+            Log.e("get-product-by-category-code", "Failed cause: ${e.message}")
+            Resource.Error(e.message ?: "An unknown error")
+
+        }
+    }
+
+    suspend fun getProductsByCode(code: String): Resource<ProductResponse> {
+        return try {
+            Resource.Success(
+                RetrofitClient.retrofit_TDA_API.getProductByCode(code)
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
             Log.e("get-product-by-code", "Failed cause: ${e.message}")
             Resource.Error(e.message ?: "An unknown error")
 
         }
     }
+
+    suspend fun getBestSeller(): Resource<List<ProductResponse>> {
+        return try {
+            Resource.Success(
+                RetrofitClient.retrofit_TDA_API.getBestSellerProduct()
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Log.e("best-seller", "Failed cause: ${e.message}")
+            Resource.Error(e.message ?: "An unknown error")
+
+        }
+    }
+
+    suspend fun getPopular(): Resource<List<ProductResponse>> {
+        return try {
+            Resource.Success(
+                RetrofitClient.retrofit_TDA_API.getPopularProduct()
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Log.e("popular", "Failed cause: ${e.message}")
+            Resource.Error(e.message ?: "An unknown error")
+
+        }
+    }
+
 }

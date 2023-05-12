@@ -54,6 +54,17 @@ fun Navigation() {
                 )
             }
         }
+        composable(
+            Screen.ProductDetail.route,
+            arguments = listOf(navArgument("code") { type = NavType.StringType })
+        ) { backStackEntry ->
+            backStackEntry.arguments?.getString("code")?.let {
+                ProductDetailScreen(
+                    nav = navController,
+                    productCode = it
+                )
+            }
+        }
     }
 }
 //        composable(Screen.PopularListScreen.route) {
