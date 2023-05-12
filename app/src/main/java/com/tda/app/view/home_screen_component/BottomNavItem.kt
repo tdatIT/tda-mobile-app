@@ -13,7 +13,7 @@ sealed class BottomNavItem(val tittle: String, val icon: Int, val route: String)
     object CartNav : BottomNavItem(
         tittle = "Favourite",
         icon = R.drawable.cart_icon,
-        route = Screen.LoginScreen.route
+        route = Screen.CartScreen.route
     )
 
     object SearchNav : BottomNavItem(

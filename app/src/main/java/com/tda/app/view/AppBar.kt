@@ -100,7 +100,7 @@ fun AppBarPrimary(navController: NavController) {
                 tint = Color.White
             )
         }
-        IconButton(onClick = {}) {
+        IconButton(onClick = {navController.navigate(Screen.CartScreen.route)}) {
             Icon(
                 imageVector = Icons.Outlined.ShoppingCart,
                 contentDescription = "",
@@ -154,7 +154,7 @@ fun SecondAppBar(navController: NavController) {
             )
             Spacer(modifier = Modifier.width(8.dp))
 
-            IconButton(onClick = {}) {
+            IconButton(onClick = {navController.navigate(Screen.CartScreen.route)}) {
                 Icon(
                     imageVector = Icons.Outlined.ShoppingCart,
                     contentDescription = "",
@@ -254,7 +254,7 @@ fun ProductInCategoryBar(navController: NavController, name: String) {
             )
             Spacer(modifier = Modifier.width(8.dp))
 
-            IconButton(onClick = {}) {
+            IconButton(onClick = {navController.navigate(Screen.CartScreen.route)}) {
                 Icon(
                     imageVector = Icons.Outlined.ShoppingCart,
                     contentDescription = "",
@@ -315,7 +315,7 @@ fun ProductDetailBar(navController: NavController) {
             )
 
             IconButton(
-                onClick = {},
+                onClick = {navController.navigate(Screen.CartScreen.route)},
             ) {
                 Icon(
                     imageVector = Icons.Outlined.ShoppingCart,

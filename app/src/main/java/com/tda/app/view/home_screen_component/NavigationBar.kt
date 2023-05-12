@@ -14,6 +14,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.tda.app.ui.theme.PrimaryLightColor
 import com.tda.app.ui.theme.TextColor
+import com.tda.app.ui.theme.colorPrimary
 import com.tda.app.view.home_screen_component.BottomNavItem
 
 @Composable
@@ -49,7 +50,7 @@ fun NavigationBottomBar(
                             painter = painterResource(id = screen.icon),
                             contentDescription = null,
                             tint = if (navBackStackEntry?.destination?.route == screen.route)
-                                MaterialTheme.colors.PrimaryLightColor
+                                colorPrimary
                             else LocalContentColor.current,
                         )
                     },
@@ -66,7 +67,7 @@ fun NavigationBottomBar(
 
 @Preview
 @Composable
-fun PreviewBottomBar(){
+fun PreviewBottomBar() {
     val nav = rememberNavController()
     NavigationBottomBar(navController = nav)
 }

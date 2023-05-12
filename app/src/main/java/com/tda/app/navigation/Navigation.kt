@@ -44,6 +44,9 @@ fun Navigation() {
         composable(Screen.AccountScreen.route) {
             AccountScreen(nav = navController)
         }
+        composable(Screen.CartScreen.route) {
+            CartScreen(nav = navController)
+        }
         composable(
             Screen.ProductInCategoryCode.route,
             arguments = listOf(navArgument("code") { type = NavType.StringType })
