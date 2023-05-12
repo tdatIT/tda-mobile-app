@@ -1,6 +1,4 @@
 package com.tda.app
-
-
 import VerificationScreen
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
@@ -21,7 +19,6 @@ fun Navigation() {
         composable(Screen.SplashScreen.route) {
             SplashScreen(navController = navController)
         }
-
         composable(Screen.LoginScreen.route) {
             LoginScreen(navController = navController)
         }

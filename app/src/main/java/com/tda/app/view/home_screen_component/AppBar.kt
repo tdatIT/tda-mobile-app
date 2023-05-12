@@ -121,10 +121,7 @@ fun AppBar(
                 ) {
                     Text(text = "3", fontSize = 11.sp, color = Color.White)
                 }
-
             }
-
-
         }
     }
 
