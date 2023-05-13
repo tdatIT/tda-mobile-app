@@ -73,4 +73,16 @@ class ProductRespository {
         }
     }
 
+    suspend fun getProductByKeyWord(keyword: String): Resource<List<ProductResponse>> {
+        return try {
+            Resource.Success(
+                RetrofitClient.retrofit_TDA_API.getProductByKeyword(keyword)
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Log.e("search-keyword", "Failed cause: ${e.message}")
+            Resource.Error(e.message ?: " An unknown error")
+        }
+    }
+
 }

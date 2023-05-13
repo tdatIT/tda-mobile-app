@@ -100,7 +100,7 @@ fun AppBarPrimary(navController: NavController) {
                 tint = Color.White
             )
         }
-        IconButton(onClick = {navController.navigate(Screen.CartScreen.route)}) {
+        IconButton(onClick = { navController.navigate(Screen.CartScreen.route) }) {
             Icon(
                 imageVector = Icons.Outlined.ShoppingCart,
                 contentDescription = "",
@@ -154,7 +154,7 @@ fun SecondAppBar(navController: NavController) {
             )
             Spacer(modifier = Modifier.width(8.dp))
 
-            IconButton(onClick = {navController.navigate(Screen.CartScreen.route)}) {
+            IconButton(onClick = { navController.navigate(Screen.CartScreen.route) }) {
                 Icon(
                     imageVector = Icons.Outlined.ShoppingCart,
                     contentDescription = "",
@@ -166,8 +166,11 @@ fun SecondAppBar(navController: NavController) {
 }
 
 @Composable
-fun SearchAppBar(navController: NavController) {
+fun SearchAppBar(
+    navController: NavController
+) {
     var searchStr by remember { mutableStateOf("") }
+
     Box(Modifier.background(white)) {
         Row(
             Modifier
@@ -187,7 +190,10 @@ fun SearchAppBar(navController: NavController) {
             Spacer(modifier = Modifier.width(4.dp))
             TextField(
                 value = searchStr,
-                onValueChange = { searchStr = it },
+                onValueChange = {
+                    searchStr = it
+
+                },
                 placeholder = {
                     Text(
                         text = "Tìm kiếm sản phẩm",
@@ -254,7 +260,7 @@ fun ProductInCategoryBar(navController: NavController, name: String) {
             )
             Spacer(modifier = Modifier.width(8.dp))
 
-            IconButton(onClick = {navController.navigate(Screen.CartScreen.route)}) {
+            IconButton(onClick = { navController.navigate(Screen.CartScreen.route) }) {
                 Icon(
                     imageVector = Icons.Outlined.ShoppingCart,
                     contentDescription = "",
@@ -315,7 +321,7 @@ fun ProductDetailBar(navController: NavController) {
             )
 
             IconButton(
-                onClick = {navController.navigate(Screen.CartScreen.route)},
+                onClick = { navController.navigate(Screen.CartScreen.route) },
             ) {
                 Icon(
                     imageVector = Icons.Outlined.ShoppingCart,

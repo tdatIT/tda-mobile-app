@@ -38,9 +38,9 @@ import com.tda.app.ui.theme.ghost_white
 import com.tda.app.ui.theme.white
 import com.tda.app.utils.Constants.EMAIL_REGEX
 import com.tda.app.viewmodel.RegisterViewModel
-import com.tda.provinceapi.viewmodel.DistrictViewModel
-import com.tda.provinceapi.viewmodel.ProvinceViewModel
-import com.tda.provinceapi.viewmodel.WardViewModel
+import com.tda.app.viewmodel.DistrictViewModel
+import com.tda.app.viewmodel.ProvinceViewModel
+import com.tda.app.viewmodel.WardViewModel
 
 @Composable
 fun SignUpScreen(navController: NavController) {

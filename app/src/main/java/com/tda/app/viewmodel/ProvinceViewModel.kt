@@ -1,4 +1,4 @@
-package com.tda.provinceapi.viewmodel
+package com.tda.app.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -28,20 +28,17 @@ interface ApiService {
 
     @GET("p/{code}")
     suspend fun getAllDistrictInProvince(
-        @Path("code") code: Int,
-        @Query("depth") depth: Int
+        @Path("code") code: Int, @Query("depth") depth: Int
     ): Province
 
     @GET("d/{code}")
     suspend fun getAllWard(
-        @Path("code") code: Int,
-        @Query("depth") depth: Int
+        @Path("code") code: Int, @Query("depth") depth: Int
     ): District
 
     @GET("products")
     suspend fun getAllProducts(
-        @Query("page") page: Int,
-        @Query("size") size: Int
+        @Query("page") page: Int, @Query("size") size: Int
     ): List<ProductResponse>
 
     @GET("categories")
@@ -53,15 +50,17 @@ interface ApiService {
     suspend fun getAllCategories(): List<CategoryResp>
 
     @GET("products/category/{categoryCode}")
-    suspend fun getAllProductByCategoryCode(@Path("categoryCode") categoryCode: String)
-            : List<ProductResponse>
+    suspend fun getAllProductByCategoryCode(@Path("categoryCode") categoryCode: String): List<ProductResponse>
 
     @GET("products/{code}")
-    suspend fun getProductByCode(@Path("code") code: String):ProductResponse
+    suspend fun getProductByCode(@Path("code") code: String): ProductResponse
 
     @GET("products/popular")
     suspend fun getPopularProduct(): List<ProductResponse>
 
     @GET("products/best-seller")
     suspend fun getBestSellerProduct(): List<ProductResponse>
+
+    @GET("search/p")
+    suspend fun getProductByKeyword(@Query("keyword") keyword: String): List<ProductResponse>
 }
