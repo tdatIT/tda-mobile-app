@@ -40,9 +40,15 @@ fun Navigation() {
         composable(Screen.SearchScreen.route) {
             SearchScreen(nav = navController)
         }
-        composable(Screen.ChangeAddress.route)
-        {
-            ChangeAddressScreen(navController = navController)
+        composable(
+            Screen.ChangeAddress.route,
+            arguments = listOf(navArgument("token") { type = NavType.StringType })
+        )
+        { args ->
+            args.arguments?.getString("token")?.let {
+                ChangeAddressScreen(navController = navController, token = it)
+            }
+
         }
         composable(Screen.AccountScreen.route) {
             AccountScreen(navController)

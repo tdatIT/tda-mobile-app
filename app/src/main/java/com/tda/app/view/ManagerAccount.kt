@@ -46,6 +46,17 @@ fun AccountScreen(
     val userLogged by userViewModel.state.collectAsState()
     userViewModel.getUserFromDB()
 
+    var isOpened by remember {
+        mutableStateOf(false)
+    }
+    if (isOpened) {
+        MessageDialog(
+            title = "Vui lòng đăng nhập tài khoản",
+            msg = "Để sử dụng tính năng này vui lòng đăng nhập",
+            onChange = { isOpened = false }
+        )
+    }
+
     val modalBottomSheetState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
@@ -155,7 +166,10 @@ fun AccountScreen(
                         icon = R.drawable.address,
                         name = "Địa chỉ nhận hàng",
                         onClick = {
-                            navController.navigate("change_address_screen")
+                            if (userLogged != null)
+                                navController.navigate("change_address_screen/${userLogged!!.jwt}")
+                            else
+                                isOpened = true
                         })
                     AccountNavItems(
                         icon = R.drawable.help,
@@ -243,7 +257,12 @@ fun LoginBtn(nav: NavController) {
 }
 
 @Composable
-private fun AccountNavItems(@DrawableRes icon: Int, name: String, onClick: () -> Unit) {
+private fun AccountNavItems(
+    @DrawableRes icon: Int,
+    name: String,
+    onClick: () -> Unit,
+    token: String? = null
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth(),

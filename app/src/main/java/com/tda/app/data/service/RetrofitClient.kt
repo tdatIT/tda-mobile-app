@@ -21,6 +21,11 @@ object RetrofitClient {
         .baseUrl(URL_VIETNAM_API)
         .addConverterFactory(GsonConverterFactory.create(gson))
         .build()
+    private val retrofit_TDA_hasJWT: Retrofit = Retrofit.Builder()
+        .baseUrl(URL_API_BASE)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
     val retrofit_TDA_API: ApiService = retrofit_TDA.create(ApiService::class.java)
+    val retrofit_TDA_JWT: JwtApiService = retrofit_TDA_hasJWT.create(JwtApiService::class.java)
     val retrofit_PV_API: ApiService = retrofit_Province.create(ApiService::class.java)
 }
