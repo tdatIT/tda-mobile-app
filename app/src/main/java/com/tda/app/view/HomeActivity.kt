@@ -35,6 +35,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.tda.app.R
 import com.tda.app.model.response.CategoryResp
 import com.tda.app.model.response.ProductResponse
+import com.tda.app.navigation.Screen
 import com.tda.app.ui.theme.TdaMobilemobileTheme
 import com.tda.app.ui.theme.colorPrimary
 import com.tda.app.utils.Constants
@@ -94,7 +95,7 @@ fun Content(
             AppBarPrimary(navController)
         }
         item(span = { GridItemSpan(2) }) {
-            HeaderBar()
+            HeaderBar(navController)
         }
         item(span = { GridItemSpan(2) }) {
             Spacer(
@@ -126,7 +127,7 @@ fun Content(
 
 
 @Composable
-fun HeaderBar() {
+fun HeaderBar(navController: NavController) {
     Card(
         Modifier
             .height(64.dp)
@@ -143,7 +144,7 @@ fun HeaderBar() {
             Row(Modifier
                 .fillMaxHeight()
                 .weight(1f)
-                .clickable { }
+                .clickable { navController.navigate(Screen.AccountScreen.route) }
                 .padding(horizontal = 8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -153,9 +154,9 @@ fun HeaderBar() {
                     tint = Color(0xFF6FCF97)
                 )
                 Column(Modifier.padding(8.dp)) {
-                    Text(text = "Xin chào", fontSize = 12.sp)
+                    Text(text = "Truy cập", fontSize = 12.sp)
                     Text(
-                        text = "Tiến Đạt",
+                        text = "Tài khoản",
                         fontWeight = FontWeight.SemiBold,
                         color = colorPrimary,
                         fontSize = 12.sp
@@ -374,7 +375,8 @@ fun ProductCard(
         Column(
             Modifier
                 .padding(bottom = 10.dp),
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(
                 modifier = Modifier

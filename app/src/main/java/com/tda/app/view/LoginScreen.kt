@@ -1,6 +1,5 @@
 package com.tda.app.view
 
-import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -32,24 +31,50 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.tda.app.R
+import com.tda.app.navigation.Screen
 import com.tda.app.ui.theme.*
-import com.tda.app.viewmodel.LoginViewModel
+import com.tda.app.viewmodel.DialogViewModel
+import com.tda.app.viewmodel.UserLogViewModel
 
 @Composable
-fun LoginScreen(navController: NavController) {
-    val context = LocalContext.current
-    val loginViewModel = viewModel(modelClass = LoginViewModel::class.java)
-    val loginState by loginViewModel.state.collectAsState()
 
-    val firaSansFamily = FontFamily(
-        Font(com.tda.app.R.font.dmsansregular, FontWeight.Normal),
-        Font(com.tda.app.R.font.dmsansmedium, FontWeight.Medium),
-        Font(com.tda.app.R.font.dmsansbold, FontWeight.Bold),
-    )
+fun LoginScreen(
+    navController: NavController,
+    userLogViewModel: UserLogViewModel = hiltViewModel()
+) {
+
+
+    val logged by userLogViewModel.state.collectAsState()
+    userLogViewModel.getUserFromDB()
+    if (logged != null) {
+        navController.navigate(Screen.HomeScreen.route)
+    }
+
+
+    var isOpened by remember {
+        mutableStateOf(false)
+    }
+
+
+    var displayed by remember {
+        mutableStateOf(false)
+    }
+
+
+    if (isOpened) {
+        MessageDialog(
+            title = "Đăng nhập thất bại",
+            msg = "Vui lòng kiểm tra email và mật khẩu",
+        )
+    }
+    if (displayed) {
+        ProgressIndicator()
+    }
 
     Box(
         modifier = Modifier
@@ -130,10 +155,6 @@ fun LoginScreen(navController: NavController) {
 
 
                     Spacer(modifier = Modifier.padding(10.dp))
-                    var isLoading by remember { mutableStateOf(false) }
-                    if (isLoading) {
-                        LoginProgressIndicator(isLoading) // Show progress indicator
-                    }
                     Text(
                         text = "Địa chỉ Email",
                         style = MaterialTheme.typography.subtitle1,
@@ -265,16 +286,14 @@ fun LoginScreen(navController: NavController) {
 
                     Button(
                         onClick = {
-                            isLoading = true
-                            loginViewModel.login(user_email, password, context)
-                            loginState?.let {
-                                isLoading = false
-                                
-                            } ?: run {
-                                isLoading = false
+                            displayed = true
+                            if (logged == null) {
+                                displayed = false
+                                if (!userLogViewModel.loginAccount(user_email, password)) {
+                                    isOpened = true
+                                } else
+                                    navController.navigate(Screen.HomeScreen.route)
                             }
-
-
                         },
                         colors = ButtonDefaults.buttonColors(backgroundColor = colorPrimary),
                         modifier = Modifier
@@ -325,6 +344,31 @@ fun LoginScreen(navController: NavController) {
 }
 
 @Composable
+fun MessageDialog(
+    title: String,
+    msg: String,
+
+    ) {
+    AlertDialog(
+        onDismissRequest = { },
+        title = {
+            Text(
+                text = title,
+                color = colorPrimary,
+                fontSize = 16.sp
+            )
+        },
+        text = { Text(text = msg) },
+        confirmButton = {
+            TextButton(onClick = { }) {
+                Text(text = "Xác nhận", color = colorPrimary)
+            }
+        }
+    )
+
+}
+
+@Composable
 fun Header() {
     Image(
         ColorPainter(colorPrimary),
@@ -354,28 +398,32 @@ fun Header() {
 }
 
 @Composable
-fun LoginProgressIndicator(isLoading: Boolean) {
-    if (isLoading) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.White)
-                .padding(16.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            CircularProgressIndicator(
-                modifier = Modifier.size(48.dp),
-                color = MaterialTheme.colors.primary
-            )
-            Text(
-                text = "Đang đăng nhập...",
-                style = MaterialTheme.typography.body1,
-                color = MaterialTheme.colors.onBackground,
-                modifier = Modifier.padding(top = 16.dp)
-            )
+fun ProgressIndicator() {
+    AlertDialog(
+        onDismissRequest = { },
+        title = {
+            Text(text = "Đang xử lý")
+        },
+        text = {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(48.dp),
+                    color = colorPrimary
+                )
+
+            }
+
+        },
+        confirmButton = {
+            TextButton(onClick = { }) {
+                Text(text = "Hủy", color = colorPrimary)
+            }
         }
-    }
+    )
 }
 
 @Preview(showBackground = true, showSystemUi = true)

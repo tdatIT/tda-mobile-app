@@ -1,4 +1,4 @@
-package com.tda.app
+package com.tda.app.navigation
 
 import VerificationScreen
 import androidx.compose.runtime.Composable
@@ -8,7 +8,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.tda.app.view.*
-import com.tda.app.navigation.Screen
 
 @Composable
 fun Navigation() {
@@ -66,6 +65,17 @@ fun Navigation() {
                 ProductDetailScreen(
                     nav = navController,
                     productCode = it
+                )
+            }
+        }
+        composable(
+            Screen.SearchResultScreen.route,
+            arguments = listOf(navArgument("keyword") { type = NavType.StringType })
+        ) { backStackEntry ->
+            backStackEntry.arguments?.getString("keyword")?.let {
+                SearchResultScreen(
+                    nav = navController,
+                    reqKw = it
                 )
             }
         }

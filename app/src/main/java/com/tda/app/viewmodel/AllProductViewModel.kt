@@ -3,7 +3,7 @@ package com.tda.app.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tda.app.data.repository.ProductRespository
+import com.tda.app.data.repository.ProductRepository
 import com.tda.app.model.Resource
 import com.tda.app.model.response.ProductResponse
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +15,7 @@ class AllProductViewModel() :
     private var _state = MutableStateFlow(emptyList<ProductResponse>())
     var state: StateFlow<List<ProductResponse>> = _state
 
-    private val repository = ProductRespository()
+    private val repository = ProductRepository()
 
     init {
         getProduct(0, 8)

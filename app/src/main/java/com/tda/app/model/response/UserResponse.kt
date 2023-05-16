@@ -8,8 +8,8 @@ class UserResponse(
     val lastname: String,
     val email: String,
     val phone: String,
-    val avatar: String,
+    val avatar: String? = null,
     val status: Boolean,
     val createDate: Timestamp,
-    val updateDate: Timestamp,
+    val updateDate: Timestamp? = null,
 )

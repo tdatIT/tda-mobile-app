@@ -2,7 +2,7 @@ package com.tda.app.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tda.app.data.repository.ProductRespository
+import com.tda.app.data.repository.ProductRepository
 import com.tda.app.model.Resource
 import com.tda.app.model.response.ProductResponse
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +13,7 @@ class BestSellerViewModel : ViewModel() {
     private val _state = MutableStateFlow(emptyList<ProductResponse>())
     val state: StateFlow<List<ProductResponse>> = _state
 
-    val repository = ProductRespository()
+    val repository = ProductRepository()
 
     init {
         fecthData()

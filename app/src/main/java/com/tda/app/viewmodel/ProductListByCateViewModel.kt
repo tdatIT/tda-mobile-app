@@ -1,9 +1,8 @@
 package com.tda.app.viewmodel
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tda.app.data.repository.ProductRespository
+import com.tda.app.data.repository.ProductRepository
 import com.tda.app.model.Resource
 import com.tda.app.model.response.ProductResponse
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +13,7 @@ class ProductListByCateViewModel : ViewModel() {
     private val _state = MutableStateFlow(emptyList<ProductResponse>())
     var state: StateFlow<List<ProductResponse>> = _state
 
-    private val repository = ProductRespository()
+    private val repository = ProductRepository()
 
     fun getProducts(code: String) {
         viewModelScope.launch {

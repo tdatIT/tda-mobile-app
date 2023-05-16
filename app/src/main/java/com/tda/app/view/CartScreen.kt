@@ -45,17 +45,19 @@ fun CartScreen(nav: NavController) {
         topBar = { HeaderCartItems(nav) },
         backgroundColor = bgwhitelight
     ) { padding ->
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(10.dp)
-        ) {
-            items(10) {
-                Items()
-                Spacer(modifier = Modifier.padding(10.dp))
+        Box(Modifier.padding(padding)) {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(10.dp)
+            ) {
+                items(10) {
+                    Items()
+                    Spacer(modifier = Modifier.padding(10.dp))
+                }
             }
+            Spacer(modifier = Modifier.padding(bottom = 100.dp))
         }
-        Spacer(modifier = Modifier.padding(bottom = 100.dp))
     }
 
 }

@@ -59,14 +59,7 @@ fun SplashScreen(navController: NavController) {
         )
         delay(Constants.SPLASH_SCREEN_DURATION)
         navController.popBackStack()
-
-        if (!jwtCheck.value.equals("")) {
-            navController.navigate(Screen.HomeScreen.route)
-            Log.i("check_jwt", "success")
-        } else {
-            Log.w("check_jwt", "not found")
-            navController.navigate(Screen.LoginScreen.route)
-        }
+        navController.navigate(Screen.HomeScreen.route)
     }
 
     Surface(
