@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.icons.Icons
@@ -20,11 +21,7 @@ import androidx.compose.material.icons.outlined.MoreHoriz
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.material.icons.rounded.Search
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,6 +29,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -46,6 +46,7 @@ import com.tda.app.ui.theme.colorPrimary
 import com.tda.app.ui.theme.gray
 import com.tda.app.ui.theme.text_hint_color
 import com.tda.app.ui.theme.white
+import kotlinx.coroutines.launch
 
 @Composable
 fun ImageHeader() {
@@ -396,12 +397,11 @@ fun BottomProductBar(navController: NavController) {
         }
     }
 }
-
 @Composable
 fun HeaderAccount(
     navController: NavController,
     name: String,
-    email: String
+    email: String,
 ) {
     Box(
         modifier = Modifier
@@ -443,7 +443,9 @@ fun HeaderAccount(
                     imageVector = Icons.Outlined.Edit,
                     contentDescription = "edit",
                     tint = colorPrimary,
-                    modifier = Modifier.size(28.dp)
+                    modifier = Modifier
+                        .size(28.dp)
+                        .clickable { }
                 )
             }
         }
@@ -500,12 +502,51 @@ fun HeaderAccount(
         }
     }
 }
+@Composable
+fun ManagerListAddress(navController: NavController) {
+    Box(Modifier.background(colorPrimary)) {
+        Row(
+            Modifier
+                .padding(16.dp)
+                .height(30.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceAround,
 
+            ) {
+            IconButton(onClick = { navController.popBackStack() }) {
+                Icon(
+                    imageVector = Icons.Outlined.ArrowBack,
+                    contentDescription = "",
+                    tint = Color.White
+                )
+            }
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = "Thay đổi địa chỉ",
+                fontSize = 20.sp,
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
+                    .wrapContentHeight(Alignment.CenterVertically),
+                color = Color.White,
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+
+            IconButton(onClick = {}) {
+                Icon(
+                    painterResource(id =  R.drawable.address),
+                    contentDescription = "",
+                    tint = Color.White
+                )
+            }
+        }
+    }
+}
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreviewAppBar() {
     val nav = rememberNavController()
     TdaMobilemobileTheme {
-        HeaderAccount(nav, "Đạt", "tdat.it2k2@gmail.com")
+        ManagerListAddress(nav)
     }
 }
