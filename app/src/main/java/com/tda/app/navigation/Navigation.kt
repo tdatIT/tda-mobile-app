@@ -73,7 +73,12 @@ fun Navigation() {
                 )
             }
         }
+        composable(Screen.CheckOutSuccessScreen.route)
+        {
+            CheckOutSuccessScreen(navController)
+        }
     }
+
 }
 //        composable(Screen.PopularListScreen.route) {
 //            PopularListScreen(navController = navController)

@@ -144,7 +144,9 @@ fun Contents(scope: CoroutineScope, state: ModalBottomSheetState, navController:
                     state.show()
                 }})
                 AccountNavItems(icon = R.drawable.address, name = "Địa chỉ nhận hàng",onClick = {
-                    navController.navigate("change_address_screen")
+               //     navController.navigate("change_address_screen")
+               //     navController.navigate("checkout_screen")
+                    navController.navigate("checsucceskout_screen")
                 })
                 AccountNavItems(icon = R.drawable.help, name = "Help",onClick = {scope.launch {state.show()}})
                 AccountNavItems(icon = R.drawable.notifications, name = "Thông báo",onClick = {scope.launch {state.show()}})
