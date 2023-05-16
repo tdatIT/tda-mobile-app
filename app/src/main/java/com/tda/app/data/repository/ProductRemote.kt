@@ -2,12 +2,11 @@ package com.tda.app.data.repository
 
 import android.util.Log
 import com.tda.app.data.service.RetrofitClient
-import com.tda.app.data.service.UserDao
 import com.tda.app.model.Resource
 import com.tda.app.model.response.ProductResponse
 
 
-class ProductRepository {
+class ProductRemote {
 
     suspend fun getProducts(page: Int, size: Int): Resource<List<ProductResponse>> {
         return try {

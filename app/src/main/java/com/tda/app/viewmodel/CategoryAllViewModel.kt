@@ -2,7 +2,7 @@ package com.tda.app.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tda.app.data.repository.CategoryRepository
+import com.tda.app.data.repository.CategoryRemote
 import com.tda.app.model.Resource
 import com.tda.app.model.response.CategoryResp
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +14,7 @@ class CategoryAllViewModel : ViewModel() {
     private val _state = MutableStateFlow(emptyList<CategoryResp>())
     val state: StateFlow<List<CategoryResp>> = _state
 
-    private val repository = CategoryRepository()
+    private val repository = CategoryRemote()
 
     init {
         getAllCategoryList()

@@ -28,7 +28,7 @@ import androidx.datastore.core.DataStore
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.tda.app.R
-import com.tda.app.data.repository.DataStoreUserLogged
+
 import com.tda.app.navigation.Screen
 import com.tda.app.ui.theme.colorPrimary
 import com.tda.app.utils.Constants
@@ -37,9 +37,6 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(navController: NavController) {
-    val context = LocalContext.current
-    val dataStore = DataStoreUserLogged(context)
-    val jwtCheck = dataStore.getJwt.collectAsState(initial = "")
 
     val scale = remember {
         Animatable(0f)

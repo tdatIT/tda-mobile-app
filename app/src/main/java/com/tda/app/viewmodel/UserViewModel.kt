@@ -1,17 +1,13 @@
 package com.tda.app.viewmodel
 
-import android.app.Application
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tda.app.data.db.UserRoomDB
-import com.tda.app.data.repository.ProductRepository
 import com.tda.app.data.repository.UserRemote
 import com.tda.app.data.repository.UserRepository
 import com.tda.app.model.Resource
 import com.tda.app.model.User
 import com.tda.app.model.request.LoginRequest
-import com.tda.app.model.response.LoginResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,7 +16,7 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class UserLogViewModel @Inject constructor(private val repository: UserRepository) : ViewModel() {
+class UserViewModel @Inject constructor(private val repository: UserRepository) : ViewModel() {
     private val _state = MutableStateFlow<User?>(null)
     val state: StateFlow<User?> = _state
 

@@ -52,6 +52,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -65,15 +66,19 @@ import com.tda.app.ui.theme.light_gray
 import com.tda.app.ui.theme.text_hint_color
 import com.tda.app.ui.theme.white
 import com.tda.app.utils.Constants
+import com.tda.app.viewmodel.KeywordViewModel
 import com.tda.app.viewmodel.ProductListByCateViewModel
 import com.tda.app.viewmodel.SearchViewModel
 
 @Composable
-fun SearchScreen(nav: NavController) {
+fun SearchScreen(
+    nav: NavController,
+    keywordViewModel: KeywordViewModel = hiltViewModel()
+) {
 
     val searchViewModel = viewModel(modelClass = SearchViewModel::class.java)
     val products by searchViewModel.state.collectAsState()
-
+    val local_keyword by keywordViewModel.keywords.collectAsState()
     var keyword by remember { mutableStateOf("") }
 
     Scaffold(
@@ -114,7 +119,10 @@ fun SearchScreen(nav: NavController) {
                         singleLine = true,
                         trailingIcon = {
                             Button(
-                                onClick = { nav.navigate("search_result/${keyword}") },
+                                onClick = {
+                                    keywordViewModel.insert(keyword)
+                                    nav.navigate("search_result/${keyword}")
+                                },
                                 shape = RoundedCornerShape(10),
                                 colors = ButtonDefaults.buttonColors(colorPrimary)
                             ) {
@@ -151,30 +159,35 @@ fun SearchScreen(nav: NavController) {
                     fontStyle = FontStyle.Italic
                 )
             }
-            items(4) {
-                Box(
-                    Modifier
-                        .fillMaxWidth()
-                        .background(white)
-                ) {
-                    Row(
-                        Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
+            if (local_keyword.isNotEmpty()) {
+                itemsIndexed(local_keyword) { index, key ->
+                    Box(
+                        Modifier
+                            .fillMaxWidth()
+                            .background(white)
                     ) {
-                        Text(
-                            text = "Sản phẩm 1",
-                            fontSize = 16.sp,
-                            modifier = Modifier.padding(14.dp)
-                        )
-                        IconButton(onClick = { /*TODO*/ }) {
-                            Icon(imageVector = Icons.Outlined.Close, contentDescription = "")
+                        Row(
+                            Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = key.keyword,
+                                fontSize = 16.sp,
+                                modifier = Modifier.padding(14.dp)
+                            )
+                            IconButton(onClick = {
+                                keywordViewModel.delete(key.id)
+                                keywordViewModel.getAll()
+                            }) {
+                                Icon(imageVector = Icons.Outlined.Close, contentDescription = "")
+                            }
                         }
+                        Divider(startIndent = 0.dp, thickness = 1.dp, color = text_hint_color)
                     }
 
-                    Divider(startIndent = 0.dp, thickness = 1.dp, color = text_hint_color)
                 }
-
             }
+
             item {
                 Text(
                     text = "Sản phẩm",
@@ -198,6 +211,7 @@ fun ProductRow(product: ProductResponse, nav: NavController) {
         .background(white)
         .padding(10.dp)
         .clickable {
+
             nav.navigate("product_detail/${product.productCode}")
         }) {
         Row() {

@@ -16,12 +16,9 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -39,22 +36,18 @@ import com.tda.app.R
 import com.tda.app.navigation.Screen
 import com.tda.app.ui.theme.*
 import com.tda.app.viewmodel.DialogViewModel
-import com.tda.app.viewmodel.UserLogViewModel
+import com.tda.app.viewmodel.UserViewModel
 
 @Composable
 
 fun LoginScreen(
     navController: NavController,
-    userLogViewModel: UserLogViewModel = hiltViewModel()
+    userViewModel: UserViewModel = hiltViewModel()
 ) {
 
 
-    val logged by userLogViewModel.state.collectAsState()
-    userLogViewModel.getUserFromDB()
-    if (logged != null) {
-        navController.navigate(Screen.HomeScreen.route)
-    }
-
+    val logged by userViewModel.state.collectAsState()
+    userViewModel.getUserFromDB()
 
     var isOpened by remember {
         mutableStateOf(false)
@@ -64,14 +57,14 @@ fun LoginScreen(
     var displayed by remember {
         mutableStateOf(false)
     }
-
-
     if (isOpened) {
         MessageDialog(
             title = "Đăng nhập thất bại",
             msg = "Vui lòng kiểm tra email và mật khẩu",
+            onChange = { isOpened = false }
         )
     }
+
     if (displayed) {
         ProgressIndicator()
     }
@@ -289,7 +282,7 @@ fun LoginScreen(
                             displayed = true
                             if (logged == null) {
                                 displayed = false
-                                if (!userLogViewModel.loginAccount(user_email, password)) {
+                                if (!userViewModel.loginAccount(user_email, password)) {
                                     isOpened = true
                                 } else
                                     navController.navigate(Screen.HomeScreen.route)
@@ -347,10 +340,10 @@ fun LoginScreen(
 fun MessageDialog(
     title: String,
     msg: String,
-
-    ) {
+    onChange: () -> Unit
+) {
     AlertDialog(
-        onDismissRequest = { },
+        onDismissRequest = { onChange() },
         title = {
             Text(
                 text = title,
@@ -360,7 +353,9 @@ fun MessageDialog(
         },
         text = { Text(text = msg) },
         confirmButton = {
-            TextButton(onClick = { }) {
+            TextButton(onClick = {
+                onChange()
+            }) {
                 Text(text = "Xác nhận", color = colorPrimary)
             }
         }

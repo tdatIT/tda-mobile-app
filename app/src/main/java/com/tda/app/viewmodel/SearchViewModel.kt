@@ -2,8 +2,7 @@ package com.tda.app.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tda.app.data.repository.ProductRepository
-import com.tda.app.data.service.UserDao
+import com.tda.app.data.repository.ProductRemote
 import com.tda.app.model.Resource
 import com.tda.app.model.response.ProductResponse
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +13,7 @@ class SearchViewModel : ViewModel() {
     private var _state = MutableStateFlow(emptyList<ProductResponse>())
     var state: StateFlow<List<ProductResponse>> = _state
 
-    val repository = ProductRepository()
+    val repository = ProductRemote()
 
     fun getProductByKeyword(keyword: String) {
         viewModelScope.launch {

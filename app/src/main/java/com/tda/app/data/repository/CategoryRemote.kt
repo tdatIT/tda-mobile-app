@@ -4,9 +4,8 @@ import android.util.Log
 import com.tda.app.data.service.RetrofitClient
 import com.tda.app.model.Resource
 import com.tda.app.model.response.CategoryResp
-import com.tda.app.model.response.ProductResponse
 
-class CategoryRepository {
+class CategoryRemote {
 
     suspend fun getCategories(size: Int): Resource<List<CategoryResp>> {
         return try {

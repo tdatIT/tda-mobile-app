@@ -25,9 +25,9 @@ fun BottomSheetEditProfile() {
             .padding(10.dp)
     ) {
 
-        var firstName:String = ""
-        var lastName:String = ""
-        var phone:String = ""
+        var firstName: String = ""
+        var lastName: String = ""
+        var phone: String = ""
 
         Row(
             modifier = Modifier
@@ -37,8 +37,7 @@ fun BottomSheetEditProfile() {
             Button(
                 colors = ButtonDefaults.buttonColors(backgroundColor = colorPrimary),
                 modifier = Modifier
-                    .padding(horizontal = 10.dp)
-                ,
+                    .padding(horizontal = 10.dp),
                 shape = RoundedCornerShape(16.dp), onClick = {}
             ) {
                 Text(
@@ -58,8 +57,7 @@ fun BottomSheetEditProfile() {
             Button(
                 colors = ButtonDefaults.buttonColors(backgroundColor = colorPrimary),
                 modifier = Modifier
-                    .padding(start = 130.dp)
-                ,
+                    .padding(start = 130.dp),
                 shape = RoundedCornerShape(16.dp), onClick = {}
             ) {
                 Text(
@@ -82,21 +80,16 @@ fun BottomSheetEditProfile() {
 
         Row(
             modifier = Modifier
-                .padding(0.dp, 10.dp, 0.dp, 10.dp)
+                .padding(10.dp)
                 .fillMaxWidth()
         ) {
             Column(
                 modifier = Modifier
-                    .padding(10.dp, 0.dp, 0.dp, 0.dp)
                     .weight(1f)
                     .align(Alignment.Bottom)
             ) {
 
-                Text(
-                    text = "Họ",
-                    style = MaterialTheme.typography.subtitle1,
-                    color = dark_gray,
-                )
+
                 OutlinedTextField(
                     value = firstName,
                     onValueChange = {
@@ -111,26 +104,21 @@ fun BottomSheetEditProfile() {
                             tint = colorPrimary
                         )
                     },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
         }
         Row(
             modifier = Modifier
-                .padding(0.dp, 10.dp, 0.dp, 10.dp)
+                .padding(10.dp)
                 .fillMaxWidth()
         ) {
             Column(
                 modifier = Modifier
-                    .padding(10.dp, 0.dp, 0.dp, 0.dp)
                     .weight(1f)
                     .align(Alignment.Bottom)
             ) {
-                Text(
-                    text = "Tên",
-                    style = MaterialTheme.typography.subtitle1,
-                    color = dark_gray,
-                )
                 OutlinedTextField(
                     value = lastName,
                     onValueChange = {
@@ -145,26 +133,23 @@ fun BottomSheetEditProfile() {
                             tint = colorPrimary
                         )
                     },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
         }
         Row(
             modifier = Modifier
-                .padding(0.dp, 10.dp, 0.dp, 10.dp)
+                .padding(10.dp)
                 .fillMaxWidth()
         ) {
             Column(
                 modifier = Modifier
-                    .padding(10.dp, 0.dp, 0.dp, 0.dp)
+
                     .weight(1f)
                     .align(Alignment.Bottom)
             ) {
-                Text(
-                    text = "Số điện thoại",
-                    style = MaterialTheme.typography.subtitle1,
-                    color = dark_gray,
-                )
+
                 OutlinedTextField(
                     value = phone,
                     onValueChange = {
@@ -179,7 +164,9 @@ fun BottomSheetEditProfile() {
                             tint = colorPrimary
                         )
                     },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    modifier = Modifier.fillMaxWidth()
+
                 )
             }
         }

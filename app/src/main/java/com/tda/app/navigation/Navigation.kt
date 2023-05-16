@@ -45,7 +45,7 @@ fun Navigation() {
             ChangeAddressScreen(navController = navController)
         }
         composable(Screen.AccountScreen.route) {
-            BottomSheetMyScreen(navController)
+            AccountScreen(navController)
         }
         composable(Screen.CartScreen.route) {
             CartScreen(nav = navController)
