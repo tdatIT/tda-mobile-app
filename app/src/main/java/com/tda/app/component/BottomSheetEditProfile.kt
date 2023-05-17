@@ -21,14 +21,26 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.tda.app.ui.theme.colorPrimary
 import com.tda.app.ui.theme.dark_gray
 import com.tda.app.ui.theme.white
+import com.tda.app.view.MessageDialog
 import com.tda.app.viewmodel.UserViewModel
 
 
 @Composable
-fun BottomSheetEditProfile(userViewModel: UserViewModel = hiltViewModel()) {
+fun BottomSheetEditProfile(userViewModel: UserViewModel = hiltViewModel(),onClose: () -> Unit) {
     val user by userViewModel.state.collectAsState()
     userViewModel.getUserFromDB()
-
+    var isBottomSheetOpen by remember { mutableStateOf(true) }
+    var isOpenedConfirm by remember {
+        mutableStateOf(false)
+    }
+    if(isOpenedConfirm)
+    {
+        MessageDialog(
+            title = "Cập nhật thông tin",
+            msg = "Thông tin đã được thay đổi",
+            onChange = {isOpenedConfirm = false}
+        )
+    }
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -47,7 +59,9 @@ fun BottomSheetEditProfile(userViewModel: UserViewModel = hiltViewModel()) {
                     colors = ButtonDefaults.buttonColors(backgroundColor = colorPrimary),
                     modifier = Modifier
                         .padding(horizontal = 10.dp),
-                    shape = RoundedCornerShape(16.dp), onClick = {}
+                    shape = RoundedCornerShape(16.dp), onClick = {
+                        isBottomSheetOpen = false
+                        onClose()}
                 ) {
                     Text(
                         text = "Cancle",
@@ -68,7 +82,10 @@ fun BottomSheetEditProfile(userViewModel: UserViewModel = hiltViewModel()) {
                     modifier = Modifier
                         .padding(start = 130.dp),
                     shape = RoundedCornerShape(16.dp), onClick = {
+                        isOpenedConfirm=true
                         userViewModel.changeInfo(firstName, lastName, phone)
+                        isBottomSheetOpen = false
+                        onClose()
                     }
                 ) {
                     Text(
