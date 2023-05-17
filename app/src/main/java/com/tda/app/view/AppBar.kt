@@ -10,6 +10,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.outlined.AddShoppingCart
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.Details
@@ -499,6 +500,37 @@ fun HeaderAccount(
                     modifier = Modifier.size(28.dp)
                 )
             }
+        }
+    }
+}
+@Composable
+fun HeaderCheckoutItems(navController: NavController) {
+    Box(Modifier.background(colorPrimary)) {
+        Row(
+            Modifier
+                .padding(16.dp)
+                .height(30.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceAround,
+
+            ) {
+            IconButton(onClick = { navController.popBackStack() }) {
+                Icon(
+                    imageVector = Icons.Outlined.ArrowBack,
+                    contentDescription = "",
+                    tint = Color.White
+                )
+            }
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = "Check out",
+                fontSize = 20.sp,
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
+                    .wrapContentHeight(Alignment.CenterVertically),
+                color = Color.White,
+            )
         }
     }
 }

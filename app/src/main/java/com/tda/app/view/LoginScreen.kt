@@ -103,9 +103,9 @@ fun LoginScreen(
 
             Surface(
                 color = ghost_white,
-                shape = RoundedCornerShape(40.dp).copy(
-                    bottomStart = ZeroCornerSize,
-                    bottomEnd = ZeroCornerSize
+                    shape = RoundedCornerShape(40.dp).copy(
+                        bottomStart = ZeroCornerSize,
+                        bottomEnd = ZeroCornerSize
                 ),
                 modifier = Modifier
                     .fillMaxSize()
