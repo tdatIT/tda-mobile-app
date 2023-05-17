@@ -36,24 +36,19 @@ import com.tda.app.R
 import com.tda.app.navigation.Screen
 import com.tda.app.ui.theme.*
 import com.tda.app.viewmodel.DialogViewModel
+import com.tda.app.viewmodel.LoginViewModel
 import com.tda.app.viewmodel.UserViewModel
 
 @Composable
 
 fun LoginScreen(
     navController: NavController,
-    userViewModel: UserViewModel = hiltViewModel()
+    loginViewModel: LoginViewModel = hiltViewModel()
 ) {
-
-
-    val logged by userViewModel.state.collectAsState()
-    userViewModel.getUserFromDB()
-
+    val login by loginViewModel.state.collectAsState()
     var isOpened by remember {
         mutableStateOf(false)
     }
-
-
     var displayed by remember {
         mutableStateOf(false)
     }
@@ -61,12 +56,28 @@ fun LoginScreen(
         MessageDialog(
             title = "Đăng nhập thất bại",
             msg = "Vui lòng kiểm tra email và mật khẩu",
-            onChange = { isOpened = false }
+            onChange = {
+                isOpened = false
+                loginViewModel.continueLogin()
+            }
         )
     }
-
     if (displayed) {
         ProgressIndicator()
+    }
+    when (login) {
+        0 -> {}
+        1 -> {
+            displayed = false
+            LaunchedEffect(key1 = ""){
+                navController.navigate(Screen.HomeScreen.route)
+            }
+        }
+
+        2 -> {
+            displayed = false
+            isOpened = true
+        }
     }
 
     Box(
@@ -280,13 +291,7 @@ fun LoginScreen(
                     Button(
                         onClick = {
                             displayed = true
-                            if (logged == null) {
-                                displayed = false
-                                if (!userViewModel.loginAccount(user_email, password)) {
-                                    isOpened = true
-                                } else
-                                    navController.navigate(Screen.HomeScreen.route)
-                            }
+                            loginViewModel.loginAccount(user_email, password)
                         },
                         colors = ButtonDefaults.buttonColors(backgroundColor = colorPrimary),
                         modifier = Modifier
@@ -360,7 +365,6 @@ fun MessageDialog(
             }
         }
     )
-
 }
 
 @Composable
@@ -411,7 +415,6 @@ fun ProgressIndicator() {
                 )
 
             }
-
         },
         confirmButton = {
             TextButton(onClick = { }) {

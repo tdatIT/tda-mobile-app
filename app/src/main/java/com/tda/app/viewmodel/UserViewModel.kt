@@ -7,7 +7,7 @@ import com.tda.app.data.repository.UserRemote
 import com.tda.app.data.repository.UserRepository
 import com.tda.app.model.Resource
 import com.tda.app.model.User
-import com.tda.app.model.request.LoginRequest
+import com.tda.app.model.request.ChangeInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,11 +22,9 @@ class UserViewModel @Inject constructor(private val repository: UserRepository) 
 
     private val userRemote = UserRemote()
 
-
     fun getUserFromDB() {
         viewModelScope.launch {
             _state.value = repository.getUser()
-
             if (_state.value != null)
                 if (repository.checkAvalaibleUser())
                     Log.i("logged-status", "UserId: ${_state.value!!.userId}")
@@ -41,24 +39,26 @@ class UserViewModel @Inject constructor(private val repository: UserRepository) 
         }
     }
 
-    fun loginAccount(email: String, password: String): Boolean {
+    fun changeInfo(firstName: String, lastName: String, phone: String) {
         viewModelScope.launch {
-            val body = LoginRequest(email, password)
-            userRemote.loginAccount(body = body).let { data ->
-                if (data is Resource.Success) {
-                    data.data?.let {
-                        val user = it.mapperToUser()
-                        _state.value = user
-                        repository.insertUserInfo(user)
-                        Log.e("auth-success", "UserId: ${it.user.userId}")
-                    }
-                }
+            state.value?.let { user ->
+                val authToken = "Bearer ${user.jwt}"
+                val body = ChangeInfo(firstName, lastName, phone)
+                userRemote.changeInfo(body = body, token = authToken)
+                repository.updateAccount(user.id, firstName, lastName, phone)
+                getUserFromDB()
+                Log.e("change-success", "update info")
             }
         }
-        if (_state.value != null)
-            return true
-        return false;
+
     }
 
 
+    fun logout(id: Int) {
+        viewModelScope.launch {
+            repository.deleteAccount(id)
+            _state.value = null
+        }
+    }
 }
+

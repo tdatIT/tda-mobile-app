@@ -34,7 +34,9 @@ import com.tda.app.navigation.Screen
 import com.tda.app.ui.theme.colorPrimary
 import com.tda.app.viewmodel.UserViewModel
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.seconds
 
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -56,7 +58,11 @@ fun AccountScreen(
             onChange = { isOpened = false }
         )
     }
+    var display by remember { mutableStateOf(false) }
 
+    if (display) {
+        ProgressIndicator()
+    }
     val modalBottomSheetState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
@@ -126,7 +132,10 @@ fun AccountScreen(
                                     .size(28.dp)
                                     .clickable {
                                         scope.launch {
-                                            modalBottomSheetState.show()
+                                            if (userLogged != null) {
+                                                modalBottomSheetState.show()
+                                            } else
+                                                isOpened = true
                                         }
                                     }
                             )
@@ -135,73 +144,81 @@ fun AccountScreen(
                 }
             }, bottomBar = {
                 NavigationBottomBar(navController)
-            },
-            content = {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(it)
-                ) {
-                    Spacer(modifier = Modifier.height(32.dp))
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Divider(
-                        color = Color(0xFFB3B3B3),
-                        modifier = Modifier.fillMaxWidth(),
-                        thickness = 1.dp
-                    )
-                    AccountNavItems(
-                        icon = R.drawable.orders,
-                        name = "Thông tin giỏ hàng",
-                        onClick = {
-                            scope.launch {
+            }
 
-                            }
-                        })
-                    AccountNavItems(icon = R.drawable.my_details, name = "Đơn hàng", onClick = {
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(it)
+            ) {
+                Spacer(modifier = Modifier.height(32.dp))
+                Spacer(modifier = Modifier.height(16.dp))
+                Divider(
+                    color = Color(0xFFB3B3B3),
+                    modifier = Modifier.fillMaxWidth(),
+                    thickness = 1.dp
+                )
+                AccountNavItems(
+                    icon = R.drawable.orders,
+                    name = "Thông tin giỏ hàng",
+                    onClick = {
                         scope.launch {
 
                         }
                     })
-                    AccountNavItems(
-                        icon = R.drawable.address,
-                        name = "Địa chỉ nhận hàng",
-                        onClick = {
-                            if (userLogged != null)
-                                navController.navigate("change_address_screen/${userLogged!!.jwt}")
-                            else
-                                isOpened = true
-                        })
-                    AccountNavItems(
-                        icon = R.drawable.help,
-                        name = "Help",
-                        onClick = { })
-                    AccountNavItems(
-                        icon = R.drawable.notifications,
-                        name = "Thông báo",
-                        onClick = { })
-                    AccountNavItems(
-                        icon = R.drawable.about,
-                        name = "About",
-                        onClick = { })
-                    Spacer(modifier = Modifier.height(26.dp))
-                    if (userLogged != null) {
-                        LogoutBtn(nav = navController)
-                    } else
-                        LoginBtn(nav = navController)
-                    Spacer(modifier = Modifier.height(26.dp))
-                }
-            }
+                AccountNavItems(icon = R.drawable.my_details, name = "Đơn hàng", onClick = {
+                    scope.launch {
 
-        )
+                    }
+                })
+                AccountNavItems(
+                    icon = R.drawable.address,
+                    name = "Địa chỉ nhận hàng",
+                    onClick = {
+                        if (userLogged != null)
+                            navController.navigate("change_address_screen/${userLogged!!.jwt}")
+                        else
+                            isOpened = true
+                    })
+                AccountNavItems(
+                    icon = R.drawable.help,
+                    name = "Help",
+                    onClick = { })
+                AccountNavItems(
+                    icon = R.drawable.notifications,
+                    name = "Thông báo",
+                    onClick = { })
+                AccountNavItems(
+                    icon = R.drawable.about,
+                    name = "About",
+                    onClick = { })
+                Spacer(modifier = Modifier.height(26.dp))
+                if (userLogged != null) {
+                    LogoutBtn(onClick = {
+                        display = true
+                        userLogged?.let {
+                            userViewModel.logout(it.id)
+                        }
+                        navController.navigate(Screen.HomeScreen.route)
+                    })
+                } else
+                    LoginBtn(nav = navController)
+                Spacer(modifier = Modifier.height(26.dp))
+            }
+        }
     }
 
 
 }
 
 @Composable
-fun LogoutBtn(nav: NavController) {
-    Button(
-        onClick = {},
+fun LogoutBtn(onClick: () -> Unit) {
+
+    LaunchedEffect(Button(
+        onClick = {
+            onClick()
+        },
         modifier = Modifier
             .height(57.dp)
             .fillMaxWidth()
@@ -224,6 +241,9 @@ fun LogoutBtn(nav: NavController) {
             Icon(imageVector = Icons.Outlined.Logout, contentDescription = "")
             Text("Đăng xuất")
         }
+    }) {
+        delay(4.seconds)
+        onClick
     }
 }
 

@@ -1,8 +1,8 @@
 package com.tda.app.view
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
@@ -32,7 +31,6 @@ import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Divider
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -43,9 +41,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.DarkGray
-import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -57,17 +52,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
-import com.tda.app.R
 import com.tda.app.model.response.ProductResponse
 import com.tda.app.ui.theme.bgwhitelight
 import com.tda.app.ui.theme.colorPrimary
-import com.tda.app.ui.theme.gray
-import com.tda.app.ui.theme.light_gray
 import com.tda.app.ui.theme.text_hint_color
 import com.tda.app.ui.theme.white
 import com.tda.app.utils.Constants
 import com.tda.app.viewmodel.KeywordViewModel
-import com.tda.app.viewmodel.ProductListByCateViewModel
 import com.tda.app.viewmodel.SearchViewModel
 
 @Composable
@@ -78,7 +69,7 @@ fun SearchScreen(
 
     val searchViewModel = viewModel(modelClass = SearchViewModel::class.java)
     val products by searchViewModel.state.collectAsState()
-    val local_keyword by keywordViewModel.keywords.collectAsState()
+    val localKeyword by keywordViewModel.keywords.collectAsState()
     var keyword by remember { mutableStateOf("") }
 
     Scaffold(
@@ -108,6 +99,7 @@ fun SearchScreen(
                         onValueChange = {
                             keyword = it
                             searchViewModel.getProductByKeyword(keyword)
+                            keywordViewModel.getAll()
                         },
                         placeholder = {
                             androidx.compose.material.Text(
@@ -121,6 +113,7 @@ fun SearchScreen(
                             Button(
                                 onClick = {
                                     keywordViewModel.insert(keyword)
+                                    keywordViewModel.getAll()
                                     nav.navigate("search_result/${keyword}")
                                 },
                                 shape = RoundedCornerShape(10),
@@ -159,32 +152,40 @@ fun SearchScreen(
                     fontStyle = FontStyle.Italic
                 )
             }
-            if (local_keyword.isNotEmpty()) {
-                itemsIndexed(local_keyword) { index, key ->
-                    Box(
-                        Modifier
-                            .fillMaxWidth()
-                            .background(white)
-                    ) {
-                        Row(
-                            Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Text(
-                                text = key.keyword,
-                                fontSize = 16.sp,
-                                modifier = Modifier.padding(14.dp)
-                            )
-                            IconButton(onClick = {
-                                keywordViewModel.delete(key.id)
-                                keywordViewModel.getAll()
-                            }) {
-                                Icon(imageVector = Icons.Outlined.Close, contentDescription = "")
-                            }
-                        }
-                        Divider(startIndent = 0.dp, thickness = 1.dp, color = text_hint_color)
+            if (localKeyword.isNotEmpty()) {
+                itemsIndexed(localKeyword) { index, key ->
+                    var visible by remember {
+                        mutableStateOf(true)
                     }
-
+                    AnimatedVisibility(visible = visible) {
+                        Box(
+                            Modifier
+                                .fillMaxWidth()
+                                .background(white)
+                        ) {
+                            Row(
+                                Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text(
+                                    text = key.keyword,
+                                    fontSize = 16.sp,
+                                    modifier = Modifier.padding(14.dp)
+                                )
+                                IconButton(onClick = {
+                                    keywordViewModel.delete(key.id)
+                                    keywordViewModel.getAll()
+                                    visible = false
+                                }) {
+                                    Icon(
+                                        imageVector = Icons.Outlined.Close,
+                                        contentDescription = ""
+                                    )
+                                }
+                            }
+                            Divider(startIndent = 0.dp, thickness = 1.dp, color = text_hint_color)
+                        }
+                    }
                 }
             }
 

@@ -20,6 +20,6 @@ interface UserDao {
     @Query("update user set avatar =:avt")
     fun updateNewAvt(avt: String)
 
-    @Query("update user set firstname=:first_name,lastname=:last_name,phone=:phone")
-    fun updateInfo(first_name: String, last_name: String, phone: String)
+    @Query("update user set firstname=:first_name,lastname=:last_name,phone=:phone where id = :id")
+    fun updateInfo(id: Int, first_name: String, last_name: String, phone: String)
 }

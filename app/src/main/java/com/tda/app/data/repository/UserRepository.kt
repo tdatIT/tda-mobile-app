@@ -59,4 +59,14 @@ class UserRepository @Inject constructor(val userDao: UserDao) {
         }
     }
 
+    fun updateAccount(id: Int, firstName: String, lastName: String, phone: String) {
+        coroutineScope.launch(Dispatchers.IO) {
+            try {
+                userDao.updateInfo(id, firstName, lastName, phone);
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
 }

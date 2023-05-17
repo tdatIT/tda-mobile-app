@@ -24,5 +24,4 @@ class SearchViewModel : ViewModel() {
             }
         }
     }
-
 }
