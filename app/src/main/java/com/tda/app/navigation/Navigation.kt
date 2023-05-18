@@ -15,6 +15,7 @@ import com.tda.app.view.CheckOutSuccessScreen
 import com.tda.app.view.CheckoutScreen
 import com.tda.app.view.HomeScreen
 import com.tda.app.view.LoginScreen
+import com.tda.app.view.OrderScreen
 import com.tda.app.view.ProductDetailScreen
 import com.tda.app.view.ProductInCategoryScreen
 import com.tda.app.view.ResetPassswordScreen
@@ -105,6 +106,9 @@ fun Navigation() {
         }
         composable(Screen.WishListScreen.route) {
             WishListScreen(nav = navController)
+        }
+        composable(Screen.OrderScreen.route) {
+            OrderScreen(nav = navController)
         }
     }
 }

@@ -442,7 +442,15 @@ fun BottomProductBar(
                     .fillMaxHeight()
                     .fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(colorPrimary),
-                    onClick = { nav.navigate("") }) {
+                    onClick = {
+                        if (jwt != null) {
+                            addToCart(jwt, product.productCode, 1)
+                            nav.navigate(Screen.CartScreen.route)
+                        } else {
+                            opened = true
+                        }
+                    }
+                ) {
                     Text(text = "Mua ngay", color = white)
                 }
             }

@@ -33,7 +33,6 @@ import com.tda.app.component.BottomSheetEditProfile
 import com.tda.app.navigation.Screen
 import com.tda.app.ui.theme.colorPrimary
 import com.tda.app.viewmodel.UserViewModel
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.seconds
@@ -172,9 +171,7 @@ fun AccountScreen(
                         }
                     })
                 AccountNavItems(icon = R.drawable.my_details, name = "Đơn hàng", onClick = {
-                    scope.launch {
-
-                    }
+                    navController.navigate(Screen.OrderScreen.route)
                 })
                 AccountNavItems(
                     icon = R.drawable.address,

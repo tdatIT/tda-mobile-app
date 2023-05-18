@@ -1,6 +1,8 @@
 package com.tda.app.utils
 
 import java.text.NumberFormat
+import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 
 object Constants {
@@ -16,5 +18,12 @@ object Constants {
         nf.maximumFractionDigits = 2
         nf.isGroupingUsed = true
         return nf.format(price)
+    }
+
+    fun formateDate(timestamp: Long): String {
+        val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+        val date = Date(timestamp)
+        return dateFormat.format(date)
+
     }
 }

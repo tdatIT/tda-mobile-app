@@ -102,4 +102,17 @@ interface JwtApiService {
         @Path("itemId") itemId: Long
     ): CustomResponse
 
+    @GET("orders/user/last-order")
+    suspend fun getOrderList(
+        @Header("Authorization") token: String,
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): List<OrderResponse>
+
+    @GET("orders/{orderId}")
+    suspend fun getOrderDetails(
+        @Header("Authorization") token: String,
+        @Path("orderId") orderId: Long
+    ): OrderResponse
+
 }

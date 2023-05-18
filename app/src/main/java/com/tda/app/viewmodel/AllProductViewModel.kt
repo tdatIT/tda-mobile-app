@@ -10,8 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class AllProductViewModel() :
-    ViewModel() {
+class AllProductViewModel() : ViewModel() {
     private var _state = MutableStateFlow(emptyList<ProductResponse>())
     var state: StateFlow<List<ProductResponse>> = _state
 
