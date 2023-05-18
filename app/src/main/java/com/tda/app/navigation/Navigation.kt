@@ -15,6 +15,7 @@ import com.tda.app.view.CheckOutSuccessScreen
 import com.tda.app.view.CheckoutScreen
 import com.tda.app.view.HomeScreen
 import com.tda.app.view.LoginScreen
+import com.tda.app.view.OrderDetailsScreen
 import com.tda.app.view.OrderScreen
 import com.tda.app.view.ProductDetailScreen
 import com.tda.app.view.ProductInCategoryScreen
@@ -95,6 +96,17 @@ fun Navigation() {
                 SearchResultScreen(
                     nav = navController,
                     reqKw = it
+                )
+            }
+        }
+        composable(
+            Screen.OrderDetailScreen.route,
+            arguments = listOf(navArgument("orderId") { type = NavType.LongType })
+        ) { backStackEntry ->
+            backStackEntry.arguments?.getLong("orderId")?.let {
+                OrderDetailsScreen(
+                    navController = navController,
+                    orderId = it
                 )
             }
         }

@@ -6,11 +6,13 @@ import com.tda.app.data.repository.OrderRemote
 import com.tda.app.data.repository.UserRepository
 import com.tda.app.model.Resource
 import com.tda.app.model.response.OrderResponse
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class OrderDetailViewModel @Inject constructor(
     val remote: OrderRemote,
     val userRepository: UserRepository

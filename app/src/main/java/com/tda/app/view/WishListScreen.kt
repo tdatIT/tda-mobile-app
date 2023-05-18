@@ -243,6 +243,35 @@ fun HeaderOrderItems(nav: NavController) {
     }
 }
 
+@Composable
+fun HeaderOrderDetails(nav: NavController) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(white),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        IconButton(onClick = {
+            nav.popBackStack()
+        }
+        ) {
+            Icon(
+                modifier = Modifier.size(32.dp, 32.dp),
+                imageVector = Icons.Default.KeyboardArrowLeft,
+                contentDescription = "",
+                tint = colorPrimary
+            )
+        }
+        Text(
+            text = "Chi tiết đơn hàng",
+            modifier = Modifier.padding(end = 130.dp, bottom = 20.dp, top = 20.dp),
+            fontWeight = FontWeight.Bold,
+            fontSize = 16.sp,
+        )
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun previewScraeensas() {

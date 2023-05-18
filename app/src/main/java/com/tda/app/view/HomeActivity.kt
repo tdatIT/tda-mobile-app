@@ -139,7 +139,7 @@ fun Content(
             Spacer(modifier = Modifier.height(16.dp))
             BestSellerSection()
         }
-        itemsIndexed(products) { index, product ->
+        itemsIndexed(products) { _, product ->
             ProductCard(
                 navController,
                 product
@@ -307,7 +307,7 @@ fun CategorySection(categories: List<CategoryResp>, navController: NavController
             contentPadding = PaddingValues(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            itemsIndexed(categories) { index, cate ->
+            itemsIndexed(categories) { _, cate ->
                 CategoryButton(cate, navController)
             }
         }
