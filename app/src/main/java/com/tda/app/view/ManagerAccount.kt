@@ -63,12 +63,18 @@ fun AccountScreen(
     if (display) {
         ProgressIndicator()
     }
+
     val modalBottomSheetState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
     ModalBottomSheetLayout(
         sheetContent = {
-            BottomSheetEditProfile()
+            BottomSheetEditProfile(onClose = {
+                scope.launch {
+                    modalBottomSheetState.hide()
+
+                }
+            })
         },
         sheetState = modalBottomSheetState,
         sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
