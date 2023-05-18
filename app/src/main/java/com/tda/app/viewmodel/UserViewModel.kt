@@ -6,7 +6,9 @@ import androidx.lifecycle.viewModelScope
 import com.tda.app.data.repository.UserRemote
 import com.tda.app.data.repository.UserRepository
 import com.tda.app.model.User
+import com.tda.app.model.request.AddressRequest
 import com.tda.app.model.request.ChangeInfo
+import com.tda.app.model.request.ChangePassword
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -53,9 +55,38 @@ class UserViewModel @Inject constructor(private val repository: UserRepository) 
                 Log.e("change-success", "update info")
             }
         }
+    }
+
+    fun changePass(newPass: String, oldPass: String) {
+        viewModelScope.launch {
+            state.value?.let { user ->
+                val authToken = "Bearer ${user.jwt}"
+                val body = ChangePassword(newPass, oldPass)
+                userRemote.changePassword(body = body, token = authToken)
+
+                Log.e("change-password", "process")
+            }
+        }
 
     }
 
+    fun addNewAddress(provine: Int, district: Int, ward: Int, detail: String, phone: String) {
+        viewModelScope.launch {
+            state.value?.let { user ->
+                val authToken = "Bearer ${user.jwt}"
+                val body = AddressRequest(
+                    province_code = provine,
+                    district_code = district,
+                    ward_code = ward,
+                    phone = phone,
+                    detail = detail
+                )
+                userRemote.addNewAddress(body = body, token = authToken)
+
+                Log.e("add-password", "process")
+            }
+        }
+    }
 
     fun logout(id: Int) {
         viewModelScope.launch {

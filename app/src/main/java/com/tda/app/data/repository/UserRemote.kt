@@ -3,7 +3,9 @@ package com.tda.app.data.repository
 import android.util.Log
 import com.tda.app.data.service.RetrofitClient
 import com.tda.app.model.Resource
+import com.tda.app.model.request.AddressRequest
 import com.tda.app.model.request.ChangeInfo
+import com.tda.app.model.request.ChangePassword
 import com.tda.app.model.request.LoginRequest
 import com.tda.app.model.request.RegisterAccount
 import com.tda.app.model.response.CustomResponse
@@ -28,6 +30,24 @@ class UserRemote {
         } catch (e: Exception) {
             e.printStackTrace()
             Log.e("change-info", "Cause ${e.message}")
+        }
+    }
+
+    suspend fun changePassword(body: ChangePassword, token: String) {
+        try {
+            RetrofitClient.retrofit_TDA_JWT.changePassword(body = body, token = token)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Log.e("change-password", "Cause ${e.message}")
+        }
+    }
+
+    suspend fun addNewAddress(body: AddressRequest, token: String) {
+        try {
+            RetrofitClient.retrofit_TDA_JWT.addNewAddress(body = body, token = token)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Log.e("new-address", "Cause ${e.message}")
         }
     }
 

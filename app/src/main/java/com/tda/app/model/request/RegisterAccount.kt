@@ -9,6 +9,6 @@ data class RegisterAccount(
     var hashPassword: String,
     var confirmPassword: String,
     var phone: String,
-    var defaultAddress: AddressRequest,
+    var defaultAddress: UserAddress,
     var address_detail: String,
 )

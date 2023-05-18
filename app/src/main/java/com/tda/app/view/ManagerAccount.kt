@@ -30,6 +30,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.tda.app.R
 import com.tda.app.component.BottomSheetEditProfile
+import com.tda.app.component.ChangePasswordDialog
 import com.tda.app.navigation.Screen
 import com.tda.app.ui.theme.colorPrimary
 import com.tda.app.viewmodel.UserViewModel
@@ -60,7 +61,15 @@ fun AccountScreen(
     if (display) {
         ProgressIndicator()
     }
-
+    var changePass by remember { mutableStateOf(false) }
+    if (changePass) {
+        ChangePasswordDialog(
+            onSubmit = { newPass, oldPass ->
+                userViewModel.changePass(newPass, oldPass)
+                changePass = false
+            },
+            onDismiss = { changePass = false })
+    }
     val modalBottomSheetState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
@@ -69,7 +78,6 @@ fun AccountScreen(
             BottomSheetEditProfile(onClose = {
                 scope.launch {
                     modalBottomSheetState.hide()
-
                 }
             })
         },
@@ -163,16 +171,17 @@ fun AccountScreen(
                     thickness = 1.dp
                 )
                 AccountNavItems(
-                    icon = R.drawable.orders,
-                    name = "Thông tin giỏ hàng",
+                    icon = R.drawable.edit_icon,
+                    name = "Thay đổi mật khẩu",
                     onClick = {
-                        scope.launch {
-
-                        }
+                        changePass = true
                     })
-                AccountNavItems(icon = R.drawable.my_details, name = "Đơn hàng", onClick = {
-                    navController.navigate(Screen.OrderScreen.route)
-                })
+                AccountNavItems(
+                    icon = R.drawable.my_details,
+                    name = "Xem lịch sử đặt hàng",
+                    onClick = {
+                        navController.navigate(Screen.OrderScreen.route)
+                    })
                 AccountNavItems(
                     icon = R.drawable.address,
                     name = "Địa chỉ nhận hàng",
@@ -290,14 +299,12 @@ private fun AccountNavItems(
             .clickable(indication = rememberRipple(bounded = true),
                 interactionSource = remember { MutableInteractionSource() }) {
                 onClick.invoke()
-            }
-        ,
+            },
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 14.dp)
-              ,
+                .padding(horizontal = 16.dp, vertical = 14.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {

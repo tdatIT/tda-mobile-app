@@ -15,6 +15,7 @@ import com.tda.app.view.CheckOutSuccessScreen
 import com.tda.app.view.CheckoutScreen
 import com.tda.app.view.HomeScreen
 import com.tda.app.view.LoginScreen
+import com.tda.app.view.NewAddressScreen
 import com.tda.app.view.OrderDetailsScreen
 import com.tda.app.view.OrderScreen
 import com.tda.app.view.ProductDetailScreen
@@ -121,6 +122,9 @@ fun Navigation() {
         }
         composable(Screen.OrderScreen.route) {
             OrderScreen(nav = navController)
+        }
+        composable(Screen.AddNewAddress.route) {
+            NewAddressScreen(navController = navController)
         }
     }
 }

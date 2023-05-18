@@ -1,216 +1,191 @@
 package com.tda.app.component
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.material.AlertDialog
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.compose.rememberNavController
 import com.tda.app.ui.theme.colorPrimary
-import com.tda.app.ui.theme.dark_gray
-import com.tda.app.ui.theme.white
+import com.tda.app.ui.theme.favourite
 
 
 @Composable
-fun BottomSheetChangePassword() {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(10.dp)
-    ) {
+fun ChangePasswordDialog(onSubmit: (String, String) -> Unit, onDismiss: () -> Unit) {
 
-        var oldPass:String = ""
-        var newPass:String = ""
-        var confirmpass:String = ""
-        var passwordVisibility by remember {
-            mutableStateOf(false)
-        }
-        Row(
-            modifier = Modifier
-                .padding(0.dp, 10.dp, 0.dp, 10.dp)
-                .fillMaxWidth()
-        ) {
-            Button(
-                colors = ButtonDefaults.buttonColors(backgroundColor = colorPrimary),
-                modifier = Modifier
-                    .padding(horizontal = 10.dp)
-                ,
-                shape = RoundedCornerShape(16.dp), onClick = {}
-            ) {
-                Text(
-                    text = "Cancle",
-                    color = white,
-                    fontWeight = FontWeight.Bold
-                )
-                Icon(
-                    imageVector = Icons.Default.Close,
-                    contentDescription = null,
-                    tint = white,
-                    modifier = Modifier
-                        .padding(start = 4.dp)
-                        .size(20.dp, 20.dp)
-                )
-            }
-            Button(
-                colors = ButtonDefaults.buttonColors(backgroundColor = colorPrimary),
-                modifier = Modifier
-                    .padding(start = 130.dp)
-                ,
-                shape = RoundedCornerShape(16.dp), onClick = {}
-            ) {
-                Text(
-                    text = "Submit",
-                    color = white,
-                    fontWeight = FontWeight.Bold
-                )
-                Icon(
-                    imageVector = Icons.Default.Check,
-                    contentDescription = null,
-                    tint = white,
-                    modifier = Modifier
-                        .padding(start = 4.dp)
-                        .size(20.dp, 20.dp)
-                )
-            }
-        }
-
-
-
-        Row(
-            modifier = Modifier
-                .padding(0.dp, 10.dp, 0.dp, 10.dp)
-                .fillMaxWidth()
-        ) {
-            Column(
-                modifier = Modifier
-                    .padding(10.dp, 0.dp, 0.dp, 0.dp)
-                    .weight(1f)
-                    .align(Alignment.Bottom)
-            ) {
-
-                Text(
-                    text = "Mật khẩu cũ",
-                    style = MaterialTheme.typography.subtitle1,
-                    color = dark_gray,
-                )
-                OutlinedTextField(
-                    value = oldPass,
-                    onValueChange = {
-                        oldPass = it
-                    },
-                    label = { Text("Họ") },
-                    placeholder = { Text(text = "Nhập họ") },
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Default.Lock,
-                            contentDescription = null,
-                            tint = colorPrimary
-                        )
-                    },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
-                )
-            }
-        }
-        Row(
-            modifier = Modifier
-                .padding(0.dp, 10.dp, 0.dp, 10.dp)
-                .fillMaxWidth()
-        ) {
-            Column(
-                modifier = Modifier
-                    .padding(10.dp, 0.dp, 0.dp, 0.dp)
-                    .weight(1f)
-                    .align(Alignment.Bottom)
-            ) {
-                Text(
-                    text = "Mật khẩu mới",
-                    style = MaterialTheme.typography.subtitle1,
-                    color = dark_gray,
-                )
-                OutlinedTextField(
-                    value = newPass,
-                    onValueChange = {
-                        newPass = it
-                    },
-                    label = { Text("Mật khẩu mới") },
-                    placeholder = { Text(text = "Nhập mật khẩu mới") },
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Default.Lock,
-                            contentDescription = null,
-                            tint = colorPrimary
-                        )
-                    }, trailingIcon = {
-                        IconButton(
-                            onClick = {
-                                passwordVisibility = !passwordVisibility
-                            }
-                        ) {
-                            Icon(
-                                imageVector = if (passwordVisibility) Icons.Default.Visibility else Icons.Default.VisibilityOff,
-                                contentDescription = if (passwordVisibility) "Ẩn mật khẩu" else "Hiện mật khẩu"
-                            )
-                        }
-                    }
-                    ,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
-                )
-            }
-        }
-//        Row(
-//            modifier = Modifier
-//                .padding(0.dp, 10.dp, 0.dp, 10.dp)
-//                .fillMaxWidth()
-//        ) {
-//            Column(
-//                modifier = Modifier
-//                    .padding(10.dp, 0.dp, 0.dp, 0.dp)
-//                    .weight(1f)
-//                    .align(Alignment.Bottom)
-//            ) {
-//                Text(
-//                    text = "Nhập lại mật khẩu",
-//                    style = MaterialTheme.typography.subtitle1,
-//                    color = dark_gray,
-//                )
-//                OutlinedTextField(
-//                    value = confirmpass,
-//                    onValueChange = {
-//                        confirmpass = it
-//                    },
-//                    label = { Text("Nhập lại mật khẩu") },
-//                    placeholder = { Text(text = "Nhập lại mật khẩu") },
-//                    leadingIcon = {
-//                        Icon(
-//                            imageVector = Icons.Default.Password,
-//                            contentDescription = null,
-//                            tint = colorPrimary
-//                        )
-//                    },
-//                    trailingIcon = {
-//                        IconButton(
-//                            onClick = {
-//                                passwordVisibility = !passwordVisibility
-//                            }
-//                        ) {
-//                            Icon(
-//                                imageVector = if (passwordVisibility) Icons.Default.Visibility else Icons.Default.VisibilityOff,
-//                                contentDescription = if (passwordVisibility) "Ẩn mật khẩu" else "Hiện mật khẩu"
-//                            )
-//                        }
-//                    }
-//                    ,
-//                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
-//                )
-//            }
-//        }
+    var oldPass by remember {
+        mutableStateOf("")
     }
+    var newPass by remember {
+        mutableStateOf("")
+    }
+    var confirmpass by remember {
+        mutableStateOf("")
+    }
+    var passwordVisibility by remember {
+        mutableStateOf(false)
+    }
+    AlertDialog(
+        modifier = Modifier.width(530.dp),
+        onDismissRequest = { onDismiss() },
+        confirmButton = {
+            TextButton(onClick = { onSubmit(newPass, oldPass) }) {
+                Text(text = "Thay đổi", color = colorPrimary)
+            }
+        }, dismissButton = {
+            TextButton(onClick = { onDismiss() }) {
+                Text(text = "Hủy", color = favourite)
+            }
+        }, text = {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp)
+                    .fillMaxWidth()
+                    .height(260.dp)
+            ) {
+                Row(
+                    modifier = Modifier
+                        .padding(0.dp, 10.dp, 0.dp, 10.dp)
+                        .fillMaxWidth()
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .padding(10.dp, 0.dp, 0.dp, 0.dp)
+                            .weight(1f)
+                            .align(Alignment.Bottom)
+                            .fillMaxWidth()
+                    ) {
+                        OutlinedTextField(
+                            value = oldPass,
+                            onValueChange = {
+                                oldPass = it
+                            },
+                            placeholder = { Text(text = "Mật khẩu cũ") },
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = Icons.Default.Lock,
+                                    contentDescription = null,
+                                    tint = colorPrimary
+                                )
+                            }, trailingIcon = {
+                                IconButton(
+                                    onClick = {
+                                        passwordVisibility = !passwordVisibility
+                                    }
+                                ) {
+                                    Icon(
+                                        imageVector = if (passwordVisibility) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                                        contentDescription = if (passwordVisibility) "Ẩn mật khẩu" else "Hiện mật khẩu"
+                                    )
+                                }
+                            },
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
+                }
+                Row(
+                    modifier = Modifier
+                        .padding(0.dp, 10.dp, 0.dp, 10.dp)
+                        .fillMaxWidth()
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .padding(10.dp, 0.dp, 0.dp, 0.dp)
+                            .weight(1f)
+                            .align(Alignment.Bottom)
+                    ) {
+                        OutlinedTextField(
+                            value = newPass,
+                            onValueChange = {
+                                newPass = it
+                            },
+                            placeholder = { Text(text = "Mật khẩu mới") },
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = Icons.Default.Lock,
+                                    contentDescription = null,
+                                    tint = colorPrimary
+                                )
+                            }, trailingIcon = {
+                                IconButton(
+                                    onClick = {
+                                        passwordVisibility = !passwordVisibility
+                                    }
+                                ) {
+                                    Icon(
+                                        imageVector = if (passwordVisibility) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                                        contentDescription = if (passwordVisibility) "Ẩn mật khẩu" else "Hiện mật khẩu"
+                                    )
+                                }
+                            },
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
+                }
+                Row(
+                    modifier = Modifier
+                        .padding(0.dp, 10.dp, 0.dp, 10.dp)
+                        .fillMaxWidth()
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .padding(10.dp, 0.dp, 0.dp, 0.dp)
+                            .weight(1f)
+                            .align(Alignment.Bottom)
+                    ) {
+                        OutlinedTextField(
+                            value = confirmpass,
+                            onValueChange = {
+                                confirmpass = it
+                            },
+                            placeholder = { Text(text = "Xác nhận MK") },
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = Icons.Default.Lock,
+                                    contentDescription = null,
+                                    tint = colorPrimary
+                                )
+                            }, trailingIcon = {
+                                IconButton(
+                                    onClick = {
+                                        passwordVisibility = !passwordVisibility
+                                    }
+                                ) {
+                                    Icon(
+                                        imageVector = if (passwordVisibility) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                                        contentDescription = if (passwordVisibility) "Ẩn mật khẩu" else "Hiện mật khẩu"
+                                    )
+                                }
+                            },
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
+                }
+            }
+        })
 }
+

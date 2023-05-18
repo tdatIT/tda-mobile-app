@@ -34,7 +34,7 @@ interface JwtApiService {
     suspend fun changeInfo(@Header("Authorization") token: String, @Body body: ChangeInfo)
 
     @PATCH("users/change-password")
-    suspend fun changPassword(@Header("Authorization") token: String, @Body body: ChangePassword)
+    suspend fun changePassword(@Header("Authorization") token: String, @Body body: ChangePassword)
 
     @PATCH("users/change-avatar")
     suspend fun changAvatar(

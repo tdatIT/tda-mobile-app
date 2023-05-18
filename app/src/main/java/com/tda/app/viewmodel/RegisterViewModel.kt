@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tda.app.data.repository.UserRemote
 import com.tda.app.model.Resource
-import com.tda.app.model.request.AddressRequest
+import com.tda.app.model.UserAddress
 import com.tda.app.model.request.RegisterAccount
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,7 +38,7 @@ class RegisterViewModel @Inject constructor(val userRemote: UserRemote) : ViewMo
                 confirmPassword = confirmPassword,
                 phone = phone,
                 address_detail = address_detail,
-                defaultAddress = AddressRequest(
+                defaultAddress = UserAddress(
                     province = provinceCode,
                     district = districtCode,
                     ward = wardCode,
