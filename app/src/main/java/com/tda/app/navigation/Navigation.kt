@@ -43,7 +43,7 @@ fun Navigation() {
             SignUpScreen(navController = navController)
         }
         composable(Screen.Verification.route) {
-            VerificationScreen(navController = navController)
+            VerificationScreen(nav = navController)
         }
         composable(Screen.ResetPassword.route) {
             ResetPassswordScreen(navController = navController)

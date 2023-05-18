@@ -1,14 +1,13 @@
 package com.tda.app.data.service
 
-import com.tda.app.model.request.LoginRequest
-import com.tda.app.model.response.LoginResponse
 import com.tda.app.model.District
+import com.tda.app.model.Province
+import com.tda.app.model.request.LoginRequest
 import com.tda.app.model.request.RegisterAccount
 import com.tda.app.model.response.CategoryResp
 import com.tda.app.model.response.CustomResponse
+import com.tda.app.model.response.LoginResponse
 import com.tda.app.model.response.ProductResponse
-import com.tda.provinceapi.model.Province
-import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -20,7 +19,10 @@ interface ApiService {
     suspend fun login(@Body body: LoginRequest): LoginResponse
 
     @POST("auth/register")
-    suspend fun register(@Body body: RegisterAccount): Call<CustomResponse?>?
+    suspend fun register(@Body body: RegisterAccount): CustomResponse
+
+    @POST("auth/verify-account")
+    suspend fun verify(@Query("token") token: String): CustomResponse
 
     //province
     @GET("p/")

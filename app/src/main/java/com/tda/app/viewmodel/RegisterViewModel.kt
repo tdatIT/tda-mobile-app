@@ -1,25 +1,21 @@
 package com.tda.app.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tda.app.data.service.RetrofitClient
-import com.tda.app.model.UserAddress
+import com.tda.app.data.repository.UserRemote
+import com.tda.app.model.Resource
 import com.tda.app.model.request.AddressRequest
 import com.tda.app.model.request.RegisterAccount
-import com.tda.app.model.response.CustomResponse
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import retrofit2.Call
+import javax.inject.Inject
 
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.awaitResponse
-
-class RegisterViewModel : ViewModel() {
-    private val _state = MutableStateFlow<CustomResponse?>(null)
-    val state: StateFlow<CustomResponse?> = _state
+@HiltViewModel
+class RegisterViewModel @Inject constructor(val userRemote: UserRemote) : ViewModel() {
+    private val _state = MutableStateFlow<Int>(0)
+    val state: StateFlow<Int> = _state
 
     fun registerAccount(
         firstName: String,
@@ -33,43 +29,35 @@ class RegisterViewModel : ViewModel() {
         districtCode: Int,
         wardCode: Int
     ) {
-        try {
-            viewModelScope.launch {
-                val newAccount = RegisterAccount(
-                    firstname = firstName,
-                    lastname = lastName,
-                    email = email,
-                    hashPassword = password,
-                    confirmPassword = confirmPassword,
-                    phone = phone,
-                    address_detail = address_detail,
-                    defaultAddress = AddressRequest(
-                        province_code = provinceCode,
-                        district_code = districtCode,
-                        ward_code = wardCode,
-                        detail = address_detail,
-                        phone = null
-                    )
+        viewModelScope.launch {
+            val newAccount = RegisterAccount(
+                firstname = firstName,
+                lastname = lastName,
+                email = email,
+                hashPassword = password,
+                confirmPassword = confirmPassword,
+                phone = phone,
+                address_detail = address_detail,
+                defaultAddress = AddressRequest(
+                    province_code = provinceCode,
+                    district_code = districtCode,
+                    ward_code = wardCode,
+                    detail = address_detail,
+                    phone = phone
                 )
-                val resp = RetrofitClient.retrofit_TDA_API.register(newAccount)?.awaitResponse()
-                resp?.let {
-                    if (!it.isSuccessful) {
-                        Log.e(
-                            "login-process",
-                            "FAIL - CODE: ${resp.code()} - Message ${resp.message()}"
-                        )
-                    } else {
-                        _state.value = resp.body()
-                        Log.e(
-                            "login-process",
-                            "Success - CODE: ${_state.value?.code} - Message ${_state.value?.message}"
-                        )
-                    }
-                }
-
+            )
+            userRemote.registerAccount(newAccount).let {
+                if (it is Resource.Success)
+                    _state.value = 1
+                else
+                    _state.value = 2
             }
-        } catch (t: Throwable) {
-            Log.e("login-process", "Error: ${t.message}")
+        }
+    }
+
+    fun continueRegister() {
+        viewModelScope.launch {
+            _state.value = 0
         }
     }
 }

@@ -6,9 +6,11 @@ import com.tda.app.data.db.KeywordRoomDB
 import com.tda.app.data.db.UserRoomDB
 import com.tda.app.data.repository.AddressRemote
 import com.tda.app.data.repository.CartRemote
+import com.tda.app.data.repository.DivisionRemote
 import com.tda.app.data.repository.KeywordRepository
 import com.tda.app.data.repository.OrderRemote
 import com.tda.app.data.repository.ShippingRemote
+import com.tda.app.data.repository.UserRemote
 import com.tda.app.data.repository.UserRepository
 import com.tda.app.data.repository.WishlistRemote
 import com.tda.app.data.service.KeywordDao
@@ -16,7 +18,6 @@ import com.tda.app.data.service.UserDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
@@ -67,15 +68,29 @@ object DbModule {
     fun getShippingRemote(): ShippingRemote {
         return ShippingRemote()
     }
+
     @Singleton
     @Provides
     fun getAddressRemote(): AddressRemote {
         return AddressRemote()
     }
+
     @Singleton
     @Provides
     fun getWishlistRemote(): WishlistRemote {
         return WishlistRemote()
+    }
+
+    @Singleton
+    @Provides
+    fun getUserRemote(): UserRemote {
+        return UserRemote()
+    }
+
+    @Singleton
+    @Provides
+    fun getDivisionRemote(): DivisionRemote {
+        return DivisionRemote()
     }
 
     @Singleton

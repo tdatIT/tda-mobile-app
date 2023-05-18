@@ -5,6 +5,8 @@ import com.tda.app.data.service.RetrofitClient
 import com.tda.app.model.Resource
 import com.tda.app.model.request.ChangeInfo
 import com.tda.app.model.request.LoginRequest
+import com.tda.app.model.request.RegisterAccount
+import com.tda.app.model.response.CustomResponse
 import com.tda.app.model.response.LoginResponse
 
 class UserRemote {
@@ -26,6 +28,28 @@ class UserRemote {
         } catch (e: Exception) {
             e.printStackTrace()
             Log.e("change-info", "Cause ${e.message}")
+        }
+    }
+
+    suspend fun registerAccount(body: RegisterAccount): Resource<CustomResponse> {
+        return try {
+            Resource.Success(
+                RetrofitClient.retrofit_TDA_API.register(body = body)
+            )
+        } catch (e: Exception) {
+            Log.e("register-account", "Cause ${e.message}")
+            Resource.Error("Login request was fail cause: ${e.message}")
+        }
+    }
+
+    suspend fun verifyAccount(token: String): Resource<CustomResponse> {
+        return try {
+            Resource.Success(
+                RetrofitClient.retrofit_TDA_API.verify(token)
+            )
+        } catch (e: Exception) {
+            Log.e("register-account", "Cause ${e.message}")
+            Resource.Error("Login request was fail cause: ${e.message}")
         }
     }
 }

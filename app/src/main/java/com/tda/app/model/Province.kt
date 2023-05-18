@@ -1,7 +1,4 @@
-package com.tda.provinceapi.model
-
-import com.tda.app.model.District
-import com.tda.app.model.DivisionGroup
+package com.tda.app.model
 
 data class Province(
     override val name: String,

@@ -1,22 +1,61 @@
 package com.tda.app.view
 
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.shape.ZeroCornerSize
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -25,8 +64,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.tda.app.R
@@ -37,21 +75,61 @@ import com.tda.app.ui.theme.dark_gray
 import com.tda.app.ui.theme.ghost_white
 import com.tda.app.ui.theme.white
 import com.tda.app.utils.Constants.EMAIL_REGEX
-import com.tda.app.viewmodel.RegisterViewModel
 import com.tda.app.viewmodel.DistrictViewModel
 import com.tda.app.viewmodel.ProvinceViewModel
+import com.tda.app.viewmodel.RegisterViewModel
 import com.tda.app.viewmodel.WardViewModel
 
 @Composable
-fun SignUpScreen(navController: NavController) {
-    val provinceViewModel = viewModel(modelClass = ProvinceViewModel::class.java)
-    val districtViewModel = viewModel(modelClass = DistrictViewModel::class.java)
-    val wardViewModel = viewModel(modelClass = WardViewModel::class.java)
-    val registerViewModel = viewModel(modelClass = RegisterViewModel::class.java)
+fun SignUpScreen(
+    navController: NavController,
+    registerViewModel: RegisterViewModel = hiltViewModel(),
+    provinceViewModel: ProvinceViewModel = hiltViewModel(),
+    districtViewModel: DistrictViewModel = hiltViewModel(),
+    wardViewModel: WardViewModel = hiltViewModel()
+) {
+
     val provinces by provinceViewModel.provinces.collectAsState()
     val districts by districtViewModel.district.collectAsState()
     val wards by wardViewModel.wards.collectAsState()
-    val register by registerViewModel.state.collectAsState()
+
+    val registerStatus by registerViewModel.state.collectAsState()
+
+    var isOpened by remember {
+        mutableStateOf(false)
+    }
+    var displayed by remember {
+        mutableStateOf(false)
+    }
+    if (isOpened) {
+        MessageDialog(
+            title = "Đăng ký thất bại",
+            msg = "Vui lòng kiểm tra dữ liệu đầu vào",
+            onChange = {
+                isOpened = false
+                registerViewModel.continueRegister()
+            }
+        )
+    }
+
+    if (displayed) {
+        ProgressIndicator()
+    }
+
+    when (registerStatus) {
+        0 -> {}
+        1 -> {
+            displayed = false
+            LaunchedEffect(key1 = "") {
+                navController.navigate(Screen.Verification.route)
+            }
+        }
+
+        2 -> {
+            displayed = false
+            isOpened = true
+        }
+    }
 
     var passwordMatch by remember {
         mutableStateOf(true)
@@ -158,7 +236,6 @@ fun SignUpScreen(navController: NavController) {
                             .clip(RoundedCornerShape(16.dp))
                             .background(white)
                     ) {
-
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -338,7 +415,7 @@ fun SignUpScreen(navController: NavController) {
                             )
 
 
-                            DropDownMenu(
+                            DropDownMenuProvince(
                                 provinces,
                                 "Tỉnh thành",
                                 { code -> provinceCode = code },
@@ -346,7 +423,7 @@ fun SignUpScreen(navController: NavController) {
                             )
                             Spacer(modifier = Modifier.padding(10.dp))
 
-                            DropDownMenu(
+                            DropDownMenuProvince(
                                 districts,
                                 "Quận/Huyện",
                                 { code -> districtCode = code },
@@ -354,7 +431,11 @@ fun SignUpScreen(navController: NavController) {
                             )
                             Spacer(modifier = Modifier.padding(10.dp))
 
-                            DropDownMenu(wards, "Xã/Phường", { code -> wardsCode = code }, {})
+                            DropDownMenuProvince(
+                                wards,
+                                "Xã/Phường",
+                                { code -> wardsCode = code },
+                                {})
                             Spacer(modifier = Modifier.padding(10.dp))
                             var details by remember {
                                 mutableStateOf("")
@@ -404,6 +485,7 @@ fun SignUpScreen(navController: NavController) {
                             ) {
                                 Button(
                                     onClick = {
+                                        displayed = true
                                         registerViewModel.registerAccount(
                                             firstName = firstname,
                                             lastName = lastname,
@@ -416,11 +498,6 @@ fun SignUpScreen(navController: NavController) {
                                             districtCode = districtCode,
                                             wardCode = wardsCode
                                         )
-                                        register?.let {
-                                            if (it.code == 200) {
-                                                navController.navigate(Screen.Verification.route)
-                                            }
-                                        }
                                     },
                                     colors = ButtonDefaults.buttonColors(backgroundColor = colorPrimary),
                                     modifier = Modifier
@@ -454,7 +531,7 @@ fun SignUpScreen(navController: NavController) {
 }
 
 @Composable
-fun DropDownMenu(
+fun DropDownMenuProvince(
     list: List<DivisionGroup>,
     content: String,
     onItemSelected: (Int) -> Unit,
@@ -490,22 +567,22 @@ fun DropDownMenu(
                 onDismissRequest = { expanded = false },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                list.forEach { t ->
-                    DropdownMenuItem(onClick = {
-                        selectedItem = t.name
-                        expanded = false
-                        onItemSelected(t.code)
-                        onUpdate(t.code)
-
-                    }) {
-                        Text(text = t.name)
+                list?.let {
+                    it.forEach { t ->
+                        DropdownMenuItem(onClick = {
+                            selectedItem = t.name
+                            expanded = false
+                            onItemSelected(t.code)
+                            onUpdate(t.code)
+                        }) {
+                            Text(text = t.name)
+                        }
                     }
                 }
             }
         }
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable

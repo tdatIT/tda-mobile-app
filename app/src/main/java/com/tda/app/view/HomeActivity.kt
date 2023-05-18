@@ -369,23 +369,6 @@ fun BestSellerSection() {
 }
 
 @Composable
-fun PopularProduct() {
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(text = "Phổ biến", style = MaterialTheme.typography.h6)
-        TextButton(onClick = {}) {
-            Text(text = "Xem thêm", color = colorPrimary)
-        }
-    }
-
-}
-
-@Composable
 fun ProductCard(
     navController: NavController,
     product: ProductResponse
