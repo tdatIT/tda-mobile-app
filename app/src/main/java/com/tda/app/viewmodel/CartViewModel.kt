@@ -45,7 +45,7 @@ class CartViewModel @Inject constructor(
     fun addItem(jwt: String, productCode: String, quantity: Int) {
         viewModelScope.launch {
             val item = CartItemRequest(productCode, quantity)
-            remote.addItem(jwt, item)?.let { resp ->
+            remote.addItem(jwt, item).let { resp ->
                 resp.data?.let {
                     getAllItem(jwt)
                     Log.i("add-cart", it)

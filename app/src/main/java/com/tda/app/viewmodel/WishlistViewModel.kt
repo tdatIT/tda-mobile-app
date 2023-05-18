@@ -48,8 +48,6 @@ class WishlistViewModel @Inject constructor(
                     Log.i("add-item", it.message)
                 }
             }
-            fecthData(jwt)
-
         }
     }
 
@@ -61,7 +59,6 @@ class WishlistViewModel @Inject constructor(
                     Log.i("update-cart", it.message)
                 }
             }
-            fecthData(jwt)
         }
     }
 

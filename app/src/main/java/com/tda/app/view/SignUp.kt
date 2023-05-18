@@ -566,7 +566,7 @@ fun DropDownMenuProvince(
                 onDismissRequest = { expanded = false },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                list?.let {
+                list.let {
                     it.forEach { t ->
                         DropdownMenuItem(onClick = {
                             selectedItem = t.name

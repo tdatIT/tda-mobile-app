@@ -39,9 +39,9 @@ class RegisterViewModel @Inject constructor(val userRemote: UserRemote) : ViewMo
                 phone = phone,
                 address_detail = address_detail,
                 defaultAddress = AddressRequest(
-                    province_code = provinceCode,
-                    district_code = districtCode,
-                    ward_code = wardCode,
+                    province = provinceCode,
+                    district = districtCode,
+                    ward = wardCode,
                     detail = address_detail,
                     phone = phone
                 )

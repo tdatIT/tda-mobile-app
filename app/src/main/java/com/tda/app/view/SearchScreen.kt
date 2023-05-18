@@ -153,7 +153,7 @@ fun SearchScreen(
                 )
             }
             if (localKeyword.isNotEmpty()) {
-                itemsIndexed(localKeyword) { index, key ->
+                itemsIndexed(localKeyword) { _, key ->
                     var visible by remember {
                         mutableStateOf(true)
                     }
