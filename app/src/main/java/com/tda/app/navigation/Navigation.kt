@@ -7,7 +7,22 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.tda.app.view.*
+import com.tda.app.view.AccountScreen
+import com.tda.app.view.CartScreen
+import com.tda.app.view.CategoryScreen
+import com.tda.app.view.ChangeAddressScreen
+import com.tda.app.view.CheckOutSuccessScreen
+import com.tda.app.view.CheckoutScreen
+import com.tda.app.view.HomeScreen
+import com.tda.app.view.LoginScreen
+import com.tda.app.view.ProductDetailScreen
+import com.tda.app.view.ProductInCategoryScreen
+import com.tda.app.view.ResetPassswordScreen
+import com.tda.app.view.SearchResultScreen
+import com.tda.app.view.SearchScreen
+import com.tda.app.view.SignUpScreen
+import com.tda.app.view.SplashScreen
+import com.tda.app.view.WishListScreen
 
 @Composable
 fun Navigation() {
@@ -40,15 +55,8 @@ fun Navigation() {
         composable(Screen.SearchScreen.route) {
             SearchScreen(nav = navController)
         }
-        composable(
-            Screen.ChangeAddress.route,
-            arguments = listOf(navArgument("token") { type = NavType.StringType })
-        )
-        { args ->
-            args.arguments?.getString("token")?.let {
-                ChangeAddressScreen(navController = navController, token = it)
-            }
-
+        composable(Screen.ChangeAddress.route) {
+            ChangeAddressScreen(navController = navController)
         }
         composable(Screen.AccountScreen.route) {
             AccountScreen(navController)
@@ -95,15 +103,11 @@ fun Navigation() {
         composable(Screen.CheckOutSuccessScreen.route) {
             CheckOutSuccessScreen(navController = navController)
         }
+        composable(Screen.WishListScreen.route) {
+            WishListScreen(nav = navController)
+        }
     }
 }
-//        composable(Screen.PopularListScreen.route) {
-//            PopularListScreen(navController = navController)
-//        }
-//        composable(Screen.DetailsScreen.route) {
-//            FlowerDetailsScreen(navController = navController)
-//        }
-
 
 
 

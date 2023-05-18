@@ -20,4 +20,5 @@ sealed class Screen(val route: String) {
     object SearchResultScreen : Screen("search_result/{keyword}")
     object CheckoutScreen : Screen("checkout_screen")
     object CheckOutSuccessScreen : Screen("checkout_success")
+    object WishListScreen:Screen("wishlist_screen")
 }

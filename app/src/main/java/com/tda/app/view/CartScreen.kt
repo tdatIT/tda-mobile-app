@@ -54,8 +54,6 @@ fun CartScreen(
     val cartItems by cartViewModel.cartItems.collectAsState()
     val price by discountCartViewModel.total.collectAsState()
 
-    userViewModel.getUserFromDB()
-
     user?.let {
         cartViewModel.getAllItem(it.jwt)
     }

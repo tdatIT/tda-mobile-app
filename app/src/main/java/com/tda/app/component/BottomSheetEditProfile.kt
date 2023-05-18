@@ -28,7 +28,6 @@ import com.tda.app.viewmodel.UserViewModel
 @Composable
 fun BottomSheetEditProfile(userViewModel: UserViewModel = hiltViewModel(),onClose: () -> Unit) {
     val user by userViewModel.state.collectAsState()
-    userViewModel.getUserFromDB()
     var isBottomSheetOpen by remember { mutableStateOf(true) }
     var isOpenedConfirm by remember {
         mutableStateOf(false)

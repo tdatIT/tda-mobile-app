@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tda.app.data.repository.UserRemote
 import com.tda.app.data.repository.UserRepository
-import com.tda.app.model.Resource
 import com.tda.app.model.User
 import com.tda.app.model.request.ChangeInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,6 +20,10 @@ class UserViewModel @Inject constructor(private val repository: UserRepository) 
     val state: StateFlow<User?> = _state
 
     private val userRemote = UserRemote()
+
+    init {
+        getUserFromDB()
+    }
 
     fun getUserFromDB() {
         viewModelScope.launch {

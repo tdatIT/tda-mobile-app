@@ -59,6 +59,7 @@ import com.tda.app.viewmodel.BestSellerViewModel
 import com.tda.app.viewmodel.CartViewModel
 import com.tda.app.viewmodel.ProductByCodeViewModel
 import com.tda.app.viewmodel.UserViewModel
+import com.tda.app.viewmodel.WishlistViewModel
 import kotlinx.coroutines.flow.StateFlow
 
 
@@ -66,13 +67,10 @@ import kotlinx.coroutines.flow.StateFlow
 fun ProductDetailScreen(
     nav: NavController, productCode: String,
     cartViewModel: CartViewModel = hiltViewModel(),
-    userViewModel: UserViewModel = hiltViewModel()
+    userViewModel: UserViewModel = hiltViewModel(),
+    wishlistViewModel: WishlistViewModel = hiltViewModel()
 ) {
     val user by userViewModel.state.collectAsState()
-    val cartItems by cartViewModel.cartItems.collectAsState()
-    userViewModel.getUserFromDB()
-
-
     val productViewModel = viewModel(modelClass = ProductByCodeViewModel::class.java)
     val product by productViewModel.state.collectAsState()
     productViewModel.fecthData(productCode)
@@ -93,7 +91,8 @@ fun ProductDetailScreen(
                 addToCart = { jwt, productCode, quantity ->
                     cartViewModel.addItem(jwt, productCode, quantity)
                 },
-                //addToWishlist = {}
+                addToWishlist = {jwt,productCode->
+                    wishlistViewModel.addItem(jwt, productCode) }
             )
         },
         backgroundColor = bgwhitelight,

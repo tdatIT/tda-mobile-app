@@ -10,6 +10,7 @@ import com.tda.app.data.repository.KeywordRepository
 import com.tda.app.data.repository.OrderRemote
 import com.tda.app.data.repository.ShippingRemote
 import com.tda.app.data.repository.UserRepository
+import com.tda.app.data.repository.WishlistRemote
 import com.tda.app.data.service.KeywordDao
 import com.tda.app.data.service.UserDao
 import dagger.Module
@@ -71,7 +72,11 @@ object DbModule {
     fun getAddressRemote(): AddressRemote {
         return AddressRemote()
     }
-
+    @Singleton
+    @Provides
+    fun getWishlistRemote(): WishlistRemote {
+        return WishlistRemote()
+    }
 
     @Singleton
     @Provides

@@ -25,8 +25,8 @@ class CartViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             val user = userRepository.getUser()
-            user?.let {
-                getAllItem(it.jwt)
+            if (user != null) {
+                getAllItem(user.jwt)
             }
         }
     }

@@ -46,8 +46,6 @@ fun AccountScreen(
     userViewModel: UserViewModel = hiltViewModel()
 ) {
     val userLogged by userViewModel.state.collectAsState()
-    userViewModel.getUserFromDB()
-
     var isOpened by remember {
         mutableStateOf(false)
     }

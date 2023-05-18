@@ -7,8 +7,10 @@ import com.tda.app.model.request.ChangeInfo
 import com.tda.app.model.request.ChangePassword
 import com.tda.app.model.response.AddressResponse
 import com.tda.app.model.response.CartItemResponse
+import com.tda.app.model.response.CustomResponse
 import com.tda.app.model.response.OrderResponse
 import com.tda.app.model.response.ShippingResponse
+import com.tda.app.model.response.WishlistResponse
 import okhttp3.MultipartBody
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -84,4 +86,20 @@ interface JwtApiService {
 
     @GET("shipping-cost-calculator")
     suspend fun calculateShipping(@Query("addressId") addressId: Long): ShippingResponse?
+
+    @GET("wishlists")
+    suspend fun getAllWishlist(@Header("Authorization") token: String): List<WishlistResponse>
+
+    @POST("wishlists")
+    suspend fun addWishlist(
+        @Header("Authorization") token: String,
+        @Query("productCode") productCode: String
+    ): CustomResponse
+
+    @DELETE("wishlists/{itemId}")
+    suspend fun removeWishlist(
+        @Header("Authorization") token: String,
+        @Path("itemId") itemId: Long
+    ): CustomResponse
+
 }
