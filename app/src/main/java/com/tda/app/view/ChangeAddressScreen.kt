@@ -26,6 +26,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Red
@@ -61,9 +62,27 @@ fun ChangeAddressScreen(
                 verticalArrangement = Arrangement.spacedBy(5.dp),
                 modifier = Modifier.padding(top = 8.dp)
             ) {
-                itemsIndexed(addresses) { index, item ->
-                    ListAddress(item, index)
-                }
+                if (addresses.isNotEmpty())
+                    itemsIndexed(addresses) { index, item ->
+                        ListAddress(item, index)
+                    }
+               if(addresses.isEmpty()) {
+                   item {
+                       Column(
+                           modifier = Modifier
+                               .fillMaxWidth()
+                               .fillMaxHeight(1f),
+                           horizontalAlignment = Alignment.CenterHorizontally,
+                           verticalArrangement = Arrangement.Center
+                       ) {
+                           Text(
+                               text = "Chưa có địa chỉ.",
+                               modifier = Modifier.fillMaxWidth(),
+                               textAlign = TextAlign.Center
+                           )
+                       }
+                   }
+               }
             }
         }
     }
@@ -73,6 +92,12 @@ fun ChangeAddressScreen(
 @Composable
 fun ListAddress(address: AddressResponse, index: Int) {
     var isSelected by remember { mutableStateOf(false) }
+    var isfirst by remember {
+        mutableStateOf(true)
+    }
+    if (isfirst == true && index == 0 ) {
+            isSelected = true
+        }
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -94,6 +119,7 @@ fun ListAddress(address: AddressResponse, index: Int) {
                 selected = isSelected,
                 onClick = {
                     isSelected = !isSelected
+                    isfirst = false
                 },
                 colors = radioColors
             )
@@ -134,7 +160,7 @@ fun ListAddress(address: AddressResponse, index: Int) {
                     textAlign = TextAlign.Left,
                     color = GrayText
                 )
-                if (isSelected) {
+                if (isSelected == true && index != 0) {
                     Box(Modifier.border(1.dp, color = Red))
                     {
                         Text(
@@ -146,6 +172,21 @@ fun ListAddress(address: AddressResponse, index: Int) {
                             textAlign = TextAlign.Left,
                             color = Color.Red
                         )
+                    }
+                }
+                if (isfirst == true && index == 0 ) {
+                    Box(Modifier.border(1.dp, color = Red))
+                    {
+                        Text(
+                            text = "Mặc định",
+                            fontSize = 16.sp,
+                            modifier = Modifier
+                                .padding(5.dp)
+                                .height(25.dp),
+                            textAlign = TextAlign.Left,
+                            color = Color.Red
+                        )
+                        isSelected = true
                     }
                 }
             }

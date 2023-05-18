@@ -27,6 +27,8 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.AddShoppingCart
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.Edit
@@ -620,7 +622,7 @@ fun ManagerListAddress(navController: NavController) {
 
             IconButton(onClick = {}) {
                 Icon(
-                    painterResource(id = R.drawable.address),
+                    imageVector = Icons.Default.Add,
                     contentDescription = "",
                     tint = Color.White
                 )

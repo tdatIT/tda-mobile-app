@@ -289,16 +289,18 @@ private fun AccountNavItems(
 ) {
     Card(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable(indication = rememberRipple(bounded = true),
+                interactionSource = remember { MutableInteractionSource() }) {
+                onClick.invoke()
+            }
+        ,
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 14.dp)
-                .clickable(indication = rememberRipple(bounded = true),
-                    interactionSource = remember { MutableInteractionSource() }) {
-                    onClick.invoke()
-                },
+              ,
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
