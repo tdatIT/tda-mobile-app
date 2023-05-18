@@ -33,7 +33,7 @@ class CartViewModel @Inject constructor(
 
     fun getAllItem(jwt: String) {
         viewModelScope.launch {
-            remote.getAllItemInCart(jwt)?.let { resp ->
+            remote.getAllItemInCart(jwt).let { resp ->
                 resp.data?.let {
                     _state.value = it
                 }
@@ -57,7 +57,7 @@ class CartViewModel @Inject constructor(
 
     fun updateItem(jwt: String, productCode: String, quantity: Int) {
         viewModelScope.launch {
-            remote.updateQuantity(jwt, productCode, quantity)?.let { resp ->
+            remote.updateQuantity(jwt, productCode, quantity).let { resp ->
                 resp.data?.let {
                     getAllItem(jwt)
                     Log.i("update-cart", it)
@@ -69,7 +69,7 @@ class CartViewModel @Inject constructor(
 
     fun deleteItem(jwt: String, productCode: String) {
         viewModelScope.launch {
-            remote.deleteItem(jwt, productCode)?.let { resp ->
+            remote.deleteItem(jwt, productCode).let { resp ->
                 resp.data?.let {
                     getAllItem(jwt)
                     Log.i("delete-cart", it)

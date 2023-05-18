@@ -73,7 +73,7 @@ fun ProductInCategoryScreen(navController: NavController, code: String) {
                 verticalArrangement = Arrangement.spacedBy(5.dp),
                 modifier = Modifier.padding(top = 8.dp)
             ) {
-                itemsIndexed(products) { index, p ->
+                itemsIndexed(products) { _, p ->
                     ProductRowCard(p, navController)
                 }
             }

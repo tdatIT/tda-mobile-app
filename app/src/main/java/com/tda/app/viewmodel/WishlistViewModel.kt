@@ -31,7 +31,7 @@ class WishlistViewModel @Inject constructor(
 
     fun fecthData(jwt: String) {
         viewModelScope.launch {
-            remote.getAllItem(jwt)?.let { resp ->
+            remote.getAllItem(jwt).let { resp ->
                 resp.data?.let {
                     _state.value = it
                 }
@@ -42,7 +42,7 @@ class WishlistViewModel @Inject constructor(
 
     fun addItem(jwt: String, productCode: String) {
         viewModelScope.launch {
-            remote.addItem(jwt, productCode)?.let { resp ->
+            remote.addItem(jwt, productCode).let { resp ->
                 resp.data?.let {
                     fecthData(jwt)
                     Log.i("add-item", it.message)
@@ -55,7 +55,7 @@ class WishlistViewModel @Inject constructor(
 
     fun delete(jwt: String, itemId: Long) {
         viewModelScope.launch {
-            remote.deleteItem(jwt, itemId)?.let { resp ->
+            remote.deleteItem(jwt, itemId).let { resp ->
                 resp.data?.let {
                     fecthData(jwt)
                     Log.i("update-cart", it.message)

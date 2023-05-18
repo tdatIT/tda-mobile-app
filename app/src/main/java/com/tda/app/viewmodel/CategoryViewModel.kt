@@ -21,7 +21,7 @@ class CategoryViewModel : ViewModel() {
 
     fun getCategoryList(size: Int) {
         viewModelScope.launch {
-            repository.getCategories(size)?.let {
+            repository.getCategories(size).let {
                 if (it is Resource.Success) {
                     _state.value = it.data!!
                 }

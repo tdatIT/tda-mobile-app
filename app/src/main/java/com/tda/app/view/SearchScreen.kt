@@ -197,7 +197,7 @@ fun SearchScreen(
                     fontStyle = FontStyle.Italic
                 )
             }
-            itemsIndexed(products) { index, p ->
+            itemsIndexed(products) { _, p ->
                 ProductRow(product = p, nav = nav)
             }
         }

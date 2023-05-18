@@ -49,7 +49,7 @@ fun CategoryScreen(navController: NavController) {
                 verticalArrangement = Arrangement.spacedBy(10.dp),
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                itemsIndexed(categories) { index, item ->
+                itemsIndexed(categories) { _, item ->
                     CategoryCard(item, navController)
                 }
             }

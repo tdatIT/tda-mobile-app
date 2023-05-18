@@ -22,7 +22,7 @@ class CategoryAllViewModel : ViewModel() {
 
     fun getAllCategoryList() {
         viewModelScope.launch {
-            repository.getAllCategories()?.let {
+            repository.getAllCategories().let {
                 if (it is Resource.Success) {
                     _state.value = it.data!!
                 }

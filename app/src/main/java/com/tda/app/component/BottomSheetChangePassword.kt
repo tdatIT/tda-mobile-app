@@ -214,9 +214,3 @@ fun BottomSheetChangePassword() {
 //        }
     }
 }
-@Preview(showBackground = true)
-@Composable
-fun previewNewScreens() {
-    val nav = rememberNavController()
-    BottomSheetChangePassword()
-}

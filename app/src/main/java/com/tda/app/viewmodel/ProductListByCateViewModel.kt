@@ -17,7 +17,7 @@ class ProductListByCateViewModel : ViewModel() {
 
     fun getProducts(code: String) {
         viewModelScope.launch {
-            repository.getProductsByCategoryCode(code)?.let {
+            repository.getProductsByCategoryCode(code).let {
                 if (it is Resource.Success) {
                     _state.value = it.data!!
                 }

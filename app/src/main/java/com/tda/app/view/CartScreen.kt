@@ -373,13 +373,6 @@ fun HeaderCartItems(nav: NavController) {
 }
 
 
-@Composable
-fun CheckoutDetails(priceState: State<Double>) {
-
-
-}
-
-
 @Preview(showBackground = true)
 @Composable
 fun previewScreensas() {

@@ -130,7 +130,7 @@ fun SearchResultScreen(nav: NavController, reqKw: String) {
             horizontalArrangement = Arrangement.spacedBy(10.dp),
             contentPadding = PaddingValues(10.dp)
         ) {
-            itemsIndexed(products) { index, product ->
+            itemsIndexed(products) { _, product ->
                 ProductCard(
                     nav,
                     product

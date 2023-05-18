@@ -22,7 +22,7 @@ class AllProductViewModel() : ViewModel() {
 
     fun getProduct(page: Int, size: Int) {
         viewModelScope.launch {
-            repository.getProducts(page, size)?.let {
+            repository.getProducts(page, size).let {
                 if (it is Resource.Success) {
                     _state.value = it.data!!
                 }

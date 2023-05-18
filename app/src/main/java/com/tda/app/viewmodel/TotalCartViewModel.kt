@@ -31,7 +31,7 @@ class TotalCartViewModel @Inject constructor(
 
     fun getAllItem(jwt: String) {
         viewModelScope.launch {
-            remote.totalAmount(jwt)?.let { resp ->
+            remote.totalAmount(jwt).let { resp ->
                 resp.data?.let {
                     _state.value = it
                 }

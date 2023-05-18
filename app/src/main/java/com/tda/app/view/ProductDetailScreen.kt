@@ -339,7 +339,7 @@ fun TopProduct(products: List<ProductResponse>, nav: NavController) {
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(6.dp)
         ) {
-            itemsIndexed(products) { index, p ->
+            itemsIndexed(products) { _, p ->
                 ProductItem(p, nav)
             }
         }

@@ -34,7 +34,7 @@ class AddressViewModel @Inject constructor(
 
     fun fetchAll(token: String) {
         viewModelScope.launch {
-            remote.fetchAllData(token)?.let {
+            remote.fetchAllData(token).let {
                 if (it is Resource.Success) {
                     _state.value = it.data!!
                 }

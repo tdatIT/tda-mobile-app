@@ -414,7 +414,6 @@ fun SignUpScreen(
                                 color = dark_gray,
                             )
 
-
                             DropDownMenuProvince(
                                 provinces,
                                 "Tỉnh thành",
