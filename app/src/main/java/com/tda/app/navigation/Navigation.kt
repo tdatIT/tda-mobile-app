@@ -89,6 +89,12 @@ fun Navigation() {
                 )
             }
         }
+        composable(Screen.CheckoutScreen.route) {
+            CheckoutScreen(navController = navController)
+        }
+        composable(Screen.CheckOutSuccessScreen.route) {
+            CheckOutSuccessScreen(navController = navController)
+        }
     }
 }
 //        composable(Screen.PopularListScreen.route) {
@@ -97,9 +103,7 @@ fun Navigation() {
 //        composable(Screen.DetailsScreen.route) {
 //            FlowerDetailsScreen(navController = navController)
 //        }
-//        composable(Screen.AddToCartScreen.route) {
-//            CheckoutScreen()
-//        }
+
 
 
 

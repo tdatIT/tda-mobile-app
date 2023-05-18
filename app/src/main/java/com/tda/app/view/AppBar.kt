@@ -40,6 +40,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.tda.app.R
+import com.tda.app.component.AddToCartDialog
+import com.tda.app.model.response.ProductResponse
 import com.tda.app.navigation.Screen
 import com.tda.app.ui.theme.TdaMobilemobileTheme
 import com.tda.app.ui.theme.bgwhitelight
@@ -47,6 +49,7 @@ import com.tda.app.ui.theme.colorPrimary
 import com.tda.app.ui.theme.gray
 import com.tda.app.ui.theme.text_hint_color
 import com.tda.app.ui.theme.white
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 @Composable
@@ -345,7 +348,25 @@ fun ProductDetailBar(navController: NavController) {
 }
 
 @Composable
-fun BottomProductBar(navController: NavController) {
+fun BottomProductBar(
+    nav: NavController,
+    jwt: String?,
+    productState: StateFlow<ProductResponse>,
+    addToCart: (jwt: String, productCode: String, quantity: Int) -> Unit,
+    // addToWishlist: (jwt: String, productCode: String) -> Unit
+) {
+    var display by remember { mutableStateOf(false) }
+    if (display) {
+        AddToCartDialog { display = false }
+    }
+    var opened by remember { mutableStateOf(false) }
+    if (opened) {
+        MessageDialog(title = "Thông báo", msg = "Vui lòng đăng nhập tài khoản") {
+            opened = false
+        }
+    }
+    val product by productState.collectAsState()
+
     Box(Modifier.background(white)) {
         Row(
             modifier = Modifier
@@ -356,7 +377,13 @@ fun BottomProductBar(navController: NavController) {
             Column(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.padding(start = 8.dp, end = 8.dp)
+                modifier = Modifier
+                    .padding(start = 8.dp, end = 8.dp)
+                    .clickable {
+                        jwt?.let {
+                            //addToWishlist(jwt, product.productCode)
+                        }
+                    }
             ) {
 
                 Icon(
@@ -371,7 +398,16 @@ fun BottomProductBar(navController: NavController) {
             Column(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.padding(end = 5.dp, start = 5.dp)
+                modifier = Modifier
+                    .padding(end = 5.dp, start = 5.dp)
+                    .clickable {
+                        if (jwt != null) {
+                            addToCart(jwt, product.productCode, 1)
+                            display = true
+                        } else {
+                            opened = true
+                        }
+                    }
             ) {
                 Icon(
                     imageVector = Icons.Outlined.AddShoppingCart,
@@ -391,13 +427,14 @@ fun BottomProductBar(navController: NavController) {
                     .fillMaxHeight()
                     .fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(colorPrimary),
-                    onClick = { /*TODO*/ }) {
+                    onClick = { nav.navigate("") }) {
                     Text(text = "Mua ngay", color = white)
                 }
             }
         }
     }
 }
+
 @Composable
 fun HeaderAccount(
     navController: NavController,
@@ -503,6 +540,7 @@ fun HeaderAccount(
         }
     }
 }
+
 @Composable
 fun HeaderCheckoutItems(navController: NavController) {
     Box(Modifier.background(colorPrimary)) {
@@ -534,6 +572,7 @@ fun HeaderCheckoutItems(navController: NavController) {
         }
     }
 }
+
 @Composable
 fun ManagerListAddress(navController: NavController) {
     Box(Modifier.background(colorPrimary)) {
@@ -566,7 +605,7 @@ fun ManagerListAddress(navController: NavController) {
 
             IconButton(onClick = {}) {
                 Icon(
-                    painterResource(id =  R.drawable.address),
+                    painterResource(id = R.drawable.address),
                     contentDescription = "",
                     tint = Color.White
                 )
@@ -574,6 +613,7 @@ fun ManagerListAddress(navController: NavController) {
         }
     }
 }
+
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreviewAppBar() {

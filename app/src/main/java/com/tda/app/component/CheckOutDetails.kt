@@ -139,11 +139,9 @@ fun CheckoutDetail() {
                             .size(20.dp, 20.dp)
                     )
                 }
-
             }
         }
     }
-
 }
 
 

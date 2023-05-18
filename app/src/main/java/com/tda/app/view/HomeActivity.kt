@@ -13,6 +13,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AirplaneTicket
+import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -39,6 +41,7 @@ import com.tda.app.model.response.ProductResponse
 import com.tda.app.navigation.Screen
 import com.tda.app.ui.theme.TdaMobilemobileTheme
 import com.tda.app.ui.theme.colorPrimary
+import com.tda.app.ui.theme.favourite
 import com.tda.app.utils.Constants
 import com.tda.app.viewmodel.CategoryViewModel
 import com.tda.app.viewmodel.AllProductViewModel
@@ -174,16 +177,16 @@ fun HeaderBar(navController: NavController) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
-                    imageVector = Icons.Rounded.AirplaneTicket,
+                    imageVector = Icons.Rounded.FavoriteBorder,
                     contentDescription = "",
-                    tint = MaterialTheme.colors.primary
+                    tint = favourite
                 )
                 Column(Modifier.padding(8.dp)) {
-                    Text(text = "Voucher", fontSize = 12.sp)
+                    Text(text = "Danh sách", fontSize = 12.sp)
                     Text(
-                        text = "12",
+                        text = "Wistlist",
                         fontWeight = FontWeight.SemiBold,
-                        color = colorPrimary,
+                        color = favourite,
                         fontSize = 12.sp
                     )
                 }

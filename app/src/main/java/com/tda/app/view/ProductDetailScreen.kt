@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.text.HtmlCompat
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -55,11 +56,22 @@ import com.tda.app.ui.theme.colorSecond
 import com.tda.app.ui.theme.light_gray
 import com.tda.app.utils.Constants
 import com.tda.app.viewmodel.BestSellerViewModel
+import com.tda.app.viewmodel.CartViewModel
 import com.tda.app.viewmodel.ProductByCodeViewModel
+import com.tda.app.viewmodel.UserViewModel
+import kotlinx.coroutines.flow.StateFlow
 
 
 @Composable
-fun ProductDetailScreen(nav: NavController, productCode: String) {
+fun ProductDetailScreen(
+    nav: NavController, productCode: String,
+    cartViewModel: CartViewModel = hiltViewModel(),
+    userViewModel: UserViewModel = hiltViewModel()
+) {
+    val user by userViewModel.state.collectAsState()
+    val cartItems by cartViewModel.cartItems.collectAsState()
+    userViewModel.getUserFromDB()
+
 
     val productViewModel = viewModel(modelClass = ProductByCodeViewModel::class.java)
     val product by productViewModel.state.collectAsState()
@@ -69,9 +81,21 @@ fun ProductDetailScreen(nav: NavController, productCode: String) {
     val bestSellers by bestSellerViewModel.state.collectAsState()
 
     var currentImagePosition by remember { mutableStateOf(0) }
+
+
     Scaffold(
         topBar = { ProductDetailBar(nav) },
-        bottomBar = { BottomProductBar(nav) },
+        bottomBar = {
+            BottomProductBar(
+                nav = nav,
+                jwt = user?.jwt,
+                productState = productViewModel.state as StateFlow<ProductResponse>,
+                addToCart = { jwt, productCode, quantity ->
+                    cartViewModel.addItem(jwt, productCode, quantity)
+                },
+                //addToWishlist = {}
+            )
+        },
         backgroundColor = bgwhitelight,
     ) { padding ->
         LazyVerticalGrid(

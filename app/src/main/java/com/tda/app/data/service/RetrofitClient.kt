@@ -3,6 +3,7 @@ package com.tda.app.data.service
 import com.google.gson.GsonBuilder
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 
 
 object RetrofitClient {
@@ -23,6 +24,7 @@ object RetrofitClient {
         .build()
     private val retrofit_TDA_hasJWT: Retrofit = Retrofit.Builder()
         .baseUrl(URL_API_BASE)
+        .addConverterFactory(ScalarsConverterFactory.create())
         .addConverterFactory(GsonConverterFactory.create())
         .build()
     val retrofit_TDA_API: ApiService = retrofit_TDA.create(ApiService::class.java)

@@ -4,7 +4,11 @@ import android.content.Context
 import androidx.room.Room
 import com.tda.app.data.db.KeywordRoomDB
 import com.tda.app.data.db.UserRoomDB
+import com.tda.app.data.repository.AddressRemote
+import com.tda.app.data.repository.CartRemote
 import com.tda.app.data.repository.KeywordRepository
+import com.tda.app.data.repository.OrderRemote
+import com.tda.app.data.repository.ShippingRemote
 import com.tda.app.data.repository.UserRepository
 import com.tda.app.data.service.KeywordDao
 import com.tda.app.data.service.UserDao
@@ -43,6 +47,29 @@ object DbModule {
     @Provides
     fun getKwDao(database: KeywordRoomDB): KeywordDao {
         return database.getKeywordDao()
+    }
+
+    @Singleton
+    @Provides
+    fun getCartRemote(): CartRemote {
+        return CartRemote()
+    }
+
+    @Singleton
+    @Provides
+    fun getOrderRemote(): OrderRemote {
+        return OrderRemote()
+    }
+
+    @Singleton
+    @Provides
+    fun getShippingRemote(): ShippingRemote {
+        return ShippingRemote()
+    }
+    @Singleton
+    @Provides
+    fun getAddressRemote(): AddressRemote {
+        return AddressRemote()
     }
 
 

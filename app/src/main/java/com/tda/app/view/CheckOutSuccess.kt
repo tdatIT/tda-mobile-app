@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.tda.app.R
+import com.tda.app.navigation.Screen
 import com.tda.app.ui.theme.GrayText
 import com.tda.app.ui.theme.colorPrimary
 import com.tda.app.ui.theme.white
@@ -43,13 +44,15 @@ fun CheckOutSuccessScreen(navController: NavController) {
             Text(
                 text = "Đặt hàng thành công",
                 style = MaterialTheme.typography.h4,
-                modifier = Modifier.padding(vertical = 16.dp)
+                modifier = Modifier
+                    .padding(vertical = 16.dp)
                     .wrapContentHeight(),
                 textAlign = TextAlign.Center,
                 color = GrayText,
             )
             Button(
                 onClick = {
+                    navController.navigate(Screen.HomeScreen.route)
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = colorPrimary),
                 modifier = Modifier
@@ -67,29 +70,10 @@ fun CheckOutSuccessScreen(navController: NavController) {
                     modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
                 )
             }
-            Button(
-                onClick = {
-                },
-                colors = ButtonDefaults.buttonColors(backgroundColor = colorPrimary),
-                modifier = Modifier
-                    .width(200.dp)
-                    .padding(
-                        top = 30.dp,
-                        bottom = 34.dp
-                    )
-                    .align(Alignment.CenterHorizontally),
-                shape = RoundedCornerShape(16.dp)
-            ) {
-                Text(
-                    text = "Tiếp tục mua hàng",
-                    color = white,
-                    style = MaterialTheme.typography.button,
-                    modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
-                )
-            }
         }
     }
 }
+
 @Preview
 @Composable
 fun PreviewListProductScr() {
